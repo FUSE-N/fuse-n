@@ -1,0 +1,117 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* Header styles */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background-color: #0099d8; /* Bright blue background */
+    color: white;
+    position: relative;
+}
+
+/* Logo container */
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo-dots {
+    width: 40px;
+    height: 40px;
+    position: relative;
+}
+
+.logo-dot {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+/* Generate positions for the dots pattern */
+/* This is a simplified version - you'd need more precise positioning for exact replication */
+.dot-1 { top: 5px; left: 10px; }
+.dot-2 { top: 5px; left: 16px; }
+.dot-3 { top: 5px; left: 22px; }
+.dot-4 { top: 5px; left: 28px; }
+.dot-5 { top: 11px; left: 7px; }
+.dot-6 { top: 11px; left: 13px; }
+.dot-7 { top: 11px; left: 19px; }
+.dot-8 { top: 11px; left: 25px; }
+.dot-9 { top: 11px; left: 31px; }
+.dot-10 { top: 17px; left: 10px; }
+.dot-11 { top: 17px; left: 16px; }
+.dot-12 { top: 17px; left: 22px; }
+.dot-13 { top: 17px; left: 28px; }
+.dot-14 { top: 23px; left: 7px; }
+.dot-15 { top: 23px; left: 13px; }
+.dot-16 { top: 23px; left: 19px; }
+.dot-17 { top: 23px; left: 25px; }
+.dot-18 { top: 23px; left: 31px; }
+.dot-19 { top: 29px; left: 10px; }
+.dot-20 { top: 29px; left: 16px; }
+.dot-21 { top: 29px; left: 22px; }
+.dot-22 { top: 29px; left: 28px; }
+
+.logo-text {
+    font-size: 28px;
+    font-weight: bold;
+    margin-left: 10px;
+    letter-spacing: 1px;
+}
+
+/* Navigation area */
+.nav-container {
+    display: flex;
+    align-items: center;
+}
+
+.language-select {
+    margin-right: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.search-icon, .menu-icon {
+    cursor: pointer;
+    margin-left: 15px;
+}
+
+.search-icon svg, .menu-icon svg {
+    fill: white;
+    width: 24px;
+    height: 24px;
+}
+
+/* Bottom border accent */
+.header-accent {
+    height: 4px;
+    background: linear-gradient(to right, #008000, #00aa00);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+/* Media query for mobile responsiveness */
+@media (max-width: 768px) {
+    .header {
+        padding: 15px 20px;
+    }
+    
+    .logo-text {
+        font-size: 24px;
+    }
+}

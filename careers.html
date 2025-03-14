@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bonniface -careers</title>
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --secondary: #5f6368;
+            --accent: #34a853;
+            --light: #f8f9fa;
+            --dark: #202124;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .hero {
+            background: linear-gradient(to right, rgba(26, 115, 232, 0.9), rgba(52, 168, 83, 0.8)), 
+                        url('/api/placeholder/1200/600') center/cover no-repeat;
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--accent);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background-color: #2d9247;
+            transform: translateY(-2px);
+        }
+        
+        section {
+            padding: 3rem 0;
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 3px;
+            width: 60px;
+            background-color: var(--accent);
+        }
+        
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .about-stats {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        .stat {
+            text-align: center;
+            padding: 1rem;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .responsibilities {
+            margin-top: 1.5rem;
+        }
+        
+        .responsibility-section {
+            margin-bottom: 2rem;
+        }
+        
+        .responsibility-section h3 {
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+        
+        .responsibility-list {
+            list-style-type: none;
+        }
+        
+        .responsibility-list li {
+            margin-bottom: 0.8rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        
+        .responsibility-list li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+        
+        .qualifications {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        .qualification-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        .qualification-list {
+            list-style-type: none;
+            margin-top: 1rem;
+        }
+        
+        .qualification-list li {
+            margin-bottom: 0.8rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        
+        .qualification-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+        
+        .cta {
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 4rem 0;
+        }
+        
+        .cta h2 {
+            color: white;
+        }
+        
+        .cta h2::after {
+            background-color: white;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+        
+        @media (max-width: 768px) {
+            .about-grid, .qualifications {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Bonniface</h1>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <div class="container">
+            <h1>Data Analyst Super Agent</h1>
+            <p>Freelance Mentor - Ghana (Remote/Consultant)</p>
+            <a href="#apply" class="btn">Apply Now</a>
+        </div>
+    </section>
+    
+    <section id="about">
+        <div class="container">
+            <h2>About Bonniface</h2>
+            <p>At Bonniface, we believe in the power of employment to change lives. We are a global nonprofit organization that supports adults to achieve economic mobility through employment. Bonniface trains and places adult learners of all ages into careers that are otherwise inaccessible, working in partnership with governments, employers, and other system actors.</p>
+            
+            <div class="about-grid">
+                <div>
+                    <p>We also conduct original research and share data insights on high priority global workforce transition topics to inform decision-making by workforce system stakeholders. Launched in 2015, Bonniface comprises a global hub (Bonniface You Employed, or GYE) and a network of in-country affiliates.</p>
+                    <p>When learners join Bonniface, 91% are unemployed, of which nearly half are long-term unemployed. Three months after completing our program, graduates have an 78% job placement rate, rising to 88% within six months.</p>
+                </div>
+                
+                <div class="about-stats">
+                    <div class="stat">
+                        <div class="stat-number">100,000+</div>
+                        <div>Graduates</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">11,000+</div>
+                        <div>Employers</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">46</div>
+                        <div>Professions</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">17</div>
+                        <div>Countries</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="position">
+        <div class="container">
+            <h2>Position Overview</h2>
+            <p>As a Data Analyst Super Agent for the Ghana Remote and Online Work Project (GROW) - Bonniface Ghana, you will play a pivotal role in empowering aspiring data analysts to become globally sought-after freelance talent. Your mission is to mentor, guide, and teach mentees not only the technical skills of data analysis but also the business acumen required to thrive in the freelancing world.</p>
+            <p>Through your expertise, you will fuel their passion for freelancing, teaching them how to build a personal brand, secure high-value gigs, and sustain a successful career in the global marketplace. Your role will involve consistent engagement, personalized support, and leveraging your network to unlock opportunities for mentees.</p>
+        </div>
+    </section>
+    
+    <section id="responsibilities" class="responsibilities">
+        <div class="container">
+            <h2>Key Responsibilities</h2>
+            
+            <div class="responsibility-section">
+                <h3>Mentorship & Skill Development</h3>
+                <ul class="responsibility-list">
+                    <li>Provide daily and weekly one-on-one and group mentoring sessions, fostering mentees' growth as skilled data analysts.</li>
+                    <li>Demonstrate technical competencies, including Linux, SQL, Python, Excel, Power BI, MongoDB, AI, Big Data, data visualization, and more.</li>
+                    <li>Instill freelancing business skills, such as client acquisition, pricing strategies, proposal writing, time management, professional development, online presence and delivering exceptional results.</li>
+                    <li>Educate mentees on creating a strong personal brand and leveraging platforms like Upwork, Fiverr, and LinkedIn to showcase their expertise.</li>
+                    <li>Share proven strategies to market their skills, pitch services effectively, and secure consistent gigs.</li>
+                    <li>Teach mentees how to handle client relationships, negotiate contracts, and manage projects professionally.</li>
+                </ul>
+            </div>
+            
+            <div class="responsibility-section">
+                <h3>Gig Sourcing & Placement Support</h3>
+                <ul class="responsibility-list">
+                    <li>Actively acquire gigs for assigned mentee group via your own network and online platforms.</li>
+                    <li>Provide tailored advice to help them meet or exceed the earning benchmark of $100-$180+/month.</li>
+                    <li>Encourage mentees to pursue opportunities and coach them to excel in interviews or client pitches.</li>
+                </ul>
+            </div>
+            
+            <div class="responsibility-section">
+                <h3>Inspiring Global Success</h3>
+                <ul class="responsibility-list">
+                    <li>Share industry insights, emerging trends, and strategies for positioning mentees as globally competitive freelance professionals.</li>
+                    <li>Conduct workshops on building confidence, effective communication, and long-term career planning.</li>
+                </ul>
+            </div>
+            
+            <div class="responsibility-section">
+                <h3>Monitoring & Reporting</h3>
+                <ul class="responsibility-list">
+                    <li>Track and document mentee progress, including technical skills, business development, and freelancing success.</li>
+                    <li>Provide regular feedback and progress updates to the Freelance Mentoring Coordinator.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <section id="qualifications">
+        <div class="container">
+            <h2>Ideal Candidate Profile</h2>
+            
+            <div class="qualifications">
+                <div class="qualification-card">
+                    <h3>Required Skills and Experience</h3>
+                    <ul class="qualification-list">
+                        <li><strong>Technical Mastery:</strong> Expertise in data analysis tools and techniques, including Python, SQL, Power BI, Excel, AI, and Big Data frameworks.</li>
+                        <li><strong>Freelancing Expertise:</strong> Proven success as a freelance data analyst with experience sourcing and delivering projects on global platforms like Upwork and Fiverr.</li>
+                        <li><strong>Business Acumen:</strong> Strong understanding of the freelance economy, client acquisition, pricing strategies, and project management.</li>
+                        <li><strong>Mentorship Skills:</strong> Passion for teaching and inspiring mentees from diverse backgrounds to achieve global freelancing success.</li>
+                        <li><strong>Networking Strength:</strong> An extensive network to source opportunities and connect mentees to valuable freelance gigs.</li>
+                    </ul>
+                </div>
+                
+                <div class="qualification-card">
+                    <h3>Preferred Qualifications</h3>
+                    <ul class="qualification-list">
+                        <li>Experience coaching or mentoring in freelancing or related fields.</li>
+                        <li>Familiarity with the Ghanaian and Global freelance market and cultural nuances.</li>
+                        <li>Certifications in relevant tools or methodologies (e.g., Google Data Analytics, Tableau, etc.).</li>
+                        <li>Experience with remote teaching tools and learning management systems.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="apply" class="cta">
+        <div class="container">
+            <h2>Join Our Mission</h2>
+            <p>Help us empower the next Bonniface of data analysts in Ghana</p>
+            <a href="#" class="btn">Apply Now</a>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Bonniface. All rights reserved.</p>
+            <p>Bonniface Home Page | Jobs powered by</p>
+        </div>
+    </footer>
+</body>
+</html>
