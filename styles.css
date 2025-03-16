@@ -6,6 +6,7 @@
     --light: #f8fafc;
     --dark: #1e293b;
     --success: #10b981;
+    --darklight:rgba(255, 255, 255, 0.136);
 }
 
 * {
@@ -16,13 +17,13 @@
 }
 
 body {
-    background-color: var(--light);
+    background-color: var(--dark);
     color: var(--dark);
     line-height: 1.6;
 }
 
 header {
-    background-color: white;
+    background-color: var(--secondary);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -73,7 +74,7 @@ header {
 .logo {
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--primary);
+    color: var(--light);
     text-decoration: none;
 }
 
@@ -85,7 +86,7 @@ header {
 
 .nav-links a {
     text-decoration: none;
-    color: var(--secondary);
+    color: var(--light);
     font-weight: 500;
     transition: color 0.3s ease;
 }
@@ -165,14 +166,14 @@ header {
 }
 
 .btn-outline {
-    background-color: transparent;
-    border: 1px solid var(--primary);
+    background-color: var(--light);
+    border: 1px solid var(--light);
     color: var(--primary);
 }
 
 .btn-outline:hover {
     background-color: var(--primary);
-    color: white;
+    color: var(--light);
 }
 
 /* New button styles */
@@ -187,7 +188,7 @@ header {
 }
 
 .btn-blue:hover {
-    background-color: var(--accent);
+    background-color: var(--light);
 }
 
 section {
@@ -196,14 +197,14 @@ section {
 
 .section-title {
     font-size: 2.25rem;
-    color: var(--dark);
+    color: var(--light);
     margin-bottom: 1.5rem;
     text-align: center;
 }
 
 .section-subtitle {
     text-align: center;
-    color: var(--secondary);
+    color: var(--light);
     margin-bottom: 3rem;
     max-width: 700px;
     margin-left: auto;
@@ -230,13 +231,13 @@ section {
 .hero-title {
     font-size: 3.5rem;
     line-height: 1.2;
-    color: var(--dark);
+    color: var(--light);
     margin-bottom: 1.5rem;
 }
 
 .hero-subtitle {
     font-size: 1.25rem;
-    color: var(--secondary);
+    color: var(--light);
     margin-bottom: 2rem;
 }
 
@@ -297,6 +298,11 @@ section {
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
+.portfolio-item:hover{
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+
+}
 
 .portfolio-image {
     height: 250px;
@@ -317,7 +323,7 @@ section {
 
 .portfolio-title {
     font-size: 1.25rem;
-    color: var(--dark);
+    color: var(--primary);
     margin-bottom: 0.5rem;
 }
 
@@ -574,13 +580,13 @@ footer {
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 762px) {
     .navbar {
-        flex-direction: column;
+        flex-direction: row;
     }
     
     .nav-links {
-        margin-top: 1rem;
+        margin-top: 0.15rem;
     }
     .logo-container {
         flex-direction: column;

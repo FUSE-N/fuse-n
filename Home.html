@@ -2,9 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link  rel="icon" href="img/boni_avatar.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bonniface | Freelance Professional</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/ai_chatbot.css">
+    <script src="script/ai_chatbot.js"></script>
 </head>
 <body>
     <header>
@@ -34,7 +37,9 @@
         </div>
     </header>
     
-    <section class="hero">
+    <section class="hero" style="background-image: url('img/Hero-section.jpeg'); 
+
+    ">
         <div class="container">
             <div class="hero-content">
                 <h1 class="hero-title">Transforming Ideas into <span class="highlight">Digital Reality</span></h1>
@@ -48,10 +53,8 @@
     <section id="services">
         <div class="container">
             <h2 class="section-title">My Services</h2>
-            <p class="section-subtitle">
-                <p>Helping businesses define strategic goals using data-driven insights, market research, and AI-powered forecasting.
+            <p class="section-subtitle">Helping businesses define strategic goals using data-driven insights, market research, and AI-powered forecasting.
 
-                 </p>
              </p>
             
             <div class="services-grid">
@@ -127,8 +130,8 @@
             <h2 class="section-title">My Portfolio</h2>
             <p class="section-subtitle">Take a look at some of my recent projects and see how I've helped clients achieve their goals.</p>
             
-            <div class="portfolio-grid">
-                <div class="portfolio-item">
+            <div class="portfolio-grid" >
+                <div class="portfolio-item" href="career-opportunities.html#careers">
                     <div class="portfolio-image">
                         <img src="assets/Projects/time_series_analysis.webp" alt="Project 1">
                     </div>
@@ -140,7 +143,7 @@
                     </div>
                 </div>
                 
-                <div class="portfolio-item">
+                <div class="portfolio-item" >
                     <div class="portfolio-image">
                         <img src="assets/Projects/neural_networks.webp" alt="Project 2">
                     </div>
@@ -202,7 +205,7 @@
         </div>
     </section>
     
-    <section id="testimonials" class="testimonials" style="background-image: url('img/Hero-section.jpeg');">
+    <!-- <section id="testimonials" class="testimonials" style="background-image: url('img/Hero-section.jpeg');">
         <div class="container">
             <h2 class="section-title">Client Testimonials</h2>
             <p class="section-subtitle">Don't just take my word for it. Here's what my clients have to say about working with me.</p>
@@ -248,7 +251,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
     
     <section id="contact" class="contact">
         <div class="container">
@@ -259,14 +262,17 @@
                 <div class="contact-info">
                     <h3 style="margin-bottom: 1.5rem;">Let's Create Something Amazing Together</h3>
                     <p>Whether you have a specific project in mind or just want to explore possibilities, I'm here to help. Fill out the form or use the contact information below to get in touch.</p>
-                    <p><strong>Email:</strong> your.email@example.com</p>
+                    <p><strong>Email:</strong> kalongboniface97@gmail.com</p>
                     <p><strong>Phone:</strong> +233 (50) 616-2161</p>
                     <p><strong>Based in:</strong> Remote </p>
                     <p>I typically respond to all inquiries within 24 hours.</p>
+                    <br>
+
+                     
                 </div>
                 
                 <div class="contact-form">
-                    <form>
+                    <!-- <form>
                         <div class="form-group">
                             <label for="name">Full Name</label>
                             <input type="text" id="name" class="form-control" placeholder="Pleae enter your full name">
@@ -288,11 +294,59 @@
                         </div>
                         
                         <button type="submit" class="btn" style="width: 100%;">Send Message</button>
-                    </form>
+                    </form> -->
+                    <p> Or <strong> Find Me @</strong></p>
+                     <div class= "Platforms-container">
+                        <!-- Card With moving Platforms Logos that are clickable -->
+
+
+
+                     </div>
                 </div>
             </div>
         </div>
     </section>
+    <!-- Ai ChatBot  -->
+    <div class="chat-widget-container">
+        <div class="chat-toggle-btn" id="chatToggleBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+        </div>
+        
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <div class="header-info">
+                    <img src="img/boni_avatar.jpg" alt="Bonniface Logo" class="logo">
+                    <h3>Bonniface Assistant</h3>
+                </div>
+                <button class="close-btn" id="closeBtn">&times;</button>
+            </div>
+            
+            <div class="chat-body" id="chatBody">
+                <div class="typing-indicator" id="typingIndicator">
+                    <span>Hi There</span>
+                    <span>Welcome</span>
+                    <span>Hope you are doing wel?</span>
+                </div>
+            </div>
+            
+            <div class="chat-footer">
+                <div class="chat-input-container">
+                    <input type="text" class="chat-input" id="chatInput" placeholder="Type your message...">
+                    <button class="send-btn" id="sendBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- Elfsight AI Chatbot | Untitled AI Chatbot
+<script src="https://static.elfsight.com/platform/platform.js" async></script>
+<div class="elfsight-app-74815c3b-1caf-4d67-8b15-fa06a717eb34" data-elfsight-app-lazy></div> -->
     
     <footer>
         <div class="container">
