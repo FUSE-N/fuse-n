@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bonniface | AI-Powered Digital Solutions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cal.com/embed.js" async></script>
+    <link rel="icon" href="img/boni_avatar.jpg">
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm fixed w-full top-0 z-50">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <img src="img/boni_avatar.jpg" alt="Logo" class="h-8 w-8 rounded-full">
+                    <span class="ml-2 text-xl font-bold text-gray-900">Bonniface</span>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <div class="relative group">
+                        <button class="text-gray-600 hover:text-blue-600">Services</button>
+                        <div class="absolute hidden group-hover:block bg-white shadow-lg rounded-lg p-4 min-w-[200px]">
+                            <a href="#consulting" class="block px-4 py-2 hover:bg-gray-50">Consulting & Strategy</a>
+                            <a href="#data-analysis" class="block px-4 py-2 hover:bg-gray-50">Data Analysis</a>
+                            <!-- Add other services -->
+                        </div>
+                    </div>
+                    <a href="#portfolio" class="text-gray-600 hover:text-blue-600">Portfolio</a>
+                    <a href="#reviews" class="text-gray-600 hover:text-blue-600">Reviews</a>
+                    <button class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+                        Hire Now
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section with Calendar Booking -->
+    <section class="pt-24 pb-12 bg-gradient-to-r from-blue-50 to-indigo-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h1 class="text-5xl font-bold text-gray-900 mb-6">
+                        Transform Your Business with 
+                        <span class="text-blue-600">AI Solutions</span>
+                    </h1>
+                    <div class="mb-8">
+                        <button class="bg-blue-600 text-white px-8 py-3 rounded-lg mr-4 hover:bg-blue-700">
+                            Schedule Consultation
+                        </button>
+                        <div class="cal-embed" data-cal-link="your-cal-username/30min"></div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <img src="img/hero-ai.png" alt="AI Solutions" class="rounded-xl shadow-xl">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Portfolio with Comments -->
+    <section id="portfolio" class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center mb-12">Featured Projects</h2>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Portfolio Item 1 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                    <img src="assets/project1.jpg" alt="AI Project" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">AI Forecasting System</h3>
+                        <div class="flex items-center mb-4">
+                            <div class="flex space-x-1 text-yellow-400">
+                                <!-- Star ratings -->
+                            </div>
+                            <span class="text-gray-600 ml-2">(24 reviews)</span>
+                        </div>
+                        <button class="w-full bg-blue-100 text-blue-600 py-2 rounded-lg hover:bg-blue-200"
+                                onclick="showProjectModal('project1')">
+                            View Details & Comments
+                        </button>
+                    </div>
+                </div>
+                <!-- Add more portfolio items -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Review & Order Assistance Section -->
+    <section id="reviews" class="bg-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12">
+                <!-- Review Form -->
+                <div class="bg-gray-50 p-8 rounded-xl">
+                    <h3 class="text-2xl font-bold mb-6">Share Your Experience</h3>
+                    <form id="reviewForm" class="space-y-4">
+                        <div>
+                            <label class="block text-gray-700 mb-2">Rating</label>
+                            <div class="flex space-x-2" id="ratingStars">
+                                <!-- Star rating input -->
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2">Review</label>
+                            <textarea class="w-full p-3 border rounded-lg" rows="4"></textarea>
+                        </div>
+                        <button class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+                            Submit Review
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Order Assistance Form -->
+                <div class="bg-blue-50 p-8 rounded-xl">
+                    <h3 class="text-2xl font-bold mb-6">Request Assistance</h3>
+                    <form class="space-y-4">
+                        <div>
+                            <label class="block text-gray-700 mb-2">Service Needed</label>
+                            <select class="w-full p-3 border rounded-lg">
+                                <option>AI Consultation</option>
+                                <option>System Integration</option>
+                                <option>Data Analysis</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2">Project Details</label>
+                            <textarea class="w-full p-3 border rounded-lg" rows="4"></textarea>
+                        </div>
+                        <button class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+                            Send Request
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Chatbot -->
+    <div class="fixed bottom-8 right-8">
+        <button class="bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition-all"
+                onclick="toggleChat()">
+            🤖
+        </button>
+        
+        <div id="chatWindow" class="hidden fixed bottom-24 right-8 w-96 bg-white rounded-xl shadow-xl">
+            <div class="p-4 border-b">
+                <h3 class="font-semibold">Bonniface AI Assistant</h3>
+            </div>
+            <div class="h-64 p-4 overflow-y-auto">
+                <!-- Chat messages -->
+            </div>
+            <div class="p-4 border-t">
+                <input type="text" placeholder="Type your message..." 
+                       class="w-full p-2 border rounded-lg">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Chatbot functionality
+        function toggleChat() {
+            const chatWindow = document.getElementById('chatWindow');
+            chatWindow.classList.toggle('hidden');
+        }
+
+        // Calendar embed initialization
+        window.addEventListener('load', function() {
+            window.CalEmbed.init();
+        });
+    </script>
+</body>
+</html>
