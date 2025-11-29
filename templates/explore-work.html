@@ -1,1418 +1,360 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Explore Work | Bonniface Freelance</title>
-        <link rel="icon" href="../static/img/boni_avatar.jpg" />
-        <link rel="stylesheet" href="../static/styles.css" />
 
-        <style>
-            :root {
-                --bg-dark: #0f172a;
-                --bg-darker: #0f172a;
-                --light: #f1f5f9;
-                --card-bg: rgba(255, 255, 255, 0.06);
-                --card-border: rgba(255, 255, 255, 0.1);
-                --accent: #7c3aed;
-                --glass: rgba(255, 255, 255, 0.04);
-                --muted: rgba(255, 255, 255, 0.7);
-            }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore | Bonniface Freelance</title>
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-darker: #0f172a;
+            --light: #f1f5f9;
+            --card-bg: rgba(255, 255, 255, 0.06);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --accent: #7c3aed;
+            --glass: rgba(255, 255, 255, 0.04);
+            --muted: rgba(255, 255, 255, 0.7);
+        }
 
-            html,
-            body {
-                height: 100%;
-            }
-            body {
-                margin: 0;
-                font-family:
-                    Inter,
-                    system-ui,
-                    -apple-system,
-                    "Segoe UI",
-                    Roboto,
-                    "Helvetica Neue",
-                    Arial;
-                background: linear-gradient(135deg, var(--bg-dark), #071024);
-                color: var(--light);
-                -webkit-font-smoothing: antialiased;
-                -moz-osx-font-smoothing: grayscale;
-            }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-            /* Page container */
-            .page-container {
-                max-width: 1300px;
-                margin: 32px auto;
-                padding: 24px;
-            }
+        body {
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            background: linear-gradient(135deg, var(--bg-dark), #071024);
+            color: var(--light);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            min-height: 100vh;
+        }
 
-            header .navbar {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding: 8px 0;
-            }
-            .logo-container {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                text-decoration: none;
-                color: var(--light);
-            }
-            .logo-container img {
-                width: 44px;
-                height: 44px;
-                border-radius: 8px;
-                object-fit: cover;
-            }
-            .nav-links a {
-                margin-left: 14px;
-                text-decoration: none;
-                color: var(--light);
-                padding: 8px 12px;
-                border-radius: 6px;
-            }
-            .nav-links .btn-primary {
-                background: var(--accent);
-                color: #fff;
+        /* Hero Section */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background-image: url('../assets/bg-img/header-bg0.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            animation: bgSlide 24s infinite;
+            box-shadow: inset 0 0 0 1000px rgba(15, 23, 42, 0.85);
+        }
+
+        @keyframes bgSlide {
+            0% {
+                background-image: url('../assets/bg-img/header-bg1.png');
             }
 
-            /* Header */
-            .works-header {
-                text-align: center;
-                margin-bottom: 28px;
-            }
-            .works-header h1 {
-                font-size: 34px;
-                margin: 6px 0;
-                font-weight: 700;
-            }
-            .works-header p {
-                opacity: 0.85;
-                margin: 0;
-            }
-            .works-count {
-                margin-top: 10px;
-                font-weight: 600;
-                color: var(--muted);
+            25% {
+                background-image: url('../assets/bg-img/header-bg2.png');
             }
 
-            /* Grid */
-            .works-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-                gap: 20px;
-                margin-bottom: 28px;
+            50% {
+                background-image: url('../assets/bg-img/header-bg3.png');
             }
 
-            .work-card {
-                background: var(--card-bg);
-                border: 1px solid var(--card-border);
-                border-radius: 12px;
-                overflow: hidden;
-                display: flex;
+            75% {
+                background-image: url('../assets/bg-img/header-bg4.png');
+            }
+
+            100% {
+                background-image: url('../assets/bg-img/header-bg1.png');
+            }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .hero-content p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: transparent;
+            color: var(--light);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--accent), #4f46e5);
+            border: none;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-indicators {
+            position: absolute;
+            bottom: 2rem;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            z-index: 3;
+        }
+
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .indicator.active {
+            background: var(--accent);
+            transform: scale(1.2);
+        }
+
+        .down-arrow-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            z-index: 3;
+        }
+
+        .down-arrow {
+            height: 40px;
+            animation: animateDown infinite 1.5s;
+            cursor: pointer;
+        }
+
+        @keyframes animateDown {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(5px);
+            }
+
+            60% {
+                transform: translateY(3px);
+            }
+        }
+
+        /* Additional content to show scrollability */
+        .content-section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .content-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .content-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .content-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .content-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-content p {
+                font-size: 1.1rem;
+            }
+
+            .hero-actions {
                 flex-direction: column;
-                transition:
-                    transform 0.28s cubic-bezier(0.2, 0.9, 0.3, 1),
-                    box-shadow 0.28s;
-                position: relative;
-                cursor: pointer;
-                min-height: 340px;
-                animation: floatBounce 6s ease-in-out infinite alternate;
-            }
-
-            /* Keyframes controlling the movement */
-            @keyframes floatBounce {
-                0% {
-                    transform: translateX(-10px);
-                }
-                100% {
-                    transform: translateX(10px);
-                }
-            }
-            .work-card:hover {
-                transform: translateY(-8px);
-                box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
-                transform: translateY(-8px) !important;
-            }
-
-            .work-card:nth-child(odd) {
-                animation-duration: 7s;
-            }
-
-            .work-card:nth-child(even) {
-                animation-duration: 5.5s;
-            }
-
-            .work-image img {
-                width: 100%;
-                height: 200px;
-                object-fit: cover;
-                display: block;
-            }
-            .work-body {
-                padding: 14px 14px 18px;
-                flex: 1;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-            }
-            .work-title {
-                font-size: 1.15rem;
-                font-weight: 700;
-                margin-bottom: 8px;
-            }
-            .work-desc {
-                font-size: 0.95rem;
-                opacity: 0.85;
-                line-height: 1.45;
-                margin-bottom: 12px;
-                color: rgba(255, 255, 255, 0.85);
-            }
-
-            /* Footer icons row (bottom-right) */
-            .work-footer {
-                display: flex;
-                justify-content: flex-end;
-                gap: 10px;
-                align-items: center;
-            }
-
-            .icon-item {
-                display: flex;
-                align-items: center;
-                gap: 2px;
-                padding: 3px 4px;
-                border-radius: 10px;
-                background: transparent;
-                cursor: pointer;
-                user-select: none;
-                transition:
-                    transform 0.15s ease,
-                    background 0.15s ease;
-            }
-            .icon-item:hover {
-                transform: translateY(-3px);
-                background: rgba(255, 255, 255, 0.02);
-            }
-
-            .icon {
-                width: 18px;
-                height: 18px;
-                display: inline-block;
-                flex-shrink: 0;
-                fill: rgba(255, 255, 255, 0.9);
-            }
-            .icon.small {
-                width: 16px;
-                height: 16px;
-            }
-            .count {
-                font-size: 0.92rem;
-                color: var(--muted);
-            }
-
-            /* Like heart - default & active */
-            .icon-item.like[data-liked="false"] .heart {
-                fill: rgba(255, 255, 255, 0.32);
-                stroke: rgba(255, 255, 255, 0.6);
-            }
-            .icon-item.like[data-liked="true"] .heart {
-                fill: #ff2d6d;
-                stroke: #ff2d6d;
-                filter: drop-shadow(0 6px 20px rgba(255, 45, 109, 0.18));
-            }
-
-            /* pulse animation for like */
-            .heart-pop {
-                animation: heartpop 0.36s cubic-bezier(0.2, 0.9, 0.3, 1);
-            }
-            @keyframes heartpop {
-                0% {
-                    transform: scale(0.72);
-                }
-                60% {
-                    transform: scale(1.25);
-                }
-                100% {
-                    transform: scale(1);
-                }
-            }
-
-            /* Content grid (articles + sidebar) */
-            .content-grid {
-                display: grid;
-                grid-template-columns: 2fr 1fr;
-                gap: 24px;
-            }
-            .articles-list {
-                display: flex;
-                flex-direction: column;
-                gap: 14px;
-            }
-            .article-item {
-                background: var(--card-bg);
-                border: 1px solid var(--card-border);
-                padding: 16px;
-                border-radius: 10px;
-            }
-            .article-category {
-                font-size: 0.75rem;
-                padding: 6px 12px;
-                border-radius: 999px;
-                background: linear-gradient(90deg, var(--accent), #4f46e5);
-                display: inline-block;
-                margin-bottom: 8px;
-            }
-            .article-title {
-                font-weight: 700;
-                font-size: 1.05rem;
-                margin: 6px 0;
-            }
-            .article-meta {
-                opacity: 0.7;
-                font-size: 0.9rem;
-            }
-
-            .sidebar {
-                background: var(--card-bg);
-                border: 1px solid var(--card-border);
-                padding: 16px;
-                border-radius: 10px;
-            }
-            .sidebar-title {
-                font-weight: 700;
-                margin-bottom: 12px;
-            }
-            .sidebar-item {
-                padding: 10px 0;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-            }
-            .sidebar-item:last-child {
-                border-bottom: none;
-            }
-            .sidebar-item-title {
-                font-size: 0.98rem;
-                margin-bottom: 6px;
-            }
-            .sidebar-item-meta {
-                opacity: 0.8;
-                font-size: 0.9rem;
-            }
-
-            /* Modal backdrop / modal */
-            .modal-backdrop {
-                position: fixed;
-                inset: 0;
-                background: rgba(3, 6, 23, 0.6);
-                backdrop-filter: blur(6px);
-                display: none;
-                align-items: center;
-                justify-content: center;
-                z-index: 1200;
-                padding: 20px;
-            }
-            .modal-backdrop.show {
-                display: flex;
-            }
-
-            .modal {
-                width: min(980px, 98%);
-                max-height: 90vh;
-                overflow: auto;
-                border-radius: 14px;
-                background: linear-gradient(
-                    180deg,
-                    rgba(255, 255, 255, 0.02),
-                    rgba(255, 255, 255, 0.01)
-                );
-                border: 1px solid rgba(255, 255, 255, 0.08);
-                box-shadow: 0 30px 80px rgba(2, 6, 23, 0.7);
-                transform: translateY(20px) scale(0.98);
-                opacity: 0;
-                transition: all 0.28s cubic-bezier(0.2, 0.9, 0.3, 1);
-                padding: 0;
-                display: flex;
-                flex-direction: column;
-            }
-            .modal.show {
-                transform: translateY(0) scale(1);
-                opacity: 1;
-            }
-
-            .modal-header {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding: 14px 18px;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-            }
-            .modal-body {
-                display: grid;
-                grid-template-columns: 1fr 380px;
-                gap: 14px;
-                padding: 18px;
-            }
-            .modal-image img {
-                width: 100%;
-                height: 360px;
-                object-fit: cover;
-                border-radius: 8px;
-            }
-            .modal-content h2 {
-                margin: 6px 0;
-                font-size: 1.35rem;
-            }
-            .modal-content p {
-                opacity: 0.95;
-                line-height: 1.5;
-                margin-top: 10px;
-            }
-            .modal-sidebar {
-                background: transparent;
-                padding-left: 6px;
-            }
-            .modal-actions {
-                display: flex;
-                gap: 10px;
-                margin-top: 12px;
                 align-items: center;
             }
 
             .btn {
-                display: inline-flex;
-                align-items: center;
-                gap: 8px;
-                padding: 10px 12px;
-                border-radius: 10px;
-                border: 1px solid rgba(255, 255, 255, 0.06);
-                background: transparent;
-                color: var(--light);
-                cursor: pointer;
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
             }
-            .btn.primary {
-                background: linear-gradient(90deg, var(--accent), #4f46e5);
-                border: none;
-                color: white;
+        }
+
+        @media (max-width: 480px) {
+            .hero-content h1 {
+                font-size: 2rem;
             }
 
-            /* Comments modal */
-            .comments-panel {
-                background: var(--glass);
-                padding: 12px;
-                border-radius: 10px;
-                border: 1px solid rgba(255, 255, 255, 0.04);
+            .hero-content p {
+                font-size: 1rem;
             }
-            .comment-list {
-                max-height: 220px;
-                overflow: auto;
-                padding: 6px 0;
-                display: flex;
-                flex-direction: column;
-                gap: 8px;
-            }
-            .comment-item {
-                background: rgba(255, 255, 255, 0.03);
-                padding: 8px;
-                border-radius: 8px;
-            }
-            .comment-form {
-                display: flex;
-                gap: 8px;
-                margin-top: 10px;
-            }
-            .comment-form textarea {
-                flex: 1;
-                min-height: 60px;
-                padding: 10px;
-                border-radius: 8px;
-                border: 1px solid rgba(255, 255, 255, 0.06);
-                background: transparent;
-                color: var(--light);
-                resize: vertical;
-            }
-            .comment-form .btn {
-                padding: 10px 12px;
-            }
-            .small-muted {
-                font-size: 0.86rem;
-                opacity: 0.75;
-                margin-top: 6px;
-            }
+        }
+    </style>
+</head>
 
-            /* Responsive tweaks */
-            @media (max-width: 980px) {
-                .modal-body {
-                    grid-template-columns: 1fr 320px;
-                }
-                .modal-image img {
-                    height: 260px;
-                }
-            }
-            @media (max-width: 720px) {
-                .works-grid {
-                    grid-template-columns: repeat(
-                        auto-fill,
-                        minmax(220px, 1fr)
-                    );
-                }
-                .modal-body {
-                    grid-template-columns: 1fr;
-                }
-                .modal-image img {
-                    height: 220px;
-                }
-            }
-        </style>
-    </head>
-    <body>
-        <!-- NAV -->
-        <header>
-            <div
-                class="page-container"
-                style="padding-top: 8px; padding-bottom: 8px"
-            >
-                <nav class="navbar">
-                    <a class="logo-container" href="../Home.html"
-                        ><img
-                            src="../static/img/boni_avatar.jpg"
-                            alt="logo"
-                        /><span style="font-weight: 700">Bonniface</span></a
-                    >
-                    <div class="nav-links">
-                        <a href="../templates/start-project.html"
-                            >Start Project</a
-                        >
-                        <a class="btn btn-primary" href="../Home.html"
-                            >Back Home</a
-                        >
-                    </div>
-                </nav>
-            </div>
-        </header>
-
-        <main class="page-container">
-            <!-- HEADER -->
-            <section class="works-header" aria-labelledby="worksHeading">
-                <h1 id="worksHeading">Explore My Works</h1>
-                <p>
-                    AI, automation, research, Web3, simulation & software —
-                    interactive previews below.
-                </p>
-                <div class="works-count">
-                    Total Works: <span id="workCount">0</span>
-                </div>
-            </section>
-
-            <!-- WORKS GRID -->
-            <section class="works-grid" id="worksGrid">
-                <!-- Example cards (duplicate/modify as needed) -->
-                <article
-                    class="work-card"
-                    data-id="work1"
-                    tabindex="0"
-                    role="button"
-                    aria-label="Open Time Series Forecasting Model"
-                >
-                    <div class="work-image">
-                        <img
-                            src="../assets/Projects/time_series_analysis.webp"
-                            alt="Time Series"
-                        />
-                    </div>
-                    <div class="work-body">
-                        <div>
-                            <div class="work-title">
-                                Time Series Forecasting Model
-                            </div>
-                            <div class="work-desc">
-                                ARIMA + LSTM ensemble used for seasonal
-                                forecasting and scenario simulation.
-                            </div>
-                        </div>
-
-                        <div class="work-footer" aria-hidden="false">
-                            <div class="icon-item view" title="Views">
-                                <svg
-                                    class="icon"
-                                    viewBox="0 0 24 24"
-                                    aria-hidden="true"
-                                >
-                                    <path
-                                        d="M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"
-                                    />
-                                </svg>
-                                <span class="count view-count">0</span>
-                            </div>
-
-                            <div
-                                class="icon-item like"
-                                data-liked="false"
-                                title="Like"
-                            >
-                                <svg
-                                    class="icon heart"
-                                    viewBox="0 0 24 24"
-                                    aria-hidden="true"
-                                >
-                                    <path
-                                        d="M12 21s-6-4.35-9-8.28C1.38 10.24 1 8.9 1 7.5 1 5 3 3 5.5 3c1.74 0 3.41 1.01 4.22 2.44h.56C14.09 4.01 15.76 3 17.5 3 20 3 22 5 22 7.5c0 1.4-.38 2.74-2 5.22C18 16.65 12 21 12 21z"
-                                    />
-                                </svg>
-                                <span class="count like-count">0</span>
-                            </div>
-
-                            <div class="icon-item share" title="Share">
-                                <svg
-                                    class="icon"
-                                    viewBox="0 0 24 24"
-                                    aria-hidden="true"
-                                >
-                                    <path
-                                        d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"
-                                    />
-                                    <path d="M16 6l-4-4-4 4" />
-                                    <path d="M12 2v13" />
-                                </svg>
-                            </div>
-
-                            <div class="icon-item comment" title="Comments">
-                                <svg
-                                    class="icon"
-                                    viewBox="0 0 24 24"
-                                    aria-hidden="true"
-                                >
-                                    <path
-                                        d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
-                                    />
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article
-                    class="work-card"
-                    data-id="work2"
-                    tabindex="0"
-                    role="button"
-                    aria-label="Open Deep Learning Neural Network"
-                >
-                    <div class="work-image">
-                        <img
-                            src="../assets/Projects/neural_networks.webp"
-                            alt="Neural Networks"
-                        />
-                    </div>
-                    <div class="work-body">
-                        <div>
-                            <div class="work-title">
-                                Deep Learning Neural Network
-                            </div>
-                            <div class="work-desc">
-                                Custom CNN-BiLSTM pipeline for gesture
-                                recognition with attention mechanism.
-                            </div>
-                        </div>
-
-                        <div class="work-footer">
-                            <div class="icon-item view" title="Views">
-                                <svg class="icon" viewBox="0 0 24 24">
-                                    <path
-                                        d="M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"
-                                    /></svg
-                                ><span class="count view-count">0</span>
-                            </div>
-                            <div
-                                class="icon-item like"
-                                data-liked="false"
-                                title="Like"
-                            >
-                                <svg class="icon heart" viewBox="0 0 24 24">
-                                    <path
-                                        d="M12 21s-6-4.35-9-8.28C1.38 10.24 1 8.9 1 7.5 1 5 3 3 5.5 3c1.74 0 3.41 1.01 4.22 2.44h.56C14.09 4.01 15.76 3 17.5 3 20 3 22 5 22 7.5c0 1.4-.38 2.74-2 5.22C18 16.65 12 21 12 21z"
-                                    /></svg
-                                ><span class="count like-count">0</span>
-                            </div>
-                            <div class="icon-item share" title="Share">
-                                <svg class="icon" viewBox="0 0 24 24">
-                                    <path
-                                        d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"
-                                    />
-                                    <path d="M16 6l-4-4-4 4" />
-                                    <path d="M12 2v13" />
-                                </svg>
-                            </div>
-                            <div class="icon-item comment" title="Comments">
-                                <svg class="icon" viewBox="0 0 24 24">
-                                    <path
-                                        d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
-                                    />
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article
-                    class="work-card"
-                    data-id="work3"
-                    tabindex="0"
-                    role="button"
-                    aria-label="Open Web3 Payments Platform"
-                >
-                    <div class="work-image">
-                        <img
-                            src="../assets/Projects/web3-projects.webp"
-                            alt="Web3"
-                        />
-                    </div>
-                    <div class="work-body">
-                        <div>
-                            <div class="work-title">Web3 Payments Platform</div>
-                            <div class="work-desc">
-                                Decentralized P2P payment gateway with on-chain
-                                settlement & MUMU wallet integration.
-                            </div>
-                        </div>
-
-                        <div class="work-footer">
-                            <div class="icon-item view" title="Views">
-                                <svg class="icon" viewBox="0 0 24 24">
-                                    <path
-                                        d="M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"
-                                    /></svg
-                                ><span class="count view-count">0</span>
-                            </div>
-                            <div
-                                class="icon-item like"
-                                data-liked="false"
-                                title="Like"
-                            >
-                                <svg class="icon heart" viewBox="0 0 24 24">
-                                    <path
-                                        d="M12 21s-6-4.35-9-8.28C1.38 10.24 1 8.9 1 7.5 1 5 3 3 5.5 3c1.74 0 3.41 1.01 4.22 2.44h.56C14.09 4.01 15.76 3 17.5 3 20 3 22 5 22 7.5c0 1.4-.38 2.74-2 5.22C18 16.65 12 21 12 21z"
-                                    /></svg
-                                ><span class="count like-count">0</span>
-                            </div>
-                            <div class="icon-item share" title="Share">
-                                <svg class="icon" viewBox="0 0 24 24">
-                                    <path
-                                        d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"
-                                    />
-                                    <path d="M16 6l-4-4-4 4" />
-                                    <path d="M12 2v13" />
-                                </svg>
-                            </div>
-                            <div class="icon-item comment" title="Comments">
-                                <svg class="icon" viewBox="0 0 24 24">
-                                    <path
-                                        d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
-                                    />
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article
-                    class="work-card"
-                    data-id="work4"
-                    tabindex="0"
-                    role="button"
-                    aria-label="Open AI Job Matching Platform"
-                >
-                    <div class="work-image">
-                        <img
-                            src="../assets/Projects/ai_job_matching_platform.webp"
-                            alt="AI Job Match"
-                        />
-                    </div>
-                    <div class="work-body">
-                        <div>
-                            <div class="work-title">
-                                AI Job Matching Platform
-                            </div>
-                            <div class="work-desc">
-                                Skill-based matching engine and ranking with
-                                resume parsing & fairness checks.
-                            </div>
-                        </div>
-
-                        <div class="work-footer">
-                            <div class="icon-item view" title="Views">
-                                <svg class="icon" viewBox="0 0 24 24">
-                                    <path
-                                        d="M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"
-                                    /></svg
-                                ><span class="count view-count">0</span>
-                            </div>
-                            <div
-                                class="icon-item like"
-                                data-liked="false"
-                                title="Like"
-                            >
-                                <svg class="icon heart" viewBox="0 0 24 24">
-                                    <path
-                                        d="M12 21s-6-4.35-9-8.28C1.38 10.24 1 8.9 1 7.5 1 5 3 3 5.5 3c1.74 0 3.41 1.01 4.22 2.44h.56C14.09 4.01 15.76 3 17.5 3 20 3 22 5 22 7.5c0 1.4-.38 2.74-2 5.22C18 16.65 12 21 12 21z"
-                                    /></svg
-                                ><span class="count like-count">0</span>
-                            </div>
-                            <div class="icon-item share" title="Share">
-                                <svg class="icon" viewBox="0 0 24 24">
-                                    <path
-                                        d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"
-                                    />
-                                    <path d="M16 6l-4-4-4 4" />
-                                    <path d="M12 2v13" />
-                                </svg>
-                            </div>
-                            <div class="icon-item comment" title="Comments">
-                                <svg class="icon" viewBox="0 0 24 24">
-                                    <path
-                                        d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
-                                    />
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-            </section>
-
-            <!-- ARTICLES + SIDEBAR -->
-            <section class="content-grid" aria-label="Articles and Trends">
-                <div class="articles-list">
-                    <article class="article-item">
-                        <span class="article-category">Health</span>
-                        <h3 class="article-title">
-                            Jennifer Lopez's Fitness Routine at 56
-                        </h3>
-                        <div class="article-meta">
-                            Health Magazine • Oct 25, 2025
-                        </div>
-                    </article>
-                    <article class="article-item">
-                        <span class="article-category">Sports</span>
-                        <h3 class="article-title">
-                            Ruben Amorim: "It wouldn't be Man Utd without
-                            suffering"
-                        </h3>
-                        <div class="article-meta">Oct 24, 2025</div>
-                    </article>
-                    <article class="article-item">
-                        <span class="article-category">News</span>
-                        <h3 class="article-title">
-                            British surfer dies after board snaps in 80mph winds
-                        </h3>
-                        <div class="article-meta">Oct 23, 2025</div>
-                    </article>
-                    <article class="article-item">
-                        <span class="article-category">Technology</span>
-                        <h3 class="article-title">
-                            The Best AI PCs Run Windows 11 on Copilot+
-                        </h3>
-                        <div class="article-meta">Oct 18, 2025</div>
-                    </article>
-                </div>
-
-                <aside class="sidebar" aria-labelledby="trendingTitle">
-                    <h4 id="trendingTitle" class="sidebar-title">Trending</h4>
-                    <div class="sidebar-item">
-                        <div class="sidebar-item-title">
-                            AI Tools Transform Global Industry
-                        </div>
-                        <div class="sidebar-item-meta">Tech • 2h ago</div>
-                    </div>
-                    <div class="sidebar-item">
-                        <div class="sidebar-item-title">
-                            Remote Work Boosts Productivity
-                        </div>
-                        <div class="sidebar-item-meta">Business • 6h ago</div>
-                    </div>
-                    <div class="sidebar-item">
-                        <div class="sidebar-item-title">
-                            Sustainable Fashion on the Rise
-                        </div>
-                        <div class="sidebar-item-meta">Fashion • 1d ago</div>
-                    </div>
-                    <div class="sidebar-item">
-                        <div class="sidebar-item-title">
-                            Future of Renewable Energy
-                        </div>
-                        <div class="sidebar-item-meta">
-                            Environment • 2d ago
-                        </div>
-                    </div>
-                </aside>
-            </section>
-        </main>
-
-        <!-- MODAL BACKDROP -->
-        <div id="modalBackdrop" class="modal-backdrop" aria-hidden="true">
-            <div
-                class="modal"
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby="modalTitle"
-            >
-                <div class="modal-header">
-                    <div style="display: flex; gap: 12px; align-items: center">
-                        <div
-                            style="
-                                width: 44px;
-                                height: 44px;
-                                border-radius: 8px;
-                                overflow: hidden;
-                                background: rgba(255, 255, 255, 0.02);
-                            "
-                        ></div>
-                        <div>
-                            <div id="modalTitle" style="font-weight: 700"></div>
-                            <div
-                                id="modalSubtitle"
-                                style="font-size: 0.92rem; opacity: 0.8"
-                            ></div>
-                        </div>
-                    </div>
-                    <div>
-                        <button
-                            id="modalClose"
-                            class="btn"
-                            aria-label="Close modal"
-                        >
-                            Close
-                        </button>
-                    </div>
-                </div>
-
-                <div class="modal-body">
-                    <div>
-                        <div class="modal-image">
-                            <img id="modalImg" src="" alt="" />
-                        </div>
-                        <div class="modal-content" style="padding-top: 12px">
-                            <h2 id="modalHeading"></h2>
-                            <p id="modalDescription"></p>
-
-                            <div class="modal-actions">
-                                <button id="modalLike" class="btn">
-                                    <svg class="icon heart" viewBox="0 0 24 24">
-                                        <path
-                                            d="M12 21s-6-4.35-9-8.28C1.38 10.24 1 8.9 1 7.5 1 5 3 3 5.5 3c1.74 0 3.41 1.01 4.22 2.44h.56C14.09 4.01 15.76 3 17.5 3 20 3 22 5 22 7.5c0 1.4-.38 2.74-2 5.22C18 16.65 12 21 12 21z"
-                                        /></svg
-                                    ><span id="modalLikeCount">0</span>
-                                </button>
-
-                                <button id="modalShareBtn" class="btn">
-                                    Share
-                                </button>
-
-                                <button id="modalCommentBtn" class="btn">
-                                    Comments
-                                </button>
-
-                                <div
-                                    style="
-                                        margin-left: auto;
-                                        color: var(--muted);
-                                        display: flex;
-                                        gap: 12px;
-                                        align-items: center;
-                                    "
-                                >
-                                    <div
-                                        style="
-                                            display: flex;
-                                            align-items: center;
-                                            gap: 8px;
-                                        "
-                                    >
-                                        <svg class="icon">
-                                            <path
-                                                d="M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"
-                                            /></svg
-                                        ><span id="modalViewCount">0</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <aside class="modal-sidebar">
-                        <div class="comments-panel">
-                            <div
-                                style="
-                                    display: flex;
-                                    justify-content: space-between;
-                                    align-items: center;
-                                "
-                            >
-                                <strong>Comments</strong>
-                                <small id="commentsCount" style="opacity: 0.8"
-                                    >0</small
-                                >
-                            </div>
-
-                            <div class="comment-list" id="commentList"></div>
-
-                            <form
-                                id="commentForm"
-                                class="comment-form"
-                                onsubmit="return false"
-                            >
-                                <textarea
-                                    id="commentInput"
-                                    placeholder="Write a constructive comment..."
-                                ></textarea>
-                                <button id="submitComment" class="btn primary">
-                                    Add
-                                </button>
-                            </form>
-
-                            <div class="small-muted">
-                                Comments are saved locally (localStorage).
-                                Connect a backend to persist globally.
-                            </div>
-                        </div>
-                    </aside>
-                </div>
+<body>
+    <section class="hero-section">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <h1>Discover Amazing Projects</h1>
+            <p>Explore innovative solutions in AI, Web3, automation, and more. Each project showcases cutting-edge
+                technology and creative problem-solving.</p>
+            <div class="hero-actions">
+                <a href="#" class="btn btn-primary">Explore Projects</a>
+                <a href="#" class="btn">Learn More</a>
             </div>
         </div>
+        <div class="hero-indicators">
+            <div class="indicator active" data-index="0"></div>
+            <div class="indicator" data-index="1"></div>
+            <div class="indicator" data-index="2"></div>
+            <div class="indicator" data-index="3"></div>
+        </div>
+        <div class="down-arrow-indicator">
+            <img class="down-arrow"
+                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"
+                alt="Down Arrow">
+        </div>
+    </section>
 
-        <!-- SHARE POPUP (simple) -->
-        <div
-            id="sharePopup"
-            style="
-                position: fixed;
-                right: 22px;
-                bottom: 22px;
-                background: var(--card-bg);
-                padding: 12px;
-                border-radius: 10px;
-                border: 1px solid var(--card-border);
-                display: none;
-                z-index: 1500;
-            "
-        >
-            <div style="display: flex; flex-direction: column; gap: 8px">
-                <button class="btn" id="copyLinkBtn">Copy link</button>
-                <a id="whatsappShare" class="btn" target="_blank" rel="noopener"
-                    >WhatsApp</a
-                >
-                <a id="facebookShare" class="btn" target="_blank" rel="noopener"
-                    >Facebook</a
-                >
+    <section class="content-section">
+        <h2>Featured Projects</h2>
+        <div class="content-grid">
+            <div class="content-card">
+                <h3>AI-Powered Analytics</h3>
+                <p>Advanced machine learning models for predictive analytics and business intelligence.</p>
+            </div>
+            <div class="content-card">
+                <h3>Web3 Integration</h3>
+                <p>Blockchain solutions for secure, decentralized applications and smart contracts.</p>
+            </div>
+            <div class="content-card">
+                <h3>Automation Systems</h3>
+                <p>Custom automation solutions to streamline workflows and increase productivity.</p>
             </div>
         </div>
+    </section>
 
-        <script>
-            // Helpers
-            const qs = (sel) => document.querySelector(sel);
-            const qsa = (sel) => Array.from(document.querySelectorAll(sel));
-            const urlBase = () =>
-                location.protocol + "//" + location.host + location.pathname;
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const indicators = document.querySelectorAll('.indicator');
+            const heroBg = document.querySelector('.hero-bg');
 
-            // Initialize
-            const cards = qsa(".work-card");
-            const workCountEl = qs("#workCount");
-            workCountEl.textContent = cards.length;
+            // Background images array - using your local images
+            const bgImages = [
+                'assets/bg-img/header-bg1.png',
+                'assets/bg-img/header-bg2.png',
+                'assets/bg-img/header-bg3.png',
+                'assets/bg-img/header-bg4.png'
+            ];
 
-            // Modal elements
-            const modalBackdrop = qs("#modalBackdrop");
-            const modal = modalBackdrop.querySelector(".modal");
-            const modalTitle = qs("#modalTitle");
-            const modalSubtitle = qs("#modalSubtitle");
-            const modalImg = qs("#modalImg");
-            const modalHeading = qs("#modalHeading");
-            const modalDescription = qs("#modalDescription");
-            const modalLike = qs("#modalLike");
-            const modalLikeCount = qs("#modalLikeCount");
-            const modalViewCount = qs("#modalViewCount");
-            const modalShareBtn = qs("#modalShareBtn");
-            const modalCommentBtn = qs("#modalCommentBtn");
-            const commentList = qs("#commentList");
-            const commentForm = qs("#commentForm");
-            const commentInput = qs("#commentInput");
-            const commentsCount = qs("#commentsCount");
+            let currentIndex = 0;
 
-            // Share popup
-            const sharePopup = qs("#sharePopup");
-            const copyLinkBtn = qs("#copyLinkBtn");
-            const whatsappShare = qs("#whatsappShare");
-            const facebookShare = qs("#facebookShare");
-
-            // Utilities for storage keys
-            const viewsKey = (id) => `${id}::views`;
-            const likesKey = (id) => `${id}::likes`;
-            const likedKey = (id) => `${id}::liked`;
-            const commentsKey = (id) => `${id}::comments`;
-
-            // Load saved counters & wire up each card
-            cards.forEach((card) => {
-                const id = card.dataset.id;
-                const viewSpan = card.querySelector(".view-count");
-                const likeBox = card.querySelector(".icon-item.like");
-                const likeSpan = card.querySelector(".like-count");
-                const shareBtn = card.querySelector(".icon-item.share");
-                const commentBtn = card.querySelector(".icon-item.comment");
-
-                // Load saved values
-                const savedViews = Number(
-                    localStorage.getItem(viewsKey(id)) || 0,
-                );
-                const savedLikes = Number(
-                    localStorage.getItem(likesKey(id)) || 0,
-                );
-                const savedLiked =
-                    localStorage.getItem(likedKey(id)) === "true";
-
-                viewSpan.textContent = savedViews;
-                likeSpan.textContent = savedLikes;
-                likeBox.dataset.liked = savedLiked;
-
-                // Clicking anywhere on card (except specific UI) opens modal and increments view
-                card.addEventListener("click", (e) => {
-                    if (e.target.closest(".icon-item")) return; // ignore clicks on the footer icons
-                    openModalForCard(card);
-                    incrementViews(id, viewSpan);
-                });
-
-                // Keyboard accessibility - Enter opens modal
-                card.addEventListener("keydown", (e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
-                        openModalForCard(card);
-                        incrementViews(id, viewSpan);
+            // Function to update the active indicator
+            function updateIndicator(index) {
+                indicators.forEach((indicator, i) => {
+                    if (i === index) {
+                        indicator.classList.add('active');
+                    } else {
+                        indicator.classList.remove('active');
                     }
                 });
+            }
 
-                // Like button behaviour
-                likeBox.addEventListener("click", (e) => {
-                    e.stopPropagation();
-                    toggleLike(id, likeBox, likeSpan);
-                });
+            // Function to change background image
+            function changeBackground(index) {
+                heroBg.style.backgroundImage = `url(${bgImages[index]})`;
+                updateIndicator(index);
+                currentIndex = index;
+            }
 
-                // Share opens small popup with options (contextual link)
-                shareBtn.addEventListener("click", (e) => {
-                    e.stopPropagation();
-                    showShareFor(id);
-                });
-
-                // Comment -> open modal and focus comments area
-                commentBtn.addEventListener("click", (e) => {
-                    e.stopPropagation();
-                    openModalForCard(card, { openComments: true });
+            // Add click events to indicators
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => {
+                    changeBackground(index);
                 });
             });
 
-            // ====== Like functions ======
-            function toggleLike(id, likeBox, likeSpan, animate = true) {
-                const liked = likeBox.dataset.liked === "true";
-                let likes = Number(localStorage.getItem(likesKey(id)) || 0);
+            // Auto-advance backgrounds (optional)
+            setInterval(() => {
+                currentIndex = (currentIndex + 1) % bgImages.length;
+                changeBackground(currentIndex);
+            }, 6000);
+        });
+    </script>
+</body>
 
-                if (liked) {
-                    // unlike
-                    likeBox.dataset.liked = "false";
-                    localStorage.setItem(likedKey(id), "false");
-                    likes = Math.max(0, likes - 1);
-                    localStorage.setItem(likesKey(id), String(likes));
-                    likeSpan.textContent = likes;
-                    // remove animation (if any)
-                    likeBox
-                        .querySelector(".heart")
-                        ?.classList.remove("heart-pop");
-                } else {
-                    // like
-                    likeBox.dataset.liked = "true";
-                    localStorage.setItem(likedKey(id), "true");
-                    likes = likes + 1;
-                    localStorage.setItem(likesKey(id), String(likes));
-                    likeSpan.textContent = likes;
-                    if (animate) {
-                        const heartEl = likeBox.querySelector(".heart");
-                        heartEl.classList.remove("heart-pop");
-                        // trigger reflow then add class
-                        void heartEl.offsetWidth;
-                        heartEl.classList.add("heart-pop");
-                    }
-                }
-            }
-
-            // ====== Views ======
-            function incrementViews(id, viewSpan, delta = 1) {
-                const current =
-                    Number(localStorage.getItem(viewsKey(id)) || 0) + delta;
-                localStorage.setItem(viewsKey(id), String(current));
-                viewSpan.textContent = current;
-
-                // If modal open and showing this id, update modal view counter
-                if (modalBackdrop.dataset.currentId === id) {
-                    modalViewCount.textContent = current;
-                }
-            }
-
-            // ====== Modal logic ======
-            function openModalForCard(card, options = {}) {
-                const id = card.dataset.id;
-                modalBackdrop.dataset.currentId = id;
-
-                // Populate modal content from card
-                const imgSrc = card.querySelector(".work-image img")?.src || "";
-                const title =
-                    card.querySelector(".work-title")?.textContent || "Project";
-                const desc =
-                    card.querySelector(".work-desc")?.textContent || "";
-                const subtitle = `${title}`;
-
-                modalImg.src = imgSrc;
-                modalImg.alt = title;
-                modalHeading.textContent = title;
-                modalDescription.textContent = desc;
-                modalTitle.textContent = title;
-                modalSubtitle.textContent = subtitle;
-
-                // Populate counts
-                const views = Number(localStorage.getItem(viewsKey(id)) || 0);
-                const likes = Number(localStorage.getItem(likesKey(id)) || 0);
-                const liked = localStorage.getItem(likedKey(id)) === "true";
-
-                modalViewCount.textContent = views;
-                modalLikeCount.textContent = likes;
-                modalLike.dataset.id = id;
-                modalLike.dataset.liked = liked ? "true" : "false";
-                modalLike
-                    .querySelector(".heart")
-                    ?.classList.toggle("heart-pop", false);
-
-                // Comments load
-                loadComments(id);
-
-                // show modal
-                modalBackdrop.classList.add("show");
-                modal.classList.add("show");
-                modalBackdrop.setAttribute("aria-hidden", "false");
-
-                // focus comment text area if requested
-                if (options.openComments) {
-                    setTimeout(() => {
-                        commentInput.focus();
-                    }, 200);
-                }
-
-                // ensure focus management
-                setTimeout(() => modalCloseFocusTrap(), 40);
-            }
-
-            // close button
-            qs("#modalClose").addEventListener("click", closeModal);
-            function closeModal() {
-                modal.classList.remove("show");
-                modalBackdrop.classList.remove("show");
-                modalBackdrop.setAttribute("aria-hidden", "true");
-                modalBackdrop.dataset.currentId = "";
-            }
-
-            // click outside modal closes it
-            modalBackdrop.addEventListener("click", (e) => {
-                if (e.target === modalBackdrop) closeModal();
-            });
-
-            // Esc closes modal
-            document.addEventListener("keydown", (e) => {
-                if (
-                    e.key === "Escape" &&
-                    modalBackdrop.classList.contains("show")
-                )
-                    closeModal();
-            });
-
-            // When modal like clicked
-            modalLike.addEventListener("click", () => {
-                const id = modalBackdrop.dataset.currentId;
-                // sync like between modal and the card
-                const likeBoxOnCard = qs(
-                    `.work-card[data-id="${id}"] .icon-item.like`,
-                );
-                const likeSpanOnCard = qs(
-                    `.work-card[data-id="${id}"] .like-count`,
-                );
-                // toggle and animate
-                toggleLike(id, likeBoxOnCard, likeSpanOnCard, true);
-
-                // update modal counters
-                modalLikeCount.textContent =
-                    localStorage.getItem(likesKey(id)) || "0";
-                modalLike.dataset.liked = likeBoxOnCard.dataset.liked;
-                // also update heart look in modal
-                const modalHeart = modalLike.querySelector(".heart");
-                if (likeBoxOnCard.dataset.liked === "true") {
-                    modalHeart.style.fill = "#ff2d6d";
-                } else {
-                    modalHeart.style.fill = "";
-                }
-            });
-
-            // Modal share button opens share popup for current item
-            modalShareBtn.addEventListener("click", () => {
-                const id = modalBackdrop.dataset.currentId;
-                showShareFor(id);
-            });
-
-            // Modal comment button focuses comment input
-            modalCommentBtn.addEventListener("click", () => {
-                commentInput.focus();
-            });
-
-            // Focus trap (simple) - focus close button when opened
-            function modalCloseFocusTrap() {
-                qs("#modalClose")?.focus();
-            }
-
-            // ====== Comments functionality ======
-            function loadComments(id) {
-                commentList.innerHTML = "";
-                const arr = JSON.parse(
-                    localStorage.getItem(commentsKey(id)) || "[]",
-                );
-                commentsCount.textContent = arr.length;
-                if (!arr.length) {
-                    commentList.innerHTML =
-                        '<div style="opacity:.8;padding:8px">No comments yet — be the first to add one.</div>';
-                    return;
-                }
-                arr.forEach((c) => {
-                    const div = document.createElement("div");
-                    div.className = "comment-item";
-                    div.textContent = c;
-                    commentList.appendChild(div);
-                });
-            }
-
-            commentForm.addEventListener("submit", (e) => {
-                e.preventDefault();
-                const id = modalBackdrop.dataset.currentId;
-                if (!id) return;
-                const text = commentInput.value.trim();
-                if (!text) return;
-                addComment(id, text);
-                commentInput.value = "";
-                commentInput.focus();
-            });
-
-            document
-                .getElementById("submitComment")
-                .addEventListener("click", () => {
-                    commentForm.dispatchEvent(
-                        new Event("submit", { cancelable: true }),
-                    );
-                });
-
-            function addComment(id, text) {
-                const arr = JSON.parse(
-                    localStorage.getItem(commentsKey(id)) || "[]",
-                );
-                arr.unshift(text); // newest first
-                localStorage.setItem(commentsKey(id), JSON.stringify(arr));
-                loadComments(id);
-            }
-
-            // ====== Share UI & handlers ======
-            let currentShareId = null;
-            function showShareFor(id) {
-                currentShareId = id;
-                const shareUrl = urlBase() + "#" + id;
-                // prepare whatsapp and facebook links
-                whatsappShare.href = `https://wa.me/?text=${encodeURIComponent(shareUrl)}`;
-                facebookShare.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
-                copyLinkBtn.onclick = async () => {
-                    try {
-                        await navigator.clipboard.writeText(shareUrl);
-                        copyLinkBtn.textContent = "Copied!";
-                        setTimeout(
-                            () => (copyLinkBtn.textContent = "Copy link"),
-                            1400,
-                        );
-                    } catch (_) {
-                        // fallback
-                        const ta = document.createElement("textarea");
-                        ta.value = shareUrl;
-                        document.body.appendChild(ta);
-                        ta.select();
-                        try {
-                            document.execCommand("copy");
-                            copyLinkBtn.textContent = "Copied!";
-                            setTimeout(
-                                () => (copyLinkBtn.textContent = "Copy link"),
-                                1400,
-                            );
-                        } catch (_) {}
-                        ta.remove();
-                    }
-                };
-                // show popup briefly
-                sharePopup.style.display = "block";
-                setTimeout(() => (sharePopup.style.opacity = "1"), 10);
-                // auto-hide after some time
-                clearTimeout(sharePopup._hideTimer);
-                sharePopup._hideTimer = setTimeout(() => {
-                    sharePopup.style.display = "none";
-                }, 8000);
-            }
-
-            // ====== Utility to update views/likes UI on startup for synchrony ======
-            function bootstrapCounters() {
-                qsa(".work-card").forEach((card) => {
-                    const id = card.dataset.id;
-                    const viewSpan = card.querySelector(".view-count");
-                    const likeSpan = card.querySelector(".like-count");
-                    const likeBox = card.querySelector(".icon-item.like");
-
-                    viewSpan.textContent =
-                        localStorage.getItem(viewsKey(id)) || 0;
-                    likeSpan.textContent =
-                        localStorage.getItem(likesKey(id)) || 0;
-                    likeBox.dataset.liked =
-                        localStorage.getItem(likedKey(id)) === "true";
-                });
-            }
-
-            // ====== Toggle like if URL hash contains id (optional) ======
-            function applyInitialHashActions() {
-                const id = location.hash
-                    ? location.hash.replace("#", "")
-                    : null;
-                if (!id) return;
-                const target = qs(`.work-card[data-id="${id}"]`);
-                if (target) {
-                    // open modal for the hash-target project
-                    openModalForCard(target);
-                }
-            }
-
-            // Run bootstrap
-            bootstrapCounters();
-            applyInitialHashActions();
-
-            // Ensure clicking share popup doesn't close things
-            sharePopup.addEventListener("click", (e) => e.stopPropagation());
-
-            // Hide share popup if clicking elsewhere
-            document.addEventListener("click", () => {
-                sharePopup.style.display = "none";
-            });
-
-            // Accessibility: trap tab inside modal while open (basic)
-            document.addEventListener(
-                "focus",
-                function (event) {
-                    if (!modalBackdrop.classList.contains("show")) return;
-                    if (!modal.contains(event.target)) {
-                        event.stopPropagation();
-                        modalCloseFocusTrap();
-                    }
-                },
-                true,
-            );
-        </script>
-    </body>
 </html>
