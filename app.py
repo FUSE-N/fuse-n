@@ -45,11 +45,16 @@ client = None
 if os.path.exists("credentials.json"):
     try:
 <<<<<<< HEAD
+<<<<<<< HEAD
         creds = ServiceAccountCredentials.from_json_keyfile_name(
             "credentials.json", scope)
 =======
         creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
 >>>>>>> 5ac7f9c (Add graceful handling for missing Google Sheets credentials and update app settings)
+=======
+        creds = ServiceAccountCredentials.from_json_keyfile_name(
+            "credentials.json", scope)
+>>>>>>> 12e2763 (replit)
         client = gspread.authorize(creds)
         sheet = client.open("Client_Project_Submissions").sheet1
     except Exception as e:
@@ -122,6 +127,7 @@ def send_admin_email(admin_email, data, filepath=None):
         )
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         file_notice = (f"Attached File: {os.path.basename(filepath)}"
                        if filepath else "No file uploaded.")
 =======
@@ -131,6 +137,10 @@ def send_admin_email(admin_email, data, filepath=None):
             else "No file uploaded."
         )
 >>>>>>> d1e0161 (Make sending emails optional when credentials are not provided)
+=======
+        file_notice = (f"Attached File: {os.path.basename(filepath)}"
+                       if filepath else "No file uploaded.")
+>>>>>>> 12e2763 (replit)
 
         msg.body = f"""
     New project submission received.
@@ -152,11 +162,16 @@ def send_admin_email(admin_email, data, filepath=None):
         if filepath and os.path.exists(filepath):
             with app.open_resource(filepath) as f:
 <<<<<<< HEAD
+<<<<<<< HEAD
                 msg.attach(os.path.basename(filepath),
                            "application/octet-stream", f.read())
 =======
                 msg.attach(os.path.basename(filepath), "application/octet-stream", f.read())
 >>>>>>> d1e0161 (Make sending emails optional when credentials are not provided)
+=======
+                msg.attach(os.path.basename(filepath),
+                           "application/octet-stream", f.read())
+>>>>>>> 12e2763 (replit)
 
         mail.send(msg)
     except Exception as e:
@@ -197,6 +212,9 @@ def submit():
     # Save data to Google Sheet
     if sheet:
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 12e2763 (replit)
         sheet.append_row([
             date_submitted,
             project_id,
@@ -210,6 +228,7 @@ def submit():
             budget,
             filepath or "No file",
         ])
+<<<<<<< HEAD
 =======
         sheet.append_row(
             [
@@ -227,6 +246,8 @@ def submit():
             ]
         )
 >>>>>>> 5ac7f9c (Add graceful handling for missing Google Sheets credentials and update app settings)
+=======
+>>>>>>> 12e2763 (replit)
 
     # Send emails
     send_client_email(email, name, project_id, title, service, date_submitted)
