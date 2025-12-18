@@ -44,8 +44,12 @@ sheet = None
 client = None
 if os.path.exists("credentials.json"):
     try:
+<<<<<<< HEAD
         creds = ServiceAccountCredentials.from_json_keyfile_name(
             "credentials.json", scope)
+=======
+        creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+>>>>>>> 5ac7f9c (Add graceful handling for missing Google Sheets credentials and update app settings)
         client = gspread.authorize(creds)
         sheet = client.open("Client_Project_Submissions").sheet1
     except Exception as e:
@@ -180,6 +184,7 @@ def submit():
 
     # Save data to Google Sheet
     if sheet:
+<<<<<<< HEAD
         sheet.append_row([
             date_submitted,
             project_id,
@@ -193,6 +198,23 @@ def submit():
             budget,
             filepath or "No file",
         ])
+=======
+        sheet.append_row(
+            [
+                date_submitted,
+                project_id,
+                name,
+                email,
+                title,
+                service,
+                description,
+                tools,
+                deadline,
+                budget,
+                filepath or "No file",
+            ]
+        )
+>>>>>>> 5ac7f9c (Add graceful handling for missing Google Sheets credentials and update app settings)
 
     # Send emails
     send_client_email(email, name, project_id, title, service, date_submitted)
