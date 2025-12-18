@@ -121,8 +121,16 @@ def send_admin_email(admin_email, data, filepath=None):
             recipients=[admin_email],
         )
 
+<<<<<<< HEAD
         file_notice = (f"Attached File: {os.path.basename(filepath)}"
                        if filepath else "No file uploaded.")
+=======
+        file_notice = (
+            f"Attached File: {os.path.basename(filepath)}"
+            if filepath
+            else "No file uploaded."
+        )
+>>>>>>> d1e0161 (Make sending emails optional when credentials are not provided)
 
         msg.body = f"""
     New project submission received.
@@ -143,8 +151,12 @@ def send_admin_email(admin_email, data, filepath=None):
         # Attach file if exists
         if filepath and os.path.exists(filepath):
             with app.open_resource(filepath) as f:
+<<<<<<< HEAD
                 msg.attach(os.path.basename(filepath),
                            "application/octet-stream", f.read())
+=======
+                msg.attach(os.path.basename(filepath), "application/octet-stream", f.read())
+>>>>>>> d1e0161 (Make sending emails optional when credentials are not provided)
 
         mail.send(msg)
     except Exception as e:
