@@ -39,9 +39,17 @@ scope = [
     "https://spreadsheets.google.com/feeds",
     "https://www.googleapis.com/auth/drive",
 ]
-creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
-client = gspread.authorize(creds)
-sheet = client.open("Client_Project_Submissions").sheet1  # Name of your Google Sheet
+
+sheet = None
+client = None
+if os.path.exists("credentials.json"):
+    try:
+        creds = ServiceAccountCredentials.from_json_keyfile_name(
+            "credentials.json", scope)
+        client = gspread.authorize(creds)
+        sheet = client.open("Client_Project_Submissions").sheet1
+    except Exception as e:
+        print(f"Warning: Could not connect to Google Sheets: {e}")
 
 
 # ---------------- HELPERS ----------------
@@ -67,12 +75,16 @@ def save_uploaded_file(file, project_id):
 
 def send_client_email(email, name, project_id, title, service, date_submitted):
     """Send confirmation email to client."""
-    msg = Message(
-        subject=f"Project Received — {project_id}",
-        sender=app.config["MAIL_USERNAME"],
-        recipients=[email],
-    )
-    msg.body = f"""
+    if not app.config.get("MAIL_USERNAME"):
+        print(f"Email sending disabled. Would send to {email}")
+        return
+    try:
+        msg = Message(
+            subject=f"Project Received — {project_id}",
+            sender=app.config["MAIL_USERNAME"],
+            recipients=[email],
+        )
+        msg.body = f"""
     Dear {name},
 
     Thank you for reaching out to Fuse-IN. Your project request has been received successfully.
@@ -88,24 +100,27 @@ def send_client_email(email, name, project_id, title, service, date_submitted):
     Boniface Kalong
     Freelance Research Analyst | AI & Data Science Consultant
     """
-    mail.send(msg)
+        mail.send(msg)
+    except Exception as e:
+        print(f"Error sending client email: {e}")
 
 
 def send_admin_email(admin_email, data, filepath=None):
     """Send notification email to admin."""
-    msg = Message(
-        subject=f"New Project Submission — {data['project_id']}",
-        sender=app.config["MAIL_USERNAME"],
-        recipients=[admin_email],
-    )
+    if not app.config.get("MAIL_USERNAME") or not admin_email:
+        print(f"Email sending disabled. Would send to {admin_email}")
+        return
+    try:
+        msg = Message(
+            subject=f"New Project Submission — {data['project_id']}",
+            sender=app.config["MAIL_USERNAME"],
+            recipients=[admin_email],
+        )
 
-    file_notice = (
-        f"Attached File: {os.path.basename(filepath)}"
-        if filepath
-        else "No file uploaded."
-    )
+        file_notice = (f"Attached File: {os.path.basename(filepath)}"
+                       if filepath else "No file uploaded.")
 
-    msg.body = f"""
+        msg.body = f"""
     New project submission received.
 
     Project ID: {data["project_id"]}
@@ -121,12 +136,15 @@ def send_admin_email(admin_email, data, filepath=None):
     {file_notice}
     """
 
-    # Attach file if exists
-    if filepath and os.path.exists(filepath):
-        with app.open_resource(filepath) as f:
-            msg.attach(os.path.basename(filepath), "application/octet-stream", f.read())
+        # Attach file if exists
+        if filepath and os.path.exists(filepath):
+            with app.open_resource(filepath) as f:
+                msg.attach(os.path.basename(filepath),
+                           "application/octet-stream", f.read())
 
-    mail.send(msg)
+        mail.send(msg)
+    except Exception as e:
+        print(f"Error sending admin email: {e}")
 
 
 # ---------------- ROUTES ----------------
@@ -161,8 +179,8 @@ def submit():
     filepath = save_uploaded_file(uploaded_file, project_id)
 
     # Save data to Google Sheet
-    sheet.append_row(
-        [
+    if sheet:
+        sheet.append_row([
             date_submitted,
             project_id,
             name,
@@ -174,8 +192,7 @@ def submit():
             deadline,
             budget,
             filepath or "No file",
-        ]
-    )
+        ])
 
     # Send emails
     send_client_email(email, name, project_id, title, service, date_submitted)
@@ -249,7 +266,7 @@ def submit():
             <h1>✅ Project Submitted Successfully</h1>
             <p>Thank you, <strong>{name}</strong>!<br>
             Your project (<strong>{project_id}</strong>) has been received.<br>
-            A confirmation email has been sent to <strong>{email}</strong>.</p>
+            A confirmation email has been sent to <strong>Bonniface</strong>.</p>
             <a href="/">← Back to Home</a>
         </div>
     </body>
@@ -267,7 +284,8 @@ def admin_login():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
-        if username == os.getenv("ADMIN_USER") and password == os.getenv("ADMIN_PASS"):
+        if username == os.getenv("ADMIN_USER") and password == os.getenv(
+                "ADMIN_PASS"):
             session["admin_logged_in"] = True
             return redirect(url_for("dashboard"))
         else:
@@ -297,8 +315,10 @@ def dashboard():
     if "admin_logged_in" not in session:
         return redirect(url_for("admin_login"))
 
-    data = sheet.get_all_values()
-    data = data[1:] if len(data) > 1 else []  # skip headers
+    data = []
+    if sheet:
+        data = sheet.get_all_values()
+        data = data[1:] if len(data) > 1 else []  # skip headers
 
     return render_template("admin.html", data=data)
 
@@ -312,4 +332,4 @@ def logout():
 
 # ---------------- MAIN ----------------
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
