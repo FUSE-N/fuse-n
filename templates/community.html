@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Hub | Bonniface Freelance</title>
+    <link rel="icon" href="../static/img/boni_avatar.jpg">
+    <link rel="stylesheet" href="../static/styles.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: var(--light);
+        }
+        .page-header {
+            padding: 6rem 0 3rem;
+            text-align: center;
+        }
+        .page-title {
+            font-size: 3rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        .feed-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .post-form-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            backdrop-filter: blur(15px);
+            border-radius: 1rem;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .post-card {
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.2s;
+        }
+        .post-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+        .post-meta {
+            display: flex;
+            justify-content: space-between;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+        .post-author {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .post-content {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="/" class="logo-container">
+                    <img src="../static/img/boni_avatar.jpg" alt="Logo">
+                    <span class="logo">Bonniface</span>
+                </a>
+                <div class="nav-links">
+                    <a href="/start-project" class="btn btn-outline">Start Project</a>
+                    <a href="/" class="btn btn-primary">Home</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="container page-header">
+        <h1 class="page-title">Community Hub</h1>
+        <p class="section-description">Connect, share updates, and see what's happening.</p>
+    </section>
+
+    <section class="container feed-container">
+        <!-- Post Form -->
+        <div class="post-form-card">
+            <h3 style="margin-bottom: 1rem; color: var(--light);">Share an update</h3>
+            <form action="/community/post" method="POST">
+                <div style="margin-bottom: 1rem;">
+                    <input type="text" name="name" placeholder="Your Name (Optional)" 
+                        style="width: 100%; padding: 0.75rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white;">
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <textarea name="content" placeholder="What's on your mind?" required
+                        style="width: 100%; padding: 0.75rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white; min-height: 100px; resize: vertical;"></textarea>
+                </div>
+                <button type="submit" class="btn">Post Update</button>
+            </form>
+        </div>
+
+        <!-- Feed -->
+        <div class="feed-list">
+            {% if posts %}
+                {% for post in posts|reverse %}
+                <div class="post-card">
+                    <div class="post-meta">
+                        <span class="post-author">{{ post[1] }}</span>
+                        <span>{{ post[0] }}</span>
+                    </div>
+                    <div class="post-content">
+                        {{ post[2] }}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div style="text-align: center; color: rgba(255,255,255,0.5);">
+                    <p>No posts yet. Be the first to share!</p>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+</body>
+</html>

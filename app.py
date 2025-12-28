@@ -8,10 +8,13 @@ from flask import (
     url_for,
 )
 from flask_mail import Mail, Message
-import gspread
-from oauth2client.service_account import ServiceAccountCredentials
 import datetime
 import random
+import os
+
+from dotenv import load_dotenv
+from werkzeug.utils import secure_filename
+from services import get_data_manager, get_email_service
 import os
 
 from dotenv import load_dotenv
@@ -34,31 +37,11 @@ app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME")  # Your email
 app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD")  # Your app password
 mail = Mail(app)
 
-# ---------------- GOOGLE SHEETS CONFIG ----------------
-scope = [
-    "https://spreadsheets.google.com/feeds",
-    "https://www.googleapis.com/auth/drive",
-]
-
-sheet = None
-client = None
-if os.path.exists("credentials.json"):
-    try:
-<<<<<<< HEAD
-<<<<<<< HEAD
-        creds = ServiceAccountCredentials.from_json_keyfile_name(
-            "credentials.json", scope)
-=======
-        creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
->>>>>>> 5ac7f9c (Add graceful handling for missing Google Sheets credentials and update app settings)
-=======
-        creds = ServiceAccountCredentials.from_json_keyfile_name(
-            "credentials.json", scope)
->>>>>>> 12e2763 (replit)
-        client = gspread.authorize(creds)
-        sheet = client.open("Client_Project_Submissions").sheet1
-    except Exception as e:
-        print(f"Warning: Could not connect to Google Sheets: {e}")
+# ---------------- SERVICES SETUP ----------------
+data_manager = get_data_manager("Client_Project_Submissions")
+community_manager = get_data_manager("Community_Posts")
+activity_manager = get_data_manager("Activity_Log")
+email_service = get_email_service(app, mail)
 
 
 # ---------------- HELPERS ----------------
@@ -84,16 +67,8 @@ def save_uploaded_file(file, project_id):
 
 def send_client_email(email, name, project_id, title, service, date_submitted):
     """Send confirmation email to client."""
-    if not app.config.get("MAIL_USERNAME"):
-        print(f"Email sending disabled. Would send to {email}")
-        return
-    try:
-        msg = Message(
-            subject=f"Project Received — {project_id}",
-            sender=app.config["MAIL_USERNAME"],
-            recipients=[email],
-        )
-        msg.body = f"""
+    subject = f"Project Received — {project_id}"
+    body = f"""
     Dear {name},
 
     Thank you for reaching out to Fuse-IN. Your project request has been received successfully.
@@ -109,40 +84,24 @@ def send_client_email(email, name, project_id, title, service, date_submitted):
     Boniface Kalong
     Freelance Research Analyst | AI & Data Science Consultant
     """
-        mail.send(msg)
-    except Exception as e:
-        print(f"Error sending client email: {e}")
+    
+    email_service.send_email(subject, [email], body)
 
 
 def send_admin_email(admin_email, data, filepath=None):
     """Send notification email to admin."""
-    if not app.config.get("MAIL_USERNAME") or not admin_email:
-        print(f"Email sending disabled. Would send to {admin_email}")
-        return
-    try:
-        msg = Message(
-            subject=f"New Project Submission — {data['project_id']}",
-            sender=app.config["MAIL_USERNAME"],
-            recipients=[admin_email],
-        )
+    # Logic is now handled inside email_service, including checking for valid sender/recipients
+    if not admin_email:
+         print("No admin email configured.")
+         return
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-        file_notice = (f"Attached File: {os.path.basename(filepath)}"
-                       if filepath else "No file uploaded.")
-=======
-        file_notice = (
-            f"Attached File: {os.path.basename(filepath)}"
-            if filepath
-            else "No file uploaded."
-        )
->>>>>>> d1e0161 (Make sending emails optional when credentials are not provided)
-=======
-        file_notice = (f"Attached File: {os.path.basename(filepath)}"
-                       if filepath else "No file uploaded.")
->>>>>>> 12e2763 (replit)
+    file_notice = (
+        f"Attached File: {os.path.basename(filepath)}"
+        if filepath
+        else "No file uploaded."
+    )
 
-        msg.body = f"""
+    msg_body = f"""
     New project submission received.
 
     Project ID: {data["project_id"]}
@@ -158,24 +117,14 @@ def send_admin_email(admin_email, data, filepath=None):
     {file_notice}
     """
 
-        # Attach file if exists
-        if filepath and os.path.exists(filepath):
-            with app.open_resource(filepath) as f:
-<<<<<<< HEAD
-<<<<<<< HEAD
-                msg.attach(os.path.basename(filepath),
-                           "application/octet-stream", f.read())
-=======
-                msg.attach(os.path.basename(filepath), "application/octet-stream", f.read())
->>>>>>> d1e0161 (Make sending emails optional when credentials are not provided)
-=======
-                msg.attach(os.path.basename(filepath),
-                           "application/octet-stream", f.read())
->>>>>>> 12e2763 (replit)
 
-        mail.send(msg)
-    except Exception as e:
-        print(f"Error sending admin email: {e}")
+    email_service.send_email(
+        subject=f"New project submission received — {data['project_id']}",
+        recipients=[admin_email],
+        body=msg_body,
+        attachment_path=filepath,
+        app_instance=app
+    )
 
 
 # ---------------- ROUTES ----------------
@@ -209,45 +158,23 @@ def submit():
     # Save uploaded file
     filepath = save_uploaded_file(uploaded_file, project_id)
 
-    # Save data to Google Sheet
-    if sheet:
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 12e2763 (replit)
-        sheet.append_row([
-            date_submitted,
-            project_id,
-            name,
-            email,
-            title,
-            service,
-            description,
-            tools,
-            deadline,
-            budget,
-            filepath or "No file",
-        ])
-<<<<<<< HEAD
-=======
-        sheet.append_row(
-            [
-                date_submitted,
-                project_id,
-                name,
-                email,
-                title,
-                service,
-                description,
-                tools,
-                deadline,
-                budget,
-                filepath or "No file",
-            ]
-        )
->>>>>>> 5ac7f9c (Add graceful handling for missing Google Sheets credentials and update app settings)
-=======
->>>>>>> 12e2763 (replit)
+    # Save data
+    data_manager.append_row([
+        date_submitted,
+        project_id,
+        name,
+        email,
+        title,
+        service,
+        description,
+        tools,
+        deadline,
+        budget,
+        filepath or "No file",
+    ])
+    
+    # Log Activity
+    activity_manager.append_row([date_submitted, "New Project Submission", f"Project ID: {project_id} by {name}"])
 
     # Send emails
     send_client_email(email, name, project_id, title, service, date_submitted)
@@ -323,10 +250,40 @@ def submit():
             Your project (<strong>{project_id}</strong>) has been received.<br>
             A confirmation email has been sent to <strong>Bonniface</strong>.</p>
             <a href="/">← Back to Home</a>
+            <br><br>
+            <a href="/community" style="background:#10b981;">Visit Community Hub</a>
         </div>
     </body>
     </html>
     """
+
+# ---------------- COMMUNITY SECTION ----------------
+@app.route("/community")
+def community():
+    """Community page to display posts."""
+    posts = community_manager.get_all_values()
+    # If GSheets returns list of lists, we might need to map them to dicts if we want cleaner template usage.
+    # For now assume list: [Date, Name, Content]
+    return render_template("community.html", posts=posts)
+
+@app.route("/community/post", methods=["POST"])
+def community_post():
+    """Handle new community post."""
+    name = request.form.get("name", "Anonymous")
+    content = request.form.get("content")
+    
+    if not content:
+        return redirect(url_for("community"))
+
+    date_posted = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
+    # Structure: [Date, Name, Content]
+    community_manager.append_row([date_posted, name, content])
+    
+    # Log Activity
+    activity_manager.append_row([date_posted, "New Community Post", f"By {name}"])
+    
+    return redirect(url_for("community"))
 
 
 # ---------------- ADMIN SECTION ----------------
@@ -371,11 +328,30 @@ def dashboard():
         return redirect(url_for("admin_login"))
 
     data = []
-    if sheet:
-        data = sheet.get_all_values()
-        data = data[1:] if len(data) > 1 else []  # skip headers
+    # Get all values from data manager
+    data = data_manager.get_all_values()
+    if data and len(data) > 1:
+         data = data[1:] # skip header if it exists
+    
+    # Analytics
+    total_projects = len(data)
+    recent_activities = activity_manager.get_all_values()
+    
+    # Filter "New Project Submission" and "New Community Post" counts if wanted, or just total logs
+    
+    if recent_activities:
+        recent_activities.reverse() # Show newest first
+        recent_activities = recent_activities[:10] # Limit to 10
+    
+    community_posts = community_manager.get_all_values()
+    
+    stats = {
+        "total_projects": total_projects,
+        "community_posts": len(community_posts),
+        "recent_activity_count": len(recent_activities) if recent_activities else 0
+    }
 
-    return render_template("admin.html", data=data)
+    return render_template("admin.html", data=data, stats=stats, activities=recent_activities)
 
 
 @app.route("/logout", methods=["POST"])
