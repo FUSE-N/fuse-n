@@ -3,19 +3,20 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" href="static/img/boni_avatar.jpg">
+    <link rel="icon" href="{{ url_for('static', filename='img/boni_avatar.jpg') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bonniface | Freelance Professional</title>
-    <link rel="stylesheet" href="static/styles.css">
-    <link rel="stylesheet" href="static/css/ai_chatbot.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ai_chatbot.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
 </head>
 
 <body>
     <header>
         <div class="container">
             <nav class="navbar">
-                <a href="home.html" class="logo-container">
-                    <img src="static/img/boni_avatar.jpg" alt="Bonniface Logo">
+                <a href="{{ url_for('home') }}" class="logo-container">
+                    <img src="{{ url_for('static', filename='img/boni_avatar.jpg') }}" alt="Bonniface Logo">
                     <span class="logo">Bonniface</span>
                 </a>
                 <div class="nav-links">
@@ -29,11 +30,11 @@
                             <a href="#system-integration">System Integration</a>
                         </div>
                     </div>
-                    <a href="templates/research.html"> Explore</a>
+                    <a href="{{ url_for('home') }}"> Explore</a>
                     <a href="#portfolio">Portfolio</a>
                     <a href="#about">About</a>
-                    <a href="career-opportunities.html#careers">Careers</a>
-                    <a href="templates/start-project.html" class="btn btn-primary">Get Started</a>
+                    <a href="{{ url_for('home') }}">Careers</a>
+                    <a href="{{ url_for('form_page') }}" class="btn btn-primary">Get Started</a>
                 </div>
             </nav>
         </div>
@@ -48,8 +49,8 @@
                 <p class="hero-subtitle">Expert consulting, cutting-edge AI solutions, and data-driven insights to
                     accelerate your digital transformation journey.</p>
                 <div class="hero-cta">
-                    <a href="/templates/start-project.html" class="btn btn-large">Start Your Project</a>
-                    <a href="templates/explore-work.html" class="btn btn-outline btn-large">Explore Work</a>
+                    <a href="{{ url_for('form_page') }}" class="btn btn-large">Start Your Project</a>
+                    <a href="{{ url_for('home') }}" class="btn btn-outline btn-large">Explore Work</a>
                 </div>
                 <div class="hero-stats">
                     <div class="stat-item">
@@ -104,7 +105,7 @@
                 </div>
                 <div class="about-image">
                     <div class="image-wrapper">
-                        <img src="static/img/boni_avatar.jpg" alt="Professional Profile">
+                        <img src="{{ url_for('static', filename='img/boni_avatar.jpg') }}" alt="Professional Profile">
                         <div class="image-decoration"></div>
                     </div>
                 </div>
@@ -428,8 +429,8 @@
             <div class="footer-grid">
                 <div class="footer-col">
                     <div class="footer-logo">
-                        <a href="home.html" class="logo-container">
-                            <img src="static/img/boni_avatar.jpg" alt="Bonniface Logo">
+                        <a href="{{ url_for('home') }}" class="logo-container">
+                            <img src="{{ url_for('static', filename='img/boni_avatar.jpg') }}" alt="Bonniface Logo">
                             <span class="logo">Bonniface</span>
                         </a>
                     </div>

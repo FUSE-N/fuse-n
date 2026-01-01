@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Start Your Project | Bonniface Freelance</title>
-    <link rel="icon" href="../static/img/boni_avatar.jpg">
-    <link rel="stylesheet" href="../static/styles.css">
+    <link rel="icon" href="{{ url_for('static', filename='img/boni_avatar.jpg') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
     <style>
         body {
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
@@ -137,14 +138,14 @@
     <header>
         <div class="container">
             <nav class="navbar">
-                <a href="../Home.html" class="logo-container">
-                    <img src="../static/img/boni_avatar.jpg" alt="Bonniface Logo">
+                <a href="{{ url_for('home') }}" class="logo-container">
+                    <img src="{{ url_for('static', filename='img/boni_avatar.jpg') }}" alt="Bonniface Logo">
                     <span class="logo">Bonniface</span>
                 </a>
                 <div class="nav-links">
 
-                    <a href="explore-work.html">Explore mine Works</a>
-                    <a href="../Home.html" class="btn btn-primary">Back to Home</a>
+                    <a href="{{ url_for('home') }}">Explore mine Works</a>
+                    <a href="{{ url_for('home') }}" class="btn btn-primary">Back to Home</a>
                 </div>
             </nav>
         </div>
@@ -199,7 +200,7 @@
                 </form>
 
                 <div class="back-home">
-                    <a href="Home.html">← Back to Home</a>
+                    <a href="{{ url_for('home') }}">← Back to Home</a>
                 </div>
             </div>
         </div>
