@@ -4,6 +4,8 @@ import datetime
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from flask_mail import Message
+import firebase_admin
+from firebase_admin import credentials, firestore
 
 # Abstract Interfaces (Implicit)
 
@@ -58,6 +60,43 @@ class GSheetsDataManager:
             return self.sheet.get_all_values()
         return []
 
+class FirebaseDataManager:
+    def __init__(self, key_path, collection_name):
+        if not firebase_admin._apps:
+            cred = credentials.Certificate(key_path)
+            firebase_admin.initialize_app(cred)
+        self.db = firestore.client()
+        self.collection_name = collection_name
+        print(f"[INFO] Initialized Firebase for {collection_name}")
+
+    def append_row(self, data):
+        # Data is a list. We need to convert to dict for Firestore or simple document.
+        # For simplicity similar to sheets, let's create a doc with timestamp.
+        # But wait, the app passes a list. We should key it properly or just store as 'data': list
+        # detailed mapping would be better but let's stick to list storage for compatibility or minimal refactor.
+        # Actually, let's map it if we can, or just store the raw list.
+        # Storing as list:
+        doc_data = {
+            "created_at": datetime.datetime.now(),
+            "raw_data": data
+            # If we knew the schema here we could map it, e.g. name=data[2]
+            # But the DataManager interface is generic 'append_row'.
+            # Let's trust usage of 'raw_data' or try to map if list length matches known schemas.
+            # A generic `raw_data` field is safest for a "list append" abstraction.
+            # HOWEVER, existing templates (admin.html, community.html) expect a LIST (row[0], row[1]...)
+            # So when we read back, we must return a LIST.
+        }
+        self.db.collection(self.collection_name).add(doc_data)
+
+    def get_all_values(self):
+        docs = self.db.collection(self.collection_name).stream()
+        all_rows = []
+        for doc in docs:
+            d = doc.to_dict()
+            if "raw_data" in d:
+                all_rows.append(d["raw_data"])
+        return all_rows
+
 class ConsoleEmailService:
     def send_email(self, subject, recipients, body, attachment_path=None, app_instance=None):
         print("\n" + "="*30)
@@ -91,7 +130,14 @@ class FlaskMailService:
 
 # Factory / Setup
 def get_data_manager(collection_name):
-    # Check for GSheets credentials
+    # Check for Firebase Key
+    if os.path.exists("firebase_key.json"):
+        try:
+            return FirebaseDataManager("firebase_key.json", collection_name)
+        except Exception as e:
+            print(f"Failed to init Firebase: {e}")
+
+    # Check for GSheets credentials (Legacy/Alternative)
     if os.path.exists("credentials.json"):
         try:
             scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]

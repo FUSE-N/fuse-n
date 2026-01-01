@@ -111,10 +111,25 @@
 </head>
 
 <body>
+  <header>
+    <div class="container">
+      <nav class="navbar">
+        <a href="/" class="logo-container">
+          <img src="{{ url_for('static', filename='img/boni_avatar.jpg') }}" alt="Logo">
+          <span class="logo">Bonniface</span>
+        </a>
+        <div class="nav-links">
+          <a href="/" class="btn btn-outline">Home</a>
+          <a href="/community" class="btn btn-outline">Community</a>
+          <form action="/logout" method="POST" style="display:inline;">
+            <button class="logout-btn" style="margin:0;">Logout</button>
+          </form>
+        </div>
+      </nav>
+    </div>
+  </header>
+
   <div class="dashboard-container">
-    <form action="/logout" method="POST">
-      <button class="logout-btn">Logout</button>
-    </form>
 
     <h1>Client Project Dashboard</h1>
 
