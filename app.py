@@ -130,7 +130,7 @@ def send_admin_email(admin_email, data, filepath=None):
 # ---------------- ROUTES ----------------
 @app.route("/")
 def home():
-    return redirect(url_for("form_page"))
+    return render_template("index.html")
 
 
 @app.route("/start-project")
