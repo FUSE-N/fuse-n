@@ -19,7 +19,10 @@
                     <img src="{{ url_for('static', filename='img/boni_avatar.jpg') }}" alt="Bonniface Logo">
                     <span class="logo">Bonniface</span>
                 </a>
-                <div class="nav-links">
+                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Menu" style="display: none; background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">
+                    ☰
+                </button>
+                <div class="nav-links" id="navLinks">
                     <div class="dropdown">
                         <a href="#services" class="dropbtn">Services</a>
                         <div class="dropdown-content">
@@ -514,6 +517,11 @@
     </footer>
 
     <script src="script/ai_chatbot.js"></script>
+    <script>
+        document.getElementById('mobileMenuToggle').addEventListener('click', function() {
+            document.getElementById('navLinks').classList.toggle('active');
+        });
+    </script>
 </body>
 
 </html>
