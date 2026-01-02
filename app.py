@@ -44,6 +44,14 @@ activity_manager = get_data_manager("Activity_Log")
 email_service = get_email_service(app, mail)
 
 
+@app.context_processor
+def inject_supabase():
+    return dict(
+        SUPABASE_URL=os.getenv("SUPABASE_URL"),
+        SUPABASE_ANON_KEY=os.getenv("SUPABASE_ANON_KEY"),
+    )
+
+
 # ---------------- HELPERS ----------------
 def generate_project_id():
     """Generate unique project ID."""
@@ -131,6 +139,22 @@ def send_admin_email(admin_email, data, filepath=None):
 @app.route("/")
 def home():
     return render_template("index.html")
+
+
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
+
+@app.route("/dashboard")
+def dashboard():
+    return render_template("dashboard.html")
+
+
+@app.route("/oauth/consent")
+def oauth_consent():
+    """OAuth consent page route."""
+    return render_template("oauth_consent.html")
 
 
 @app.route("/start-project")

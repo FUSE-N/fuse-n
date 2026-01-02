@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="../static/img/boni_avatar.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OAuth Consent | Bonniface</title>
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <link rel="stylesheet" href="../static/css/navbar.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .consent-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            text-decoration: none;
+            color: white;
+        }
+
+        .logo-container img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .permissions-list {
+            text-align: left;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .permission-item {
+            display: flex;
+            gap: 1rem;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .permission-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .permission-icon {
+            color: #3b82f6;
+            font-size: 1.25rem;
+            margin-top: 0.25rem;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-confirm {
+            background: #3b82f6;
+            color: white;
+            border: none;
+        }
+
+        .btn-confirm:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+        }
+
+        .btn-cancel {
+            background: transparent;
+            color: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-cancel:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="consent-card">
+        <div class="logo-container">
+            <img src="../static/img/boni_avatar.jpg" alt="Bonniface Logo">
+            <span class="logo-text">Bonniface</span>
+        </div>
+
+        <h1>Permission Request</h1>
+        <p style="color: rgba(255, 255, 255, 0.6); margin-bottom: 2rem;">
+            Application is requesting access to the following information:
+        </p>
+
+        <div class="permissions-list">
+            <div class="permission-item">
+                <div class="permission-icon">👤</div>
+                <div>
+                    <div style="font-weight: 600;">Basic Profile</div>
+                    <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.5);">View your name and profile
+                        picture.</div>
+                </div>
+            </div>
+            <div class="permission-item">
+                <div class="permission-icon">✉️</div>
+                <div>
+                    <div style="font-weight: 600;">Email Address</div>
+                    <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.5);">View your primary email address.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <a href="index.html" class="btn btn-cancel">Cancel</a>
+            <a href="dashboard.html" class="btn btn-confirm">Allow Access</a>
+        </div>
+    </div>
+</body>
+
+</html>

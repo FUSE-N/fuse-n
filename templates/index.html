@@ -3,23 +3,97 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" href="{{ url_for('static', filename='img/boni_avatar.jpg') }}">
+    <link rel="icon" href="../static/img/boni_avatar.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bonniface | Freelance Professional</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/ai_chatbot.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <link rel="stylesheet" href="../static/css/ai_chatbot.css">
+    <link rel="stylesheet" href="../static/css/navbar.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        .profile-container {
+            position: relative;
+            display: none;
+            /* Hidden by default until auth check */
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+        }
+
+        .profile-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #3b82f6;
+            transition: transform 0.3s ease;
+        }
+
+        .profile-container:hover .profile-img {
+            transform: scale(1.05);
+        }
+
+        .profile-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            padding: 0.5rem;
+            min-width: 200px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            margin-top: 0.75rem;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .profile-container.active .profile-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            border-radius: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 0.5rem 0;
+        }
+
+        .btn-get-started {
+            display: inline-block;
+        }
+    </style>
 </head>
 
 <body>
     <header>
         <div class="container">
             <nav class="navbar">
-                <a href="{{ url_for('home') }}" class="logo-container">
-                    <img src="{{ url_for('static', filename='img/boni_avatar.jpg') }}" alt="Bonniface Logo">
+                <a href="index.html" class="logo-container">
+                    <img src="../static/img/boni_avatar.jpg" alt="Bonniface Logo">
                     <span class="logo">Bonniface</span>
                 </a>
-                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Menu" style="display: none; background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">
+                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Menu"
+                    style="display: none; background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">
                     ☰
                 </button>
                 <div class="nav-links" id="navLinks">
@@ -37,7 +111,29 @@
                     <a href="#portfolio">Portfolio</a>
                     <a href="#about">About</a>
                     <a href="{{ url_for('home') }}">Careers</a>
-                    <a href="{{ url_for('form_page') }}" class="btn btn-primary">Get Started</a>
+                    <a href="login.html" class="btn btn-primary btn-get-started" id="getStartedBtn">Get
+                        Started</a>
+                    <div class="profile-container" id="profileContainer">
+                        <img src="../static/img/boni_avatar.jpg" alt="Profile" class="profile-img" id="headerAvatar">
+                        <div class="profile-dropdown">
+                            <div style="padding: 0.5rem 1rem; font-size: 0.875rem; color: rgba(255,255,255,0.5);"
+                                id="headerUserName">User</div>
+                            <div class="dropdown-divider"></div>
+                            <a href="{{ url_for('dashboard') }}" class="dropdown-item">
+                                <ion-icon name="grid-outline"></ion-icon>
+                                Dashboard
+                            </a>
+                            <a href="{{ url_for('form_page') }}" class="dropdown-item">
+                                <ion-icon name="rocket-outline"></ion-icon>
+                                Start Project
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a onclick="signOut()" class="dropdown-item" style="color: #ef4444;">
+                                <ion-icon name="log-out-outline"></ion-icon>
+                                Logout
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </nav>
         </div>
@@ -108,7 +204,7 @@
                 </div>
                 <div class="about-image">
                     <div class="image-wrapper">
-                        <img src="{{ url_for('static', filename='img/boni_avatar.jpg') }}" alt="Professional Profile">
+                        <img src="../static/img/boni_avatar.jpg" alt="Professional Profile">
                         <div class="image-decoration"></div>
                     </div>
                 </div>
@@ -127,7 +223,7 @@
                 <div class="service-card">
                     <div class="service-icon">📊</div>
                     <div class="service-image">
-                        <img src="assets/Services/consulting_strategy.webp" alt="Consulting & Strategy">
+                        <img src="../static/assets/Services/consulting_strategy.webp" alt="Consulting & Strategy">
                     </div>
                     <div class="service-content">
                         <h3 class="service-title">Consulting & Strategy</h3>
@@ -140,7 +236,7 @@
                 <div class="service-card">
                     <div class="service-icon">📈</div>
                     <div class="service-image">
-                        <img src="assets/Services/data_analysis.webp" alt="Data Analysis">
+                        <img src="../static/assets/Services/data_analysis.webp" alt="Data Analysis">
                     </div>
                     <div class="service-content">
                         <h3 class="service-title">Data Analysis & Visualization</h3>
@@ -153,7 +249,7 @@
                 <div class="service-card">
                     <div class="service-icon">🤖</div>
                     <div class="service-image">
-                        <img src="assets/Services/ai_automation.webp" alt="AI & Automation">
+                        <img src="../static/assets/Services/ai_automation.webp" alt="AI & Automation">
                     </div>
                     <div class="service-content">
                         <h3 class="service-title">AI & Automation</h3>
@@ -166,7 +262,7 @@
                 <div class="service-card">
                     <div class="service-icon">📝</div>
                     <div class="service-image">
-                        <img src="assets/Services/research_reports.webp" alt="Research & Reports">
+                        <img src="../static/assets/Services/research_reports.webp" alt="Research & Reports">
                     </div>
                     <div class="service-content">
                         <h3 class="service-title">Research & Reports</h3>
@@ -179,7 +275,7 @@
                 <div class="service-card">
                     <div class="service-icon">🔗</div>
                     <div class="service-image">
-                        <img src="assets/Services/system_integration.webp" alt="System Integration">
+                        <img src="../static/assets/Services/system_integration.webp" alt="System Integration">
                     </div>
                     <div class="service-content">
                         <h3 class="service-title">System Integration</h3>
@@ -192,7 +288,7 @@
                 <div class="service-card">
                     <div class="service-icon">💼</div>
                     <div class="service-image">
-                        <img src="assets/Services/f_b_analyst.webp" alt="Financial Analysis">
+                        <img src="../static/assets/Services/f_b_analyst.webp" alt="Financial Analysis">
                     </div>
                     <div class="service-content">
                         <h3 class="service-title">Financial & Business Analysis</h3>
@@ -215,7 +311,7 @@
             <div class="portfolio-grid">
                 <div class="portfolio-item">
                     <div class="portfolio-image">
-                        <img src="assets/Projects/time_series_analysis.webp" alt="Time Series Analysis">
+                        <img src="../static/assets/Projects/time_series_analysis.webp" alt="Time Series Analysis">
                         <div class="portfolio-overlay">
                             <span class="portfolio-category">Machine Learning</span>
                         </div>
@@ -229,7 +325,7 @@
 
                 <div class="portfolio-item">
                     <div class="portfolio-image">
-                        <img src="assets/Projects/neural_networks.webp" alt="Neural Networks">
+                        <img src="../static/assets/Projects/neural_networks.webp" alt="Neural Networks">
                         <div class="portfolio-overlay">
                             <span class="portfolio-category">Deep Learning</span>
                         </div>
@@ -243,7 +339,7 @@
 
                 <div class="portfolio-item">
                     <div class="portfolio-image">
-                        <img src="assets/Projects/climate_change_analysis.webp" alt="Climate Analytics">
+                        <img src="../static/assets/Projects/climate_change_analysis.webp" alt="Climate Analytics">
                         <div class="portfolio-overlay">
                             <span class="portfolio-category">Data Science</span>
                         </div>
@@ -257,7 +353,7 @@
 
                 <div class="portfolio-item">
                     <div class="portfolio-image">
-                        <img src="assets/Projects/image_detection.webp" alt="Image Detection">
+                        <img src="../static/assets/Projects/image_detection.webp" alt="Image Detection">
                         <div class="portfolio-overlay">
                             <span class="portfolio-category">Computer Vision</span>
                         </div>
@@ -271,7 +367,7 @@
 
                 <div class="portfolio-item">
                     <div class="portfolio-image">
-                        <img src="assets/Projects/ai_job_matching_platform.webp" alt="Job Matching">
+                        <img src="../static/assets/Projects/ai_job_matching_platform.webp" alt="Job Matching">
                         <div class="portfolio-overlay">
                             <span class="portfolio-category">AI Platform</span>
                         </div>
@@ -285,7 +381,7 @@
 
                 <div class="portfolio-item">
                     <div class="portfolio-image">
-                        <img src="assets/Projects/web3-projects.webp" alt="Web3 Projects">
+                        <img src="../static/assets/Projects/web3-projects.webp" alt="Web3 Projects">
                         <div class="portfolio-overlay">
                             <span class="portfolio-category">Blockchain</span>
                         </div>
@@ -398,7 +494,7 @@
         <div class="chat-window" id="chatWindow">
             <div class="chat-header">
                 <div class="header-info">
-                    <img src="static/img/boni_avatar.jpg" alt="Bonniface Logo" class="logo">
+                    <img src="../static/img/boni_avatar.jpg" alt="Bonniface Logo" class="logo">
                     <h3>Bonniface Assistant</h3>
                 </div>
                 <button class="close-btn" id="closeBtn">&times;</button>
@@ -433,7 +529,7 @@
                 <div class="footer-col">
                     <div class="footer-logo">
                         <a href="{{ url_for('home') }}" class="logo-container">
-                            <img src="{{ url_for('static', filename='img/boni_avatar.jpg') }}" alt="Bonniface Logo">
+                            <img src="../static/img/boni_avatar.jpg" alt="Bonniface Logo">
                             <span class="logo">Bonniface</span>
                         </a>
                     </div>
@@ -516,11 +612,57 @@
         </div>
     </footer>
 
-    <script src="script/ai_chatbot.js"></script>
     <script>
-        document.getElementById('mobileMenuToggle').addEventListener('click', function() {
+        window.SUPABASE_URL = "{{ SUPABASE_URL }}";
+        window.SUPABASE_ANON_KEY = "{{ SUPABASE_ANON_KEY }}";
+    </script>
+    <script src="../static/js/ai_chatbot.js"></script>
+    <script src="../static/js/supabase_init.js"></script>
+    <script>
+        async function updateHeader() {
+            if (typeof checkSession !== 'function') return;
+            const session = await checkSession();
+            const getStartedBtn = document.getElementById('getStartedBtn');
+            const profileContainer = document.getElementById('profileContainer');
+
+            if (session) {
+                if (getStartedBtn) getStartedBtn.style.display = 'none';
+                if (profileContainer) profileContainer.style.display = 'flex';
+
+                const user = session.user;
+                const nameEl = document.getElementById('headerUserName');
+                const avatarEl = document.getElementById('headerAvatar');
+
+                if (nameEl) nameEl.textContent = user.user_metadata.full_name || user.email;
+                if (avatarEl && user.user_metadata.avatar_url) {
+                    avatarEl.src = user.user_metadata.avatar_url;
+                }
+            } else {
+                if (getStartedBtn) getStartedBtn.style.display = 'inline-block';
+                if (profileContainer) profileContainer.style.display = 'none';
+            }
+        }
+
+        const profileContainer = document.getElementById('profileContainer');
+        if (profileContainer) {
+            profileContainer.addEventListener('click', function (e) {
+                e.stopPropagation();
+                this.classList.toggle('active');
+            });
+        }
+
+        document.addEventListener('click', function (e) {
+            const container = document.getElementById('profileContainer');
+            if (container && !container.contains(e.target)) {
+                container.classList.remove('active');
+            }
+        });
+
+        document.getElementById('mobileMenuToggle').addEventListener('click', function () {
             document.getElementById('navLinks').classList.toggle('active');
         });
+
+        updateHeader();
     </script>
 </body>
 

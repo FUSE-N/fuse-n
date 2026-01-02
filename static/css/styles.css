@@ -168,6 +168,7 @@ header {
         opacity: 0;
         transform: translateY(-10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -202,12 +203,10 @@ header {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.3),
-        transparent
-    );
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.3),
+            transparent);
     transition: left 0.5s ease;
 }
 
@@ -304,7 +303,7 @@ section {
     display: flex;
     align-items: center;
     background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-    background-image: url("img/Hero-section.jpeg");
+    background-image: url("../img/Hero-section.jpeg");
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -319,11 +318,9 @@ section {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(
-        135deg,
-        rgba(30, 41, 59, 0.95) 0%,
-        rgba(15, 23, 42, 0.9) 100%
-    );
+    background: linear-gradient(135deg,
+            rgba(30, 41, 59, 0.95) 0%,
+            rgba(15, 23, 42, 0.9) 100%);
 }
 
 .hero-overlay {
@@ -332,11 +329,9 @@ section {
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(
-        circle at 20% 50%,
-        rgba(59, 130, 246, 0.1) 0%,
-        transparent 50%
-    );
+    background: radial-gradient(circle at 20% 50%,
+            rgba(59, 130, 246, 0.1) 0%,
+            transparent 50%);
 }
 
 .hero-content {
@@ -424,6 +419,7 @@ section {
         opacity: 0;
         transform: translateY(30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -528,11 +524,9 @@ section {
 }
 
 .service-card {
-    background: linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.05) 0%,
-        rgba(255, 255, 255, 0.02) 100%
-    );
+    background: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.05) 0%,
+            rgba(255, 255, 255, 0.02) 100%);
     backdrop-filter: blur(10px);
     border-radius: 1rem;
     overflow: hidden;
@@ -644,11 +638,9 @@ section {
 .portfolio-item {
     border-radius: 1rem;
     overflow: hidden;
-    background: linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.05) 0%,
-        rgba(255, 255, 255, 0.02) 100%
-    );
+    background: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.05) 0%,
+            rgba(255, 255, 255, 0.02) 100%);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     transition: all 0.3s ease;
@@ -702,11 +694,9 @@ section {
 
 .portfolio-content {
     padding: 2rem;
-    background: linear-gradient(
-        135deg,
-        rgba(30, 41, 59, 0.5) 0%,
-        rgba(15, 23, 42, 0.8) 100%
-    );
+    background: linear-gradient(135deg,
+            rgba(30, 41, 59, 0.5) 0%,
+            rgba(15, 23, 42, 0.8) 100%);
 }
 
 .portfolio-title {
@@ -733,11 +723,9 @@ section {
 .process-step {
     text-align: center;
     padding: 2rem;
-    background: linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.05) 0%,
-        rgba(255, 255, 255, 0.02) 100%
-    );
+    background: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.05) 0%,
+            rgba(255, 255, 255, 0.02) 100%);
     border-radius: 1rem;
     border: 1px solid rgba(255, 255, 255, 0.1);
     transition: all 0.3s ease;
@@ -809,11 +797,9 @@ section {
 }
 
 .contact-card {
-    background: linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.05) 0%,
-        rgba(255, 255, 255, 0.02) 100%
-    );
+    background: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.05) 0%,
+            rgba(255, 255, 255, 0.02) 100%);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 1rem;
@@ -877,11 +863,9 @@ footer {
     width: 45px;
     height: 45px;
     border-radius: 50%;
-    background: linear-gradient(
-        135deg,
-        rgba(59, 130, 246, 0.2) 0%,
-        rgba(147, 51, 234, 0.2) 100%
-    );
+    background: linear-gradient(135deg,
+            rgba(59, 130, 246, 0.2) 0%,
+            rgba(147, 51, 234, 0.2) 100%);
     border: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     align-items: center;
@@ -1007,6 +991,7 @@ footer {
         grid-template-columns: 1fr;
     }
 }
+
 /************ Explore Work cards ********/
 .search-bar {
     display: flex;
@@ -1017,6 +1002,7 @@ footer {
     border-radius: 25px;
     padding: 0.5rem 1rem;
 }
+
 .search-bar input {
     border: none;
     background: transparent;
@@ -1024,6 +1010,7 @@ footer {
     font-size: 1rem;
     outline: none;
 }
+
 .tabs {
     display: flex;
     justify-content: center;
@@ -1032,6 +1019,7 @@ footer {
     gap: 2rem;
     padding: 0.75rem 0;
 }
+
 .tabs button {
     background: none;
     border: none;
@@ -1039,10 +1027,12 @@ footer {
     color: #555;
     cursor: pointer;
 }
+
 .tabs button:hover,
 .tabs button.active {
     color: #2563eb;
 }
+
 .content {
     display: grid;
     grid-template-columns: 3fr 1fr;
@@ -1051,9 +1041,11 @@ footer {
     margin: 2rem auto;
     padding: 0 2rem;
 }
+
 .explore-section {
     padding: 6rem 2rem;
 }
+
 .explore-container {
     display: grid;
     grid-template-columns: 3fr 1fr;
@@ -1061,11 +1053,13 @@ footer {
     max-width: 1300px;
     margin: auto;
 }
+
 .explore-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1.5rem;
 }
+
 .work-card {
     background: rgba(255, 255, 255, 0.05);
     border-radius: 0.75rem;
@@ -1073,30 +1067,37 @@ footer {
     border: 1px solid rgba(255, 255, 255, 0.1);
     transition: transform 0.3s ease;
 }
+
 .work-card:hover {
     transform: translateY(-4px);
 }
+
 .work-card img {
     width: 100%;
     height: 180px;
     object-fit: cover;
 }
+
 .work-card-body {
     padding: 1rem;
 }
+
 .work-card-body h3 {
     color: var(--light);
     margin: 0 0 0.5rem;
 }
+
 .work-card-body p {
     color: rgba(255, 255, 255, 0.8);
     font-size: 0.9rem;
 }
+
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1.5rem;
 }
+
 .card {
     background: #fff;
     border-radius: 0.75rem;
@@ -1104,33 +1105,40 @@ footer {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     transition: transform 0.3s ease;
 }
+
 .card:hover {
     transform: translateY(-4px);
 }
+
 .card img {
     width: 100%;
     height: 180px;
     object-fit: cover;
 }
+
 .card-body {
     padding: 1rem;
 }
+
 .card-body h3 {
     margin: 0;
     font-size: 1.1rem;
     color: #222;
 }
+
 .card-body p {
     color: #555;
     font-size: 0.9rem;
     margin-top: 0.5rem;
 }
+
 .reaction-bar {
     display: flex;
     justify-content: space-between;
     padding: 0.75rem 1rem 1rem;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
+
 .reaction-btn {
     display: flex;
     align-items: center;
@@ -1141,14 +1149,17 @@ footer {
         color 0.3s ease,
         transform 0.2s ease;
 }
+
 .reaction-btn:hover {
     color: var(--accent);
     transform: scale(1.05);
 }
+
 .reaction-btn.active {
     color: var(--accent);
     font-weight: 600;
 }
+
 .explore-sidebar {
     background: rgba(255, 255, 255, 0.05);
     border-radius: 1rem;
@@ -1156,6 +1167,7 @@ footer {
     border: 1px solid rgba(255, 255, 255, 0.1);
     height: fit-content;
 }
+
 .explore-sidebar h4 {
     color: var(--accent);
     margin-top: 0;
@@ -1167,6 +1179,7 @@ footer {
     .explore-container {
         grid-template-columns: 1fr;
     }
+
     .explore-sidebar {
         order: -1;
         margin-bottom: 2rem;
