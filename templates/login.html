@@ -215,6 +215,24 @@
             z-index: 1000;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
         }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .password-toggle:hover {
+            color: white;
+        }
     </style>
 </head>
 
@@ -250,7 +268,11 @@
                         <a onclick="switchView('forgotView')"
                             style="font-size: 0.75rem; color: #60a5fa; cursor: pointer;">Forgot?</a>
                     </div>
-                    <input type="password" id="loginPassword" placeholder="••••••••" required>
+                    <div class="password-wrapper">
+                        <input type="password" id="loginPassword" placeholder="••••••••" required>
+                        <ion-icon name="eye-outline" class="password-toggle" id="loginToggle"
+                            onclick="togglePassword('loginPassword', 'loginToggle')"></ion-icon>
+                    </div>
                 </div>
                 <button type="submit" class="auth-btn">Sign In</button>
             </form>
@@ -288,7 +310,11 @@
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" id="signupPassword" placeholder="••••••••" required>
+                    <div class="password-wrapper">
+                        <input type="password" id="signupPassword" placeholder="••••••••" required>
+                        <ion-icon name="eye-outline" class="password-toggle" id="signupToggle"
+                            onclick="togglePassword('signupPassword', 'signupToggle')"></ion-icon>
+                    </div>
                 </div>
                 <button type="submit" class="auth-btn">Create Account</button>
             </form>
@@ -329,7 +355,11 @@
             <form onsubmit="handleUpdatePassword(event)">
                 <div class="form-group">
                     <label>New Password</label>
-                    <input type="password" id="newPassword" placeholder="••••••••" required>
+                    <div class="password-wrapper">
+                        <input type="password" id="newPassword" placeholder="••••••••" required>
+                        <ion-icon name="eye-outline" class="password-toggle" id="newToggle"
+                            onclick="togglePassword('newPassword', 'newToggle')"></ion-icon>
+                    </div>
                 </div>
                 <button type="submit" class="auth-btn">Update Password</button>
             </form>
@@ -344,6 +374,8 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../static/js/supabase_init.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
     <script>
         // Check for recovery link
@@ -364,6 +396,19 @@
             toast.style.background = isError ? '#ef4444' : '#10b981';
             toast.style.display = 'block';
             setTimeout(() => toast.style.display = 'none', 5000);
+        }
+
+        function togglePassword(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+
+            if (input.type === "password") {
+                input.type = "text";
+                icon.setAttribute("name", "eye-off-outline");
+            } else {
+                input.type = "password";
+                icon.setAttribute("name", "eye-outline");
+            }
         }
 
         async function handleEmailLogin(e) {
