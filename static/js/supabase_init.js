@@ -1,98 +1,124 @@
 // Supabase Initialization
-const supabaseUrl = window.SUPABASE_URL || 'YOUR_SUPABASE_URL';
-const supabaseAnonKey = window.SUPABASE_ANON_KEY || 'YOUR_SUPABASE_ANON_KEY';
-
-// For local testing, we might want to get these from somewhere else or hardcode if the user permits
-// But best practice is to have them injected or handled securely.
-// Since this is a client-side script, they will be exposed anyway.
-
-console.log('supabase_init.js loading...');
+const supabaseUrl = "https://sefuxvdhfgylmlqdrhoh.supabase.co";
+const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNlZnV4dmRoZmd5bG1scWRyaG9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzU4NzYxMzEsImV4cCI6MjA1MTQ1MjEzMX0.-p-gG1vtY4-jemZAhE8VZtei4tT-8OQp2qM4t9FJwRg";
 
 let _supabaseInstance;
 
 try {
-    const supabaseLib = window.supabase || window.supabasejs;
-    if (!supabaseLib) {
-        throw new Error('Supabase library not found on window. Check if CDN script is loaded.');
+    // The supabase library is already loaded via CDN
+    // Use the global supabase object from the CDN
+    if (typeof supabase === 'undefined') {
+        throw new Error('Supabase library not loaded. Check if CDN script is loaded.');
     }
 
-    _supabaseInstance = supabaseLib.createClient(supabaseUrl, supabaseAnonKey);
+    _supabaseInstance = supabase.createClient(supabaseUrl, supabaseAnonKey);
     console.log('Supabase client initialized successfully.');
 } catch (err) {
     console.error('Failed to initialize Supabase client:', err.message);
+    alert('Failed to initialize authentication service: ' + err.message);
 }
 
 async function signInWithGoogle() {
-    const { data, error } = await _supabaseInstance.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-            redirectTo: window.location.origin + '/dashboard'
-        }
-    });
+    try {
+        const { data, error } = await _supabaseInstance.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+                redirectTo: window.location.origin + '/templates/login.html'
+            }
+        });
 
-    if (error) {
-        console.error('Error signing in:', error.message);
-        alert('Authentication failed: ' + error.message);
+        if (error) throw error;
+        return data;
+    } catch (error) {
+        console.error('Error signing in with Google:', error.message);
+        throw error;
     }
+}
+
+async function signUpWithGoogle() {
+    // For OAuth, sign up and sign in are the same flow
+    return signInWithGoogle();
 }
 
 async function signOut() {
     const { error } = await _supabaseInstance.auth.signOut();
     if (error) {
         console.error('Error signing out:', error.message);
+        throw error;
     } else {
-        window.location.href = '/';
+        window.location.href = '../index.html';
     }
 }
 
 async function signInWithEmail(email, password) {
-    const { data, error } = await _supabaseInstance.auth.signInWithPassword({
-        email,
-        password,
-    });
-    if (error) throw error;
-    return data;
+    try {
+        const { data, error } = await _supabaseInstance.auth.signInWithPassword({
+            email,
+            password,
+        });
+        if (error) throw error;
+        return data;
+    } catch (error) {
+        console.error('Error signing in with email:', error.message);
+        throw error;
+    }
 }
 
 async function signUpWithEmail(email, password, fullName) {
-    const { data, error } = await _supabaseInstance.auth.signUp({
-        email,
-        password,
-        options: {
-            data: {
-                full_name: fullName,
-            },
-            emailRedirectTo: window.location.origin + '/login'
-        }
-    });
-    if (error) throw error;
-    return data;
+    try {
+        const { data, error } = await _supabaseInstance.auth.signUp({
+            email,
+            password,
+            options: {
+                data: {
+                    full_name: fullName,
+                },
+                emailRedirectTo: window.location.origin + '/login.html'
+            }
+        });
+        if (error) throw error;
+        return data;
+    } catch (error) {
+        console.error('Error signing up:', error.message);
+        throw error;
+    }
 }
 
 async function resetPassword(email) {
-    const { data, error } = await _supabaseInstance.auth.resetPasswordForEmail(email, {
-        redirectTo: window.location.origin + '/login', // User will be redirected here after clicking reset link
-    });
-    if (error) throw error;
-    return data;
+    try {
+        const { data, error } = await _supabaseInstance.auth.resetPasswordForEmail(email, {
+            redirectTo: window.location.origin + '/login.html',
+        });
+        if (error) throw error;
+        return data;
+    } catch (error) {
+        console.error('Error resetting password:', error.message);
+        throw error;
+    }
 }
 
 async function checkSession() {
-    const { data: { session }, error } = await _supabaseInstance.auth.getSession();
-    if (error) {
+    try {
+        const { data: { session }, error } = await _supabaseInstance.auth.getSession();
+        if (error) throw error;
+        return session;
+    } catch (error) {
         console.error('Error getting session:', error.message);
         return null;
     }
-    return session;
 }
 
 // Global exposure for specific use cases
 window.supabaseClient = {
     supabase: _supabaseInstance,
     signInWithGoogle,
+    signUpWithGoogle,
     signInWithEmail,
     signUpWithEmail,
     resetPassword,
     signOut,
     checkSession
 };
+
+// Also expose for direct access
+window.supabase = _supabaseInstance;

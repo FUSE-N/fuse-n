@@ -254,6 +254,11 @@
                 </div>
                 <button type="submit" class="auth-btn">Sign In</button>
             </form>
+            <p style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); margin-top: 1rem; margin-bottom: 0;">
+                By signing up or logging in, you consent to DeepSeek's <a href="#"
+                    style="color: #60a5fa; text-decoration: none;">Terms of Use</a> and <a href="#"
+                    style="color: #60a5fa; text-decoration: none;">Privacy Policy</a>.
+            </p>
 
             <div class="switch-view">
                 Don't have an account? <a onclick="switchView('signupView')">Sign Up</a>
@@ -264,6 +269,13 @@
         <div id="signupView" class="auth-view">
             <h1>Create Account</h1>
             <p>Start your project journey today.</p>
+
+            <button class="google-btn" onclick="supabaseClient.signUpWithGoogle()">
+                <img src="https://www.google.com/favicon.ico" alt="Google">
+                Create account with Google
+            </button>
+
+            <div class="divider">or sign up with email</div>
 
             <form onsubmit="handleEmailSignup(event)">
                 <div class="form-group">
@@ -280,6 +292,11 @@
                 </div>
                 <button type="submit" class="auth-btn">Create Account</button>
             </form>
+            <p style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); margin-top: 1rem; margin-bottom: 0;">
+                By signing up or logging in, you consent to DeepSeek's <a href="#"
+                    style="color: #60a5fa; text-decoration: none;">Terms of Use</a> and <a href="#"
+                    style="color: #60a5fa; text-decoration: none;">Privacy Policy</a>.
+            </p>
 
             <div class="switch-view">
                 Already have an account? <a onclick="switchView('loginView')">Sign In</a>
@@ -395,6 +412,26 @@
                 btn.textContent = 'Send Reset Link';
             }
         }
+
+        // Handle OAuth callback
+        window.addEventListener('load', async function () {
+            if (window.location.hash.includes('access_token')) {
+                try {
+                    // Check session after a brief delay to allow Supabase to process the hash
+                    setTimeout(async () => {
+                        const { data: { session }, error } = await supabaseClient.supabase.auth.getSession();
+
+                        if (error) throw error;
+
+                        if (session) {
+                            window.location.href = 'dashboard.html';
+                        }
+                    }, 500);
+                } catch (error) {
+                    showToast('Authentication error: ' + error.message);
+                }
+            }
+        });
 
         async function handleUpdatePassword(e) {
             e.preventDefault();
