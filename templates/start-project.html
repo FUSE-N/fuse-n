@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Start Your Project | Bonniface Freelance</title>
-    <link rel="icon" href="{{ url_for('static', filename='img/boni_avatar.jpg') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+    <link rel="icon" href="../static/img/boni_avatar.jpg">
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <link rel="stylesheet" href="../static/css/navbar.css">
     <style>
         body {
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
@@ -138,14 +138,14 @@
     <header>
         <div class="container">
             <nav class="navbar">
-                <a href="{{ url_for('home') }}" class="logo-container">
-                    <img src="{{ url_for('static', filename='img/boni_avatar.jpg') }}" alt="Bonniface Logo">
+                <a href="../index.html" class="logo-container">
+                    <img src="../static/img/boni_avatar.jpg" alt="Bonniface Logo">
                     <span class="logo">Bonniface</span>
                 </a>
                 <div class="nav-links">
 
-                    <a href="{{ url_for('home') }}">Explore mine Works</a>
-                    <a href="{{ url_for('home') }}" class="btn btn-primary">Back to Home</a>
+                    <a href="../index.html">Explore mine Works</a>
+                    <a href="../index.html" class="btn btn-primary">Back to Home</a>
                 </div>
             </nav>
         </div>
@@ -157,7 +157,7 @@
                 <p class="form-subtitle">Tell me about your project so I can help you get the best possible solution.
                 </p>
 
-                <form action="{{base_url}}/submit" method="POST" enctype="multipart/form-data">
+                <form name="project-request" data-netlify="true">
                     <label>Full Name</label>
                     <input type="text" name="name" placeholder="Enter your full name" required>
 
@@ -199,7 +199,7 @@
                 </form>
 
                 <div class="back-home">
-                    <a href="{{ url_for('home') }}">← Back to Home</a>
+                    <a href="../index.html">← Back to Home</a>
                 </div>
             </div>
         </div>

@@ -222,7 +222,7 @@
     <div id="toast" class="toast"></div>
 
     <div class="login-card">
-        <a href="index.html" class="logo-container">
+        <a href="../index.html" class="logo-container">
             <img src="../static/img/boni_avatar.jpg" alt="Bonniface Logo">
             <span class="logo-text">Bonniface</span>
         </a>
@@ -318,12 +318,12 @@
             </form>
         </div>
 
-        <a href="index.html" class="back-link">← Back to home</a>
+        <a href="../index.html" class="back-link">← Back to home</a>
     </div>
 
     <script>
-        window.SUPABASE_URL = "{{ SUPABASE_URL }}";
-        window.SUPABASE_ANON_KEY = "{{ SUPABASE_ANON_KEY }}";
+        window.SUPABASE_URL = "https://sefuxvdhfgylmlqdrhoh.supabase.co";
+        window.SUPABASE_ANON_KEY = "sb_publishable_5KdCsyhbO5dGmopJfa0Ycg_GA2R50v9";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../static/js/supabase_init.js"></script>
@@ -356,7 +356,7 @@
 
             try {
                 await signInWithEmail(email, password);
-                window.location.href = '/dashboard';
+                window.location.href = 'dashboard.html';
             } catch (error) {
                 showToast(error.message);
             }
