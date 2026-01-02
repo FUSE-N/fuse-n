@@ -6,10 +6,24 @@ const supabaseAnonKey = window.SUPABASE_ANON_KEY || 'YOUR_SUPABASE_ANON_KEY';
 // But best practice is to have them injected or handled securely.
 // Since this is a client-side script, they will be exposed anyway.
 
-const supabase = supabasejs.createClient(supabaseUrl, supabaseAnonKey);
+console.log('supabase_init.js loading...');
+
+let _supabaseInstance;
+
+try {
+    const supabaseLib = window.supabase || window.supabasejs;
+    if (!supabaseLib) {
+        throw new Error('Supabase library not found on window. Check if CDN script is loaded.');
+    }
+
+    _supabaseInstance = supabaseLib.createClient(supabaseUrl, supabaseAnonKey);
+    console.log('Supabase client initialized successfully.');
+} catch (err) {
+    console.error('Failed to initialize Supabase client:', err.message);
+}
 
 async function signInWithGoogle() {
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    const { data, error } = await _supabaseInstance.auth.signInWithOAuth({
         provider: 'google',
         options: {
             redirectTo: window.location.origin + '/dashboard'
@@ -23,7 +37,7 @@ async function signInWithGoogle() {
 }
 
 async function signOut() {
-    const { error } = await supabase.auth.signOut();
+    const { error } = await _supabaseInstance.auth.signOut();
     if (error) {
         console.error('Error signing out:', error.message);
     } else {
@@ -32,7 +46,7 @@ async function signOut() {
 }
 
 async function signInWithEmail(email, password) {
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await _supabaseInstance.auth.signInWithPassword({
         email,
         password,
     });
@@ -41,7 +55,7 @@ async function signInWithEmail(email, password) {
 }
 
 async function signUpWithEmail(email, password, fullName) {
-    const { data, error } = await supabase.auth.signUp({
+    const { data, error } = await _supabaseInstance.auth.signUp({
         email,
         password,
         options: {
@@ -56,7 +70,7 @@ async function signUpWithEmail(email, password, fullName) {
 }
 
 async function resetPassword(email) {
-    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+    const { data, error } = await _supabaseInstance.auth.resetPasswordForEmail(email, {
         redirectTo: window.location.origin + '/login', // User will be redirected here after clicking reset link
     });
     if (error) throw error;
@@ -64,7 +78,7 @@ async function resetPassword(email) {
 }
 
 async function checkSession() {
-    const { data: { session }, error } = await supabase.auth.getSession();
+    const { data: { session }, error } = await _supabaseInstance.auth.getSession();
     if (error) {
         console.error('Error getting session:', error.message);
         return null;
@@ -74,7 +88,7 @@ async function checkSession() {
 
 // Global exposure for specific use cases
 window.supabaseClient = {
-    supabase,
+    supabase: _supabaseInstance,
     signInWithGoogle,
     signInWithEmail,
     signUpWithEmail,

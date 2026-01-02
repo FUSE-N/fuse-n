@@ -111,7 +111,7 @@
                     <a href="#portfolio">Portfolio</a>
                     <a href="#about">About</a>
                     <a href="index.html">Careers</a>
-                    <a href="login.html" class="btn btn-primary btn-get-started" id="getStartedBtn">Get
+                    <a href="templates/login.html" class="btn btn-primary btn-get-started" id="getStartedBtn">Get
                         Started</a>
                     <div class="profile-container" id="profileContainer">
                         <img src="static/img/boni_avatar.jpg" alt="Profile" class="profile-img" id="headerAvatar">
@@ -128,7 +128,7 @@
                                 Start Project
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a onclick="signOut()" class="dropdown-item" style="color: #ef4444;">
+                            <a onclick="supabaseClient.signOut()" class="dropdown-item" style="color: #ef4444;">
                                 <ion-icon name="log-out-outline"></ion-icon>
                                 Logout
                             </a>
@@ -590,7 +590,7 @@
                     <h3 class="footer-title">Quick Links</h3>
                     <ul class="footer-links">
                         <li><a href="#about">About</a></li>
-                        <li><a href="/templates/explore-work.html">Portfolio</a></li>
+                        <li><a href="templates/explore-work.html">Portfolio</a></li>
                         <li><a href="career-opportunities.html">Careers</a></li>
                         <li><a href="#contact">Contact</a></li>
                     </ul>
@@ -620,8 +620,8 @@
     <script src="static/js/supabase_init.js"></script>
     <script>
         async function updateHeader() {
-            if (typeof checkSession !== 'function') return;
-            const session = await checkSession();
+            if (typeof window.supabaseClient === 'undefined' || typeof window.supabaseClient.checkSession !== 'function') return;
+            const session = await window.supabaseClient.checkSession();
             const getStartedBtn = document.getElementById('getStartedBtn');
             const profileContainer = document.getElementById('profileContainer');
 
