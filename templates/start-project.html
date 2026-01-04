@@ -309,23 +309,62 @@
         }
         checkAccess();
 
-        function handleProjectSubmit(e) {
+        async function handleProjectSubmit(e) {
             e.preventDefault();
-            // TODO: Implement actual submission logic to Supabase or Email backend
+
             const btn = e.target.querySelector('button[type="submit"]');
             const originalText = btn.innerText;
+            const form = e.target;
 
-            btn.innerText = "Submitting...";
-            btn.disabled = true;
-            btn.style.opacity = "0.7";
+            // Get form data
+            const formData = new FormData(form);
+            const projectData = {
+                title: formData.get('title'),
+                service_type: formData.get('service'),
+                description: formData.get('description'),
+                deadline: formData.get('deadline') || null,
+                budget: formData.get('budget'),
+                // file_url: ... (File upload requires Storage bucket, skipping for now or mocking)
+            };
 
-            setTimeout(() => {
+            try {
+                btn.innerText = "Submitting...";
+                btn.disabled = true;
+                btn.style.opacity = "0.7";
+
+                const session = await window.supabaseClient.checkSession();
+                if (!session) throw new Error("You must be logged in to submit a project.");
+
+                // Add user_id to project data
+                projectData.user_id = session.user.id;
+
+                const { data, error } = await window.supabase
+                    .from('projects')
+                    .insert([projectData])
+                    .select();
+
+                if (error) throw error;
+
+                // Create a notification for admin
+                await window.supabase
+                    .from('notifications')
+                    .insert([{
+                        user_id: session.user.id,
+                        type: 'project',
+                        message: `New Project Request: ${projectData.title}`
+                    }]);
+
                 alert('Project request submitted successfully! I will review it shortly.');
+                form.reset();
+
+            } catch (error) {
+                console.error('Error submitting project:', error);
+                alert('Failed to submit project: ' + error.message);
+            } finally {
                 btn.innerText = originalText;
                 btn.disabled = false;
                 btn.style.opacity = "1";
-                e.target.reset();
-            }, 1500);
+            }
         }
     </script>
 </body>

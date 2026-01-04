@@ -5,228 +5,665 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard | Fuse-IN</title>
-  <link rel="icon" href="{{ url_for('static', filename='img/boni_avatar.jpg') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+  <link rel="icon" href="../static/img/boni_avatar.jpg">
+  <link rel="stylesheet" href="../static/css/styles.css">
+  <link rel="stylesheet" href="../static/css/navbar.css">
   <style>
+    :root {
+      --sidebar-width: 280px;
+      --primary-blue: #3b82f6;
+      --bg-dark: #0f172a;
+      --bg-card: rgba(255, 255, 255, 0.05);
+      --border-color: rgba(255, 255, 255, 0.1);
+    }
+
     body {
-      background: linear-gradient(135deg, #0f172a, #1e293b);
-      color: var(--light);
+      background: var(--bg-dark);
+      color: white;
       font-family: 'Inter', sans-serif;
+      margin: 0;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
     }
 
-    .dashboard-container {
-      max-width: 1200px;
-      margin: 3rem auto;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 1rem;
+    /* Sidebar */
+    .sidebar {
+      width: var(--sidebar-width);
+      background: rgba(15, 23, 42, 0.95);
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      height: 100vh;
+      z-index: 100;
+    }
+
+    .sidebar-header {
       padding: 2rem;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      border-bottom: 1px solid var(--border-color);
     }
 
-    h1 {
-      text-align: center;
-      font-size: 2.2rem;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 2rem;
+    .sidebar-nav {
+      padding: 2rem 1rem;
+      flex-grow: 1;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem 1rem;
+      color: rgba(255, 255, 255, 0.6);
+      text-decoration: none;
+      border-radius: 0.75rem;
+      transition: all 0.3s ease;
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+    }
+
+    .nav-item:hover,
+    .nav-item.active {
+      background: var(--bg-card);
+      color: white;
+    }
+
+    .nav-item ion-icon {
+      font-size: 1.25rem;
+    }
+
+    .sidebar-footer {
+      padding: 2rem;
+      border-top: 1px solid var(--border-color);
+    }
+
+    /* Main Content Area */
+    .main-content {
+      margin-left: var(--sidebar-width);
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .view-section {
+      display: none;
+      padding: 3rem;
+      overflow-y: auto;
+      height: 100%;
+      box-sizing: border-box;
+    }
+
+    .view-section.active {
+      display: block;
+    }
+
+    /* --- Overview Tab Styles --- */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      padding: 1.5rem;
+      border-radius: 1rem;
+      border: 1px solid var(--border-color);
+    }
+
+    .table-container {
+      background: var(--bg-card);
+      border-radius: 1rem;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 1rem;
     }
 
     table th,
     table td {
-      padding: 0.75rem 1rem;
       text-align: left;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      color: rgba(255, 255, 255, 0.9);
-      font-size: 0.95rem;
+      padding: 1rem;
+      border-bottom: 1px solid var(--border-color);
     }
 
     table th {
-      background: rgba(37, 99, 235, 0.2);
-      font-weight: 700;
-    }
-
-    .file-link a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-
-    .file-link a:hover {
-      text-decoration: underline;
+      background: rgba(0, 0, 0, 0.2);
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.7);
     }
 
     .search-box {
-      text-align: center;
-      margin-bottom: 1rem;
+      margin-bottom: 2rem;
     }
 
     .search-box input {
-      width: 50%;
-      padding: 0.75rem 1rem;
+      width: 100%;
+      max-width: 400px;
+      padding: 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
       border-radius: 0.5rem;
-      border: none;
-      background: rgba(255, 255, 255, 0.1);
       color: white;
-      outline: none;
     }
 
-    .logout-btn {
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      color: white;
-      border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 0.5rem;
-      font-weight: 600;
+    /* --- Chat / Messages Tab Styles --- */
+    .chat-container {
+      display: flex;
+      height: 100%;
+      margin: -3rem;
+      /* Counteract padding to fill screen */
+      background: var(--bg-dark);
+    }
+
+    .user-list-sidebar {
+      width: 300px;
+      border-right: 1px solid var(--border-color);
+      background: rgba(15, 23, 42, 0.5);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-main {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-dark);
+    }
+
+    .user-item {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border-color);
       cursor: pointer;
-      float: right;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .user-item:hover,
+    .user-item.active {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #334155;
+    }
+
+    /* --- Files Tab Styles --- */
+    .file-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .file-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 1rem;
+      padding: 1rem;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+
+    .file-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--primary-blue);
+    }
+
+    .file-icon {
+      font-size: 3rem;
+      color: rgba(255, 255, 255, 0.5);
       margin-bottom: 1rem;
-      transition: all 0.3s ease;
     }
 
-    .logout-btn:hover {
-      background: var(--accent);
-      transform: translateY(-2px);
+    /* --- Notifications Tab Styles --- */
+    .notification-list {
+      max-width: 800px;
     }
 
-    @media (max-width: 768px) {
+    .notification-item {
+      background: var(--bg-card);
+      border-radius: 0.75rem;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-left: 4px solid var(--primary-blue);
+      display: flex;
+      align-items: start;
+      gap: 1rem;
+    }
 
-      table th,
-      table td {
-        font-size: 0.8rem;
-        padding: 0.5rem;
-      }
+    .notification-time {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.4);
+      white-space: nowrap;
+    }
 
-      .search-box input {
-        width: 80%;
-      }
+    .badge-count {
+      background: #ef4444;
+      color: white;
+      font-size: 0.7rem;
+      padding: 0.1rem 0.4rem;
+      border-radius: 1rem;
+      margin-left: auto;
     }
   </style>
 </head>
 
 <body>
-  <header>
-    <div class="container">
-      <nav class="navbar">
-        <a href="/" class="logo-container">
-          <img src="{{ url_for('static', filename='img/boni_avatar.jpg') }}" alt="Logo">
-          <span class="logo">Bonniface</span>
-        </a>
-        <div class="nav-links">
-          <a href="/" class="btn btn-outline">Home</a>
-          <a href="/community" class="btn btn-outline">Community</a>
-          <form action="/logout" method="POST" style="display:inline;">
-            <button class="logout-btn" style="margin:0;">Logout</button>
-          </form>
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="/" class="logo-container"
+        style="display:flex; align-items:center; gap:1rem; text-decoration:none; color:white;">
+        <img src="../static/img/boni_avatar.jpg" alt="Logo" style="width: 32px; height: 32px; border-radius: 50%;">
+        <span class="logo-text" style="font-weight: 700; font-size: 1.25rem;">Bonniface|Admin</span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-item active" onclick="switchTab('overview', this)">
+        <ion-icon name="grid-outline"></ion-icon>
+        Overview
+      </div>
+      <div class="nav-item" onclick="switchTab('messages', this)">
+        <ion-icon name="chatbubbles-outline"></ion-icon>
+        Messages
+        <span class="badge-count">3</span>
+      </div>
+      <div class="nav-item" onclick="switchTab('files', this)">
+        <ion-icon name="folder-open-outline"></ion-icon>
+        Files
+      </div>
+      <div class="nav-item" onclick="switchTab('notifications', this)">
+        <ion-icon name="notifications-outline"></ion-icon>
+        Notifications
+        <span class="badge-count">5</span>
+      </div>
+      <div class="nav-item" onclick="alert('Settings view coming soon')">
+        <ion-icon name="settings-outline"></ion-icon>
+        Settings
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <form action="/logout" method="POST" style="margin:0;">
+        <button type="submit" style="background:transparent; border:none; width:100%; text-align:left; padding:0;"
+          class="nav-item">
+          <span style="display:flex; align-items:center; gap:1rem; color:#ef4444; font-weight:600;">
+            <ion-icon name="log-out-outline"></ion-icon>
+            Logout
+          </span>
+        </button>
+      </form>
+    </div>
+  </aside>
+
+  <main class="main-content">
+
+    <!-- OVERVIEW TAB -->
+    <div id="overview" class="view-section active">
+      <h1 style="margin-bottom: 2rem;">Dashboard Overview</h1>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div style="color:rgba(255,255,255,0.5); margin-bottom:0.5rem;">Total Projects</div>
+          <div style="font-size: 2.5rem; font-weight: 700;" id="statTotalProjects">-</div>
         </div>
-      </nav>
-    </div>
-  </header>
-
-  <div class="dashboard-container">
-
-    <h1>Client Project Dashboard</h1>
-
-    <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Search by name, email, or project ID..." onkeyup="filterTable()">
-    </div>
-
-    <!-- Stats Cards -->
-    <div
-      style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
-      <div
-        style="background: rgba(37, 99, 235, 0.2); padding: 1.5rem; border-radius: 0.75rem; border: 1px solid rgba(59, 130, 246, 0.3); text-align: center;">
-        <h3 style="margin-bottom: 0.5rem; color: rgba(255,255,255,0.7); font-size: 0.9rem; text-transform: uppercase;">
-          Total Projects</h3>
-        <p style="font-size: 2.5rem; font-weight: 700; color: white;">{{ stats.total_projects }}</p>
+        <div class="stat-card" style="border-color: rgba(16, 185, 129, 0.3);">
+          <div style="color:rgba(255,255,255,0.5); margin-bottom:0.5rem;">Total Messages</div>
+          <div style="font-size: 2.5rem; font-weight: 700; color:#4ade80;" id="statTotalMessages">-</div>
+        </div>
+        <div class="stat-card" style="border-color: rgba(245, 158, 11, 0.3);">
+          <div style="color:rgba(255,255,255,0.5); margin-bottom:0.5rem;">Pending Requests</div>
+          <div style="font-size: 2.5rem; font-weight: 700; color:#fbbf24;" id="statPendingRequests">-</div>
+        </div>
       </div>
-      <div
-        style="background: rgba(16, 185, 129, 0.2); padding: 1.5rem; border-radius: 0.75rem; border: 1px solid rgba(16, 185, 129, 0.3); text-align: center;">
-        <h3 style="margin-bottom: 0.5rem; color: rgba(255,255,255,0.7); font-size: 0.9rem; text-transform: uppercase;">
-          Community Posts</h3>
-        <p style="font-size: 2.5rem; font-weight: 700; color: white;">{{ stats.community_posts }}</p>
+
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search projects by name, title..." onkeyup="filterTable()">
       </div>
-      <div
-        style="background: rgba(245, 158, 11, 0.2); padding: 1.5rem; border-radius: 0.75rem; border: 1px solid rgba(245, 158, 11, 0.3); text-align: center;">
-        <h3 style="margin-bottom: 0.5rem; color: rgba(255,255,255,0.7); font-size: 0.9rem; text-transform: uppercase;">
-          Recent Activities</h3>
-        <p style="font-size: 2.5rem; font-weight: 700; color: white;">{{ stats.recent_activity_count }}</p>
+
+      <div class="table-container">
+        <table id="projectTable">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Title</th>
+              <th>Service</th>
+              <th>Budget</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="projectTableBody">
+            <!-- Populated by JS -->
+            <tr>
+              <td colspan="6" style="text-align:center; padding:2rem;">Loading projects...</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
-    <!-- Recent Activity Log -->
-    <div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 0.75rem; margin-bottom: 2rem;">
-      <h3
-        style="color: var(--light); margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem;">
-        Recent Activity Log</h3>
-      {% if activities %}
-      <ul style="list-style: none; padding: 0;">
-        {% for activity in activities %}
-        <li
-          style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; font-size: 0.9rem;">
-          <div>
-            <span style="color: var(--accent); font-weight: 600;">{{ activity[1] }}</span>
-            <span style="color: rgba(255,255,255,0.6);"> - {{ activity[2] }}</span>
+    <!-- MESSAGES TAB -->
+    <div id="messages" class="view-section" style="padding:0;">
+      <div class="chat-container">
+        <div class="user-list-sidebar">
+          <div style="padding:1.5rem; border-bottom:1px solid var(--border-color);">
+            <h3 style="margin:0;">Conversations</h3>
           </div>
-          <span style="color: rgba(255,255,255,0.4); font-size: 0.8rem;">{{ activity[0] }}</span>
-        </li>
-        {% endfor %}
-      </ul>
-      {% else %}
-      <p style="color: rgba(255,255,255,0.5);">No recent activity.</p>
-      {% endif %}
+          <div style="overflow-y:auto; flex-grow:1;">
+            <!-- Fake User List -->
+            <div class="user-item active">
+              <div class="user-avatar"></div>
+              <div>
+                <div style="font-weight:600;">Alice Freeman</div>
+                <div style="font-size:0.8rem; opacity:0.6;">I need help with...</div>
+              </div>
+            </div>
+            <div class="user-item">
+              <div class="user-avatar" style="background:#475569;"></div>
+              <div>
+                <div style="font-weight:600;">Bob Smith</div>
+                <div style="font-size:0.8rem; opacity:0.6;">Project File attached</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="chat-main" style="position:relative;">
+          <div
+            style="padding:1.5rem; border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
+            <h3>Alice Freeman</h3>
+            <button
+              style="background:transparent; border:1px solid var(--border-color); color:white; padding:0.5rem 1rem; border-radius:0.5rem; cursor:pointer;">Actions</button>
+          </div>
+          <div style="flex-grow:1; padding:2rem; overflow-y:auto;">
+            <!-- Chat Bubbles -->
+            <div style="display:flex; gap:1rem; margin-bottom:1.5rem;">
+              <div class="user-avatar"></div>
+              <div
+                style="background:rgba(255,255,255,0.1); padding:1rem; border-radius:0 1rem 1rem 1rem; max-width:60%;">
+                Hello Admin, I have a question about my project proposal.
+              </div>
+            </div>
+            <div style="display:flex; gap:1rem; margin-bottom:1.5rem; flex-direction:row-reverse;">
+              <div class="user-avatar" style="background:var(--primary-blue);"></div>
+              <div style="background:var(--primary-blue); padding:1rem; border-radius:1rem 0 1rem 1rem; max-width:60%;">
+                Hi Alice! Sure, I'd be happy to help. What's on your mind?
+              </div>
+            </div>
+          </div>
+          <!-- Input Area -->
+          <div style="padding:1.5rem; border-top:1px solid var(--border-color); background:rgba(15,23,42,0.9);">
+            <div
+              style="display:flex; gap:1rem; background:rgba(255,255,255,0.05); padding:0.5rem; border-radius:0.5rem;">
+              <button style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;"><ion-icon
+                  name="attach"></ion-icon></button>
+              <button style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;"><ion-icon
+                  name="mic"></ion-icon></button>
+              <input type="text" placeholder="Type a reply..."
+                style="flex-grow:1; background:transparent; border:none; color:white; outline:none;">
+              <button
+                style="background:none; border:none; color:var(--primary-blue); font-size:1.2rem; cursor:pointer;"><ion-icon
+                  name="send"></ion-icon></button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <table id="projectTable">
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Project ID</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Service</th>
-          <th>Budget</th>
-          <th>File</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for row in data %}
-        <tr>
-          <td>{{ row[0] }}</td>
-          <td>{{ row[1] }}</td>
-          <td>{{ row[2] }}</td>
-          <td>{{ row[3] }}</td>
-          <td>{{ row[5] }}</td>
-          <td>{{ row[9] }}</td>
-          <td class="file-link">
-            {% if row[10] and row[10] != "No file" %}
-            <a href="{{ url_for('static', filename='../' + row[10]) }}" target="_blank">View</a>
-            {% else %}
-            —
-            {% endif %}
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+    <!-- FILES TAB -->
+    <div id="files" class="view-section">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
+        <h1>File Manager</h1>
+        <button
+          style="background:var(--primary-blue); color:white; border:none; padding:0.75rem 1.5rem; border-radius:0.5rem; cursor:pointer; font-weight:600;">
+          <ion-icon name="cloud-upload" style="vertical-align:middle; margin-right:0.5rem;"></ion-icon>Upload File
+        </button>
+      </div>
 
+      <div class="file-grid">
+        <!-- Mock Files -->
+        <div class="file-card">
+          <div class="file-icon"><ion-icon name="document-text"></ion-icon></div>
+          <div style="font-weight:600; margin-bottom:0.5rem;">Project_Requirements.pdf</div>
+          <div style="font-size:0.8rem; opacity:0.6;">2.5 MB • 2h ago</div>
+        </div>
+        <div class="file-card">
+          <div class="file-icon"><ion-icon name="image"></ion-icon></div>
+          <div style="font-weight:600; margin-bottom:0.5rem;">Design_Mockup.png</div>
+          <div style="font-size:0.8rem; opacity:0.6;">4.1 MB • 1d ago</div>
+        </div>
+        <div class="file-card">
+          <div class="file-icon"><ion-icon name="code-slash"></ion-icon></div>
+          <div style="font-weight:600; margin-bottom:0.5rem;">main.py</div>
+          <div style="font-size:0.8rem; opacity:0.6;">12 KB • 3d ago</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTIFICATIONS TAB -->
+    <div id="notifications" class="view-section">
+      <h1 style="margin-bottom: 2rem;">Notifications</h1>
+      <div class="notification-list" id="notificationList">
+        <!-- Populated by JS -->
+        <div style="padding:1rem; opacity:0.6;">Loading notifications...</div>
+      </div>
+    </div>
+
+    <!-- SETTINGS TAB -->
+    <div id="settings" class="view-section">
+      <h1 style="margin-bottom: 2rem;">Admin Settings</h1>
+
+      <div style="max-width: 800px;">
+        <div
+          style="background: var(--bg-card); padding: 2rem; border-radius: 1rem; border: 1px solid var(--border-color); margin-bottom: 2rem;">
+          <h2
+            style="margin-top: 0; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+            Profile Information</h2>
+          <div style="display: flex; gap: 2rem; align-items: start;">
+            <img src="../static/img/boni_avatar.jpg" alt="Admin"
+              style="width: 100px; height: 100px; border-radius: 50%;">
+            <div style="flex-grow: 1;">
+              <div style="margin-bottom: 1rem;">
+                <label style="display: block; margin-bottom: 0.5rem; color: rgba(255,255,255,0.7);">Full Name</label>
+                <input type="text" value="Bonniface Admin"
+                  style="width: 100%; padding: 0.75rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 0.5rem; color: white;">
+              </div>
+              <div style="margin-bottom: 1rem;">
+                <label style="display: block; margin-bottom: 0.5rem; color: rgba(255,255,255,0.7);">Email
+                  Address</label>
+                <input type="email" value="admin@fusein.com"
+                  style="width: 100%; padding: 0.75rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 0.5rem; color: white;"
+                  disabled>
+              </div>
+              <button
+                style="background: var(--primary-blue); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer;">Save
+                Changes</button>
+            </div>
+          </div>
+        </div>
+
+        <div
+          style="background: var(--bg-card); padding: 2rem; border-radius: 1rem; border: 1px solid var(--border-color);">
+          <h2
+            style="margin-top: 0; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+            System Configuration</h2>
+
+          <div style="margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between;">
+            <div>
+              <div style="font-weight: 600;">Maintenance Mode</div>
+              <div style="font-size: 0.875rem; color: rgba(255,255,255,0.5);">Disable user access temporarily</div>
+            </div>
+            <label class="switch" style="position: relative; display: inline-block; width: 50px; height: 26px;">
+              <input type="checkbox" style="opacity: 0; width: 0; height: 0;">
+              <span
+                style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #334155; transition: .4s; border-radius: 34px;"></span>
+              <span
+                style="position: absolute; content: ''; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%;"></span>
+            </label>
+          </div>
+
+          <div style="margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between;">
+            <div>
+              <div style="font-weight: 600;">Allow New Registrations</div>
+              <div style="font-size: 0.875rem; color: rgba(255,255,255,0.5);">Users can sign up for new accounts</div>
+            </div>
+            <label class="switch" style="position: relative; display: inline-block; width: 50px; height: 26px;">
+              <input type="checkbox" checked style="opacity: 0; width: 0; height: 0;">
+              <span
+                style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #334155; transition: .4s; border-radius: 34px;"></span>
+              <span
+                style="position: absolute; content: ''; height: 20px; width: 20px; left: 27px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%;"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../static/js/supabase_init.js"></script>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
   <script>
+    // Init Global Data
+    let projects = [];
+    let messages = [];
+
+    function switchTab(tabId, navElement) {
+      // Hide all views
+      document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+      // Remove active class from nav
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+
+      // Show selected view
+      document.getElementById(tabId).classList.add('active');
+      // Activate nav item
+      navElement.classList.add('active');
+
+      // Refresh data for tab
+      if (tabId === 'overview') fetchProjects();
+      if (tabId === 'notifications') fetchNotifications();
+    }
+
+    async function fetchProjects() {
+      try {
+        const { data, error } = await window.supabase
+          .from('projects')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        projects = data;
+        renderProjects(projects);
+        updateStats(projects);
+      } catch (err) {
+        console.error('Error fetching projects:', err);
+      }
+    }
+
+    async function fetchNotifications() {
+      try {
+        const { data, error } = await window.supabase
+          .from('notifications')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        renderNotifications(data);
+      } catch (err) {
+        console.error('Error fetching notifications', err);
+      }
+    }
+
+    function renderProjects(data) {
+      const tbody = document.getElementById('projectTableBody');
+      tbody.innerHTML = '';
+
+      if (data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:2rem; color:rgba(255,255,255,0.5);">No projects found.</td></tr>';
+        return;
+      }
+
+      data.forEach(p => {
+        const date = new Date(p.created_at).toLocaleDateString();
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+                    <td>${date}</td>
+                    <td style="font-weight:600; color:white;">${p.title}</td>
+                    <td>${p.service_type || '-'}</td>
+                    <td>${p.budget || '-'}</td>
+                    <td><span style="padding:0.2rem 0.5rem; border-radius:0.5rem; background:rgba(59,130,246,0.2); color:#60a5fa; font-size:0.8rem;">${p.status}</span></td>
+                    <td>
+                        <button style="background:transparent; border:1px solid var(--border-color); color:white; padding:0.3rem 0.6rem; border-radius:0.3rem; cursor:pointer;">Details</button>
+                    </td>
+                `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderNotifications(data) {
+      const list = document.getElementById('notificationList');
+      list.innerHTML = '';
+
+      if (data.length === 0) {
+        list.innerHTML = '<div style="padding:1rem; opacity:0.6;">No new notifications.</div>';
+        return;
+      }
+
+      data.forEach(n => {
+        const time = new Date(n.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const item = document.createElement('div');
+        item.className = 'notification-item';
+        // Color code by type
+        let color = '#3b82f6';
+        let icon = 'information-circle';
+        if (n.type === 'message') { color = '#fbbf24'; icon = 'chatbubble'; }
+        if (n.type === 'project') { color = '#10b981'; icon = 'briefcase'; }
+
+        item.style.borderLeftColor = color;
+        item.innerHTML = `
+                     <div style="font-size:1.5rem; color:${color};"><ion-icon name="${icon}"></ion-icon></div>
+                     <div style="flex-grow:1;">
+                         <div style="font-weight:600;">${n.type.toUpperCase()}</div>
+                         <div style="opacity:0.7; font-size:0.9rem;">${n.message}</div>
+                     </div>
+                     <div class="notification-time">${time}</div>
+                 `;
+        list.appendChild(item);
+      });
+    }
+
+    function updateStats(data) {
+      document.getElementById('statTotalProjects').innerText = data.length;
+      const pending = data.filter(p => p.status === 'pending').length;
+      document.getElementById('statPendingRequests').innerText = pending;
+      // Mock total messages for now or fetch count
+      document.getElementById('statTotalMessages').innerText = '0';
+    }
+
     function filterTable() {
       const input = document.getElementById("searchInput").value.toLowerCase();
-      const rows = document.querySelectorAll("#projectTable tbody tr");
+      const rows = document.querySelectorAll("#projectTableBody tr");
       rows.forEach(row => {
         const text = row.textContent.toLowerCase();
         row.style.display = text.includes(input) ? "" : "none";
       });
     }
+
+    // Initial Load
+    window.addEventListener('load', () => {
+      fetchProjects();
+      fetchNotifications(); // Pre-load to show badge counts eventually
+    });
   </script>
 </body>
 
