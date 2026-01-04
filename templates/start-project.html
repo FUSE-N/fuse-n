@@ -245,11 +245,16 @@
                     <label class="form-label">Service Type</label>
                     <select class="form-select" name="service" required>
                         <option value="">Select a Service</option>
-                        <option>AI / Machine Learning</option>
+                        <option>Web Design & Development</option>
+                        <option>Academic Research & Reports</option>
                         <option>Data Analysis & Visualization</option>
-                        <option>Research / Report Writing</option>
-                        <option>Web Development</option>
-                        <option>Consulting / Strategy</option>
+                        <option>AI Integration for Businesses</option>
+                        <option>AI Automation & Workflows</option>
+                        <option>IT Consulting</option>
+                        <option>Machine Learning Solutions</option>
+                        <option>Business Intelligence Consulting</option>
+                        <option>System Integration & APIs</option>
+                        <option>Ongoing Support</option>
                         <option>Other</option>
                     </select>
                 </div>
@@ -277,25 +282,49 @@
                     <input type="text" class="form-input" name="tools" placeholder="e.g., Python, TensorFlow, Flask">
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">Project Files (Optional)</label>
-                    <div class="file-upload-wrapper" onclick="document.getElementById('projectFile').click()">
-                        <ion-icon name="cloud-upload-outline"
-                            style="font-size: 2rem; color: var(--primary-blue); margin-bottom: 0.5rem;"></ion-icon>
-                        <div style="font-weight: 500;">Click to upload files</div>
-                        <div style="font-size: 0.875rem; color: rgba(255,255,255,0.5);">CSV, PDF, DOCX, ZIP (Max 10MB)
-                        </div>
-                        <input type="file" id="projectFile" hidden
-                            onchange="alert('File selected: ' + this.files[0].name)">
-                    </div>
-                </div>
+        </div>
 
-                <button type="submit" class="btn-submit">Submit Request</button>
-            </form>
+        <div class="form-group">
+            <label class="form-label">Payment Preference</label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <label
+                    style="background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); padding: 1rem; border-radius: 0.75rem; cursor: pointer; display: flex; align-items: center; gap: 0.75rem;">
+                    <input type="radio" name="payment_method" value="pay_now" checked onchange="updateSubmitButton()">
+                    <div>
+                        <div style="font-weight: 600;">Pay 50% Deposit</div>
+                        <div style="font-size: 0.8rem; opacity: 0.7;">Secure your slot immediately</div>
+                    </div>
+                </label>
+                <label
+                    style="background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); padding: 1rem; border-radius: 0.75rem; cursor: pointer; display: flex; align-items: center; gap: 0.75rem;">
+                    <input type="radio" name="payment_method" value="pay_later" onchange="updateSubmitButton()">
+                    <div>
+                        <div style="font-weight: 600;">Request Invoice</div>
+                        <div style="font-size: 0.8rem; opacity: 0.7;">Pay later (Subject to review)</div>
+                    </div>
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Project Files (Optional)</label>
+            <div class="file-upload-wrapper" onclick="document.getElementById('projectFile').click()">
+                <ion-icon name="cloud-upload-outline"
+                    style="font-size: 2rem; color: var(--primary-blue); margin-bottom: 0.5rem;"></ion-icon>
+                <div style="font-weight: 500;">Click to upload files</div>
+                <div style="font-size: 0.875rem; color: rgba(255,255,255,0.5);">CSV, PDF, DOCX, ZIP (Max 10MB)
+                </div>
+                <input type="file" id="projectFile" hidden onchange="alert('File selected: ' + this.files[0].name)">
+            </div>
+        </div>
+
+        <button type="submit" class="btn-submit">Submit Request</button>
+        </form>
         </div>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://js.paystack.co/v1/inline.js"></script>
     <script src="../static/js/supabase_init.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
@@ -309,6 +338,16 @@
         }
         checkAccess();
 
+        function updateSubmitButton() {
+            const method = document.querySelector('input[name="payment_method"]:checked').value;
+            const btn = document.querySelector('.btn-submit');
+            if (method === 'pay_now') {
+                btn.textContent = "Proceed to Payment";
+            } else {
+                btn.textContent = "Submit Request";
+            }
+        }
+
         async function handleProjectSubmit(e) {
             e.preventDefault();
 
@@ -318,54 +357,129 @@
 
             // Get form data
             const formData = new FormData(form);
+            const paymentMethod = formData.get('payment_method');
+            const budgetStr = formData.get('budget').replace(/[^0-9.]/g, ''); // Extract numbers
+            const budget = parseFloat(budgetStr) || 0;
+            const selectedService = formData.get('service');
+
+            // Service Minimum Prices Map
+            const minPrices = {
+                "Web Design & Development": 500,
+                "Academic Research & Reports": 300,
+                "Data Analysis & Visualization": 400,
+                "AI Integration for Businesses": 1000,
+                "AI Automation & Workflows": 800,
+                "IT Consulting": 40, // Hourly rate minimum
+                "Machine Learning Solutions": 1500,
+                "Business Intelligence Consulting": 600,
+                "System Integration & APIs": 700,
+                "Ongoing Support": 150
+            };
+
+            const minPrice = minPrices[selectedService] || 0;
+
+            // Validation: Check Minimum Budget (Skip if Other or not in map)
+            if (minPrice > 0 && budget < minPrice) {
+                alert(`The minimum budget for ${selectedService} is $${minPrice}. Please increase your budget.`);
+                btn.disabled = false;
+                btn.innerText = originalText;
+                btn.style.opacity = "1";
+                return;
+            }
+
             const projectData = {
                 title: formData.get('title'),
-                service_type: formData.get('service'),
+                service_type: selectedService,
                 description: formData.get('description'),
                 deadline: formData.get('deadline') || null,
                 budget: formData.get('budget'),
-                // file_url: ... (File upload requires Storage bucket, skipping for now or mocking)
+                status: 'pending' // Default
             };
 
             try {
-                btn.innerText = "Submitting...";
                 btn.disabled = true;
                 btn.style.opacity = "0.7";
 
                 const session = await window.supabaseClient.checkSession();
                 if (!session) throw new Error("You must be logged in to submit a project.");
 
-                // Add user_id to project data
+                // Add user_id
                 projectData.user_id = session.user.id;
 
-                const { data, error } = await window.supabase
-                    .from('projects')
-                    .insert([projectData])
-                    .select();
+                if (paymentMethod === 'pay_now') {
+                    if (budget <= 0) throw new Error("Please enter a valid budget amount to calculate deposit.");
+                    btn.innerText = "Processing...";
 
-                if (error) throw error;
+                    // Trigger Paystack Integration
+                    // Calculate 50% deposit in kobo/cents. Assuming GHS for now as default currency context.
+                    // 1 unit = 100 kobo.
+                    const depositAmount = (budget * 0.5) * 100;
 
-                // Create a notification for admin
-                await window.supabase
-                    .from('notifications')
-                    .insert([{
-                        user_id: session.user.id,
-                        type: 'project',
-                        message: `New Project Request: ${projectData.title}`
-                    }]);
+                    const handler = PaystackPop.setup({
+                        key: 'pk_test_64a5e8550ef53bf8089e4c109e49def1341b2235', // Use User's Test Key
+                        email: session.user.email,
+                        amount: depositAmount,
+                        currency: 'GHS', // Could make this dynamic if needed
+                        ref: '' + Math.floor((Math.random() * 1000000000) + 1),
+                        callback: async function (response) {
+                            // Payment Success
+                            projectData.status = 'deposit_paid';
+                            // Save to DB
+                            await saveProject(projectData, session.user.id, `Payment Ref: ${response.reference}`);
+                            form.reset();
+                            updateSubmitButton();
+                        },
+                        onClose: function () {
+                            alert('Payment cancelled. Project not submitted.');
+                            btn.disabled = false;
+                            btn.innerText = originalText;
+                            btn.style.opacity = "1";
+                        }
+                    });
+                    handler.openIframe();
 
-                alert('Project request submitted successfully! I will review it shortly.');
-                form.reset();
+                } else {
+                    // Pay Later Flow
+                    btn.innerText = "Submitting...";
+                    await saveProject(projectData, session.user.id, "Invoice requested");
+                    form.reset();
+                    updateSubmitButton();
+                    btn.disabled = false;
+                    btn.innerText = originalText;
+                    btn.style.opacity = "1";
+                }
 
             } catch (error) {
                 console.error('Error submitting project:', error);
                 alert('Failed to submit project: ' + error.message);
-            } finally {
-                btn.innerText = originalText;
                 btn.disabled = false;
+                btn.innerText = originalText;
                 btn.style.opacity = "1";
             }
         }
+
+        async function saveProject(data, userId, note) {
+            // Save project
+            const { error } = await window.supabase
+                .from('projects')
+                .insert([data]);
+
+            if (error) throw error;
+
+            // Notification
+            await window.supabase
+                .from('notifications')
+                .insert([{
+                    user_id: userId,
+                    type: 'project',
+                    message: `New Project: ${data.title} (${data.status}) - ${note || ''}`
+                }]);
+
+            alert('Project submitted successfully!');
+        }
+
+        // Initialize button state
+        updateSubmitButton();
     </script>
 </body>
 
