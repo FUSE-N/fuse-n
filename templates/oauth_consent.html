@@ -52,14 +52,16 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../static/js/supabase_init.js"></script>
     <script>
-        // Initialize Supabase
-        const supabaseUrl = "https://sefuxvdhfgylmlqdrhoh.supabase.co";
-        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNlZnV4dmRoZmd5bG1scWRyaG9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzU4NzYxMzEsImV4cCI6MjA1MTQ1MjEzMX0.-p-gG1vtY4-jemZAhE8VZtei4tT-8OQp2qM4t9FJwRg";
-        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-
         async function handleOAuthCallback() {
             try {
+                // Wait for supabase_init.js to initialize window.supabase
+                if (!window.supabase) {
+                    console.error('Supabase client not found on window');
+                    // Fallback or retry? valid supabase_init.js should set it immediately.
+                }
+
                 // Get the hash from URL
                 const hash = window.location.hash.substring(1);
                 const params = new URLSearchParams(hash);
@@ -75,8 +77,9 @@
                 }
 
                 if (accessToken && refreshToken) {
-                    // Set the session
-                    const { data, error: sessionError } = await supabase.auth.setSession({
+                    // Set the session using the global client from supabase_init.js
+                    // Note: window.supabase is the initialized client instance
+                    const { data, error: sessionError } = await window.supabase.auth.setSession({
                         access_token: accessToken,
                         refresh_token: refreshToken
                     });
@@ -91,6 +94,9 @@
                     window.location.href = 'dashboard.html';
                 } else {
                     // No tokens, redirect to login
+                    // Only redirect if we actually expected a hash (which we do on this page)
+                    // If loaded without hash, maybe just go to login?
+                    console.warn('No tokens found in hash');
                     window.location.href = 'login.html';
                 }
             } catch (error) {

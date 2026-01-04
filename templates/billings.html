@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="../static/img/boni_avatar.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billings | Bonniface</title>
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <link rel="stylesheet" href="../static/css/navbar.css">
+    <style>
+        :root {
+            --sidebar-width: 280px;
+            --primary-blue: #3b82f6;
+            --bg-dark: #0f172a;
+            --bg-card: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            background: var(--bg-dark);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Reusing Sidebar Styles from Dashboard (Should be a component, but inline for now as per dashboard.html) */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: rgba(15, 23, 42, 0.95);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-nav {
+            padding: 2rem 1rem;
+            flex-grow: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: var(--bg-card);
+            color: white;
+        }
+
+        .nav-item ion-icon {
+            font-size: 1.25rem;
+        }
+
+        .sidebar-footer {
+            padding: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex-grow: 1;
+            padding: 3rem;
+        }
+
+        .page-header {
+            margin-bottom: 3rem;
+        }
+
+        .section-card {
+            background: var(--bg-card);
+            border-radius: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .plan-card {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(37, 99, 235, 0.1));
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .plan-info h3 {
+            margin: 0 0 0.5rem 0;
+            color: white;
+        }
+
+        .plan-price {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .plan-period {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 400;
+        }
+
+        .badge {
+            background: var(--primary-blue);
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th,
+        .table td {
+            text-align: left;
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .table th {
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .status-paid {
+            color: #4ade80;
+            background: rgba(74, 222, 128, 0.1);
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+
+        .btn-logout {
+            color: #ef4444;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <a href="../index.html" class="logo-container">
+                <img src="../static/img/boni_avatar.jpg" alt="Logo"
+                    style="width: 32px; height: 32px; border-radius: 50%;">
+                <span class="logo-text" style="font-weight: 700; font-size: 1.25rem; color: white;">Bonniface</span>
+            </a>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item">
+                <ion-icon name="grid-outline"></ion-icon>
+                Overview
+            </a>
+            <a href="messages.html" class="nav-item">
+                <ion-icon name="chatbubbles-outline"></ion-icon>
+                Messages
+            </a>
+            <a href="start-project.html" class="nav-item">
+                <ion-icon name="rocket-outline"></ion-icon>
+                New Project
+            </a>
+            <a href="billings.html" class="nav-item active">
+                <ion-icon name="card-outline"></ion-icon>
+                Billings
+            </a>
+            <a href="settings.html" class="nav-item">
+                <ion-icon name="settings-outline"></ion-icon>
+                Settings
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a onclick="supabaseClient.signOut()" class="btn-logout">
+                <ion-icon name="log-out-outline"></ion-icon>
+                Logout
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="page-header">
+            <h1>Billing & Plans</h1>
+            <p style="color: rgba(255,255,255,0.5);">Manage your subscription and payment details.</p>
+        </header>
+
+        <div class="section-card plan-card">
+            <div class="plan-info">
+                <h3>Current Plan <span class="badge">Active</span></h3>
+                <div style="color: rgba(255,255,255,0.7);">Pro Plan - Unlimited Access</div>
+            </div>
+            <div class="plan-actions" style="text-align: right;">
+                <div class="plan-price">$29<span class="plan-period">/month</span></div>
+                <button class="btn-primary" style="margin-top: 1rem;">Upgrade Plan</button>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <h2 style="margin-top: 0;">Payment Method</h2>
+            <div
+                style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 0.75rem;">
+                <ion-icon name="card" style="font-size: 2rem; color: white;"></ion-icon>
+                <div>
+                    <div style="font-weight: 600;">Visa ending in 4242</div>
+                    <div style="font-size: 0.875rem; color: rgba(255,255,255,0.5);">Expires 12/28</div>
+                </div>
+                <button
+                    style="margin-left: auto; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Edit</button>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <h2 style="margin-top: 0;">Invoice History</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Invoice ID</th>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>INV-2024-001</td>
+                        <td>Jan 01, 2026</td>
+                        <td>$29.00</td>
+                        <td><span class="status-paid">Paid</span></td>
+                        <td style="text-align: right;"><ion-icon name="download-outline"
+                                style="cursor: pointer;"></ion-icon></td>
+                    </tr>
+                    <tr>
+                        <td>INV-2023-012</td>
+                        <td>Dec 01, 2025</td>
+                        <td>$29.00</td>
+                        <td><span class="status-paid">Paid</span></td>
+                        <td style="text-align: right;"><ion-icon name="download-outline"
+                                style="cursor: pointer;"></ion-icon></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../static/js/supabase_init.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script>
+        // Basic session check
+        async function checkAccess() {
+            const session = await window.supabaseClient.checkSession();
+            if (!session) {
+                window.location.href = 'login.html';
+            }
+        }
+        checkAccess();
+    </script>
+</body>
+
+</html>

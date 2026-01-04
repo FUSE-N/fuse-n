@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="../static/img/boni_avatar.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings | Bonniface</title>
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <link rel="stylesheet" href="../static/css/navbar.css">
+    <style>
+        :root {
+            --sidebar-width: 280px;
+            --primary-blue: #3b82f6;
+            --bg-dark: #0f172a;
+            --bg-card: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            background: var(--bg-dark);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar (Same as dashboard) */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: rgba(15, 23, 42, 0.95);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-nav {
+            padding: 2rem 1rem;
+            flex-grow: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: var(--bg-card);
+            color: white;
+        }
+
+        .nav-item ion-icon {
+            font-size: 1.25rem;
+        }
+
+        .sidebar-footer {
+            padding: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-logout {
+            color: #ef4444;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex-grow: 1;
+            padding: 3rem;
+            max-width: 800px;
+        }
+
+        .page-header {
+            margin-bottom: 3rem;
+        }
+
+        .section-card {
+            background: var(--bg-card);
+            border-radius: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.875rem;
+        }
+
+        .form-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            color: white;
+            font-family: inherit;
+            box-sizing: border-box;
+            /* Fixes width overflow */
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+        }
+
+        .btn-primary {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+
+        .avatar-upload {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .current-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid var(--primary-blue);
+            object-fit: cover;
+        }
+    </style>
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <a href="../index.html" class="logo-container">
+                <img src="../static/img/boni_avatar.jpg" alt="Logo"
+                    style="width: 32px; height: 32px; border-radius: 50%;">
+                <span class="logo-text" style="font-weight: 700; font-size: 1.25rem; color: white;">Bonniface</span>
+            </a>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item">
+                <ion-icon name="grid-outline"></ion-icon>
+                Overview
+            </a>
+            <a href="messages.html" class="nav-item">
+                <ion-icon name="chatbubbles-outline"></ion-icon>
+                Messages
+            </a>
+            <a href="start-project.html" class="nav-item">
+                <ion-icon name="rocket-outline"></ion-icon>
+                New Project
+            </a>
+            <a href="billings.html" class="nav-item">
+                <ion-icon name="card-outline"></ion-icon>
+                Billings
+            </a>
+            <a href="settings.html" class="nav-item active">
+                <ion-icon name="settings-outline"></ion-icon>
+                Settings
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a onclick="supabaseClient.signOut()" class="btn-logout">
+                <ion-icon name="log-out-outline"></ion-icon>
+                Logout
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="page-header">
+            <h1>Account Settings</h1>
+            <p style="color: rgba(255,255,255,0.5);">Manage your profile and security preferences.</p>
+        </header>
+
+        <div class="section-card">
+            <h2 style="margin-top: 0; margin-bottom: 2rem;">Profile Information</h2>
+
+            <div class="avatar-upload">
+                <img src="../static/img/boni_avatar.jpg" alt="Current Avatar" class="current-avatar"
+                    id="settingsAvatar">
+                <div>
+                    <button class="btn-primary" style="background: rgba(255,255,255,0.1); margin-right: 0.5rem;">Change
+                        Photo</button>
+                    <div style="font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-top: 0.5rem;">JPG or PNG, max
+                        2MB</div>
+                </div>
+            </div>
+
+            <form onsubmit="event.preventDefault(); alert('Profile update implementation coming soon!');">
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" class="form-input" id="fullNameInput" placeholder="Your Name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-input" id="emailInput" disabled
+                        style="opacity: 0.5; cursor: not-allowed;">
+                    <div style="font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-top: 0.25rem;">Email cannot be
+                        changed securely currently.</div>
+                </div>
+                <button type="submit" class="btn-primary">Save Changes</button>
+            </form>
+        </div>
+
+        <div class="section-card">
+            <h2 style="margin-top: 0; margin-bottom: 1.5rem;">Security</h2>
+            <form onsubmit="event.preventDefault(); alert('Password reset implementation coming soon!');">
+                <div class="form-group">
+                    <label class="form-label">New Password</label>
+                    <input type="password" class="form-input" placeholder="Enter new password">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Confirm Password</label>
+                    <input type="password" class="form-input" placeholder="Confirm new password">
+                </div>
+                <button type="submit" class="btn-primary" style="background: rgba(255,255,255,0.1);">Update
+                    Password</button>
+            </form>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../static/js/supabase_init.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script>
+        // Init and fill data
+        async function initSettings() {
+            const session = await window.supabaseClient.checkSession();
+            if (!session) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const user = session.user;
+            if (user.user_metadata.full_name) {
+                document.getElementById('fullNameInput').value = user.user_metadata.full_name;
+            }
+            if (user.email) {
+                document.getElementById('emailInput').value = user.email;
+            }
+            if (user.user_metadata.avatar_url) {
+                document.getElementById('settingsAvatar').src = user.user_metadata.avatar_url;
+            }
+        }
+        initSettings();
+    </script>
+</body>
+
+</html>
