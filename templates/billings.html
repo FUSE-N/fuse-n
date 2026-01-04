@@ -257,7 +257,7 @@
                 </div>
 
                 <!-- Paystack -->
-                <div class="payment-option"
+                <div class="payment-option" onclick="payWithPaystack()"
                     style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 1rem; border: 1px solid rgba(255,255,255,0.1); text-align: center; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center;">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Paystack_Logo.png" alt="Paystack"
                         style="height: 40px; margin-bottom: 1rem; object-fit: contain;">
@@ -331,14 +331,47 @@
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script>
+        <script src="https://js.paystack.co/v1/inline.js"></script>
+    <script>
         // Basic session check
+        let currentUserEmail = "";
+
         async function checkAccess() {
             const session = await window.supabaseClient.checkSession();
-            if (!session) {
-                window.location.href = 'login.html';
+        if (!session) {
+            window.location.href = 'login.html';
+            } else {
+            currentUserEmail = session.user.email;
             }
         }
         checkAccess();
+
+        function payWithPaystack() {
+            if(!currentUserEmail) {
+            alert("Please wait for session to load...");
+        return;
+            }
+
+        const handler = PaystackPop.setup({
+            key: 'pk_test_64a5e8550ef53bf8089e4c109e49def1341b2235', // User provided Public Key
+        email: currentUserEmail,
+                amount: 2900 * 15, // Amount in kobo (Test: $29 * ~15 GHS rate * 100 for kobo, just an example) -> Let's use GHS for Paystack usually. Or USD if enabled.
+        // Let's assume GHS for now as user mentioned Mobile Money (MOMO)
+        // 29 USD to GHS approx 450 GHS -> 45000 kobo
+        // For safety in test, let's charge 10 GHS
+        amount: 1000,
+        currency: 'GHS',
+        ref: ''+Math.floor((Math.random() * 1000000000) + 1), // Generate a random ref
+        callback: function(response) {
+            alert('Payment complete! Reference: ' + response.reference);
+                    // TODO: Call backend to verify transaction
+                },
+        onClose: function() {
+            alert('Transaction was closed.');
+                },
+            });
+        handler.openIframe();
+        }
     </script>
 </body>
 
