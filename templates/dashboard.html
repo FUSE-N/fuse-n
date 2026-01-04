@@ -5,144 +5,144 @@
     <meta charset="UTF-8">
     <link rel="icon" href="../static/img/boni_avatar.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Dashboard | Bonniface/title>
-        <link rel="stylesheet" href="../static/css/styles.css">
-        <link rel="stylesheet" href="../static/css/navbar.css">
-        <style>
-            :root {
-                --sidebar-width: 280px;
-                --primary-blue: #3b82f6;
-                --bg-dark: #0f172a;
-                --bg-card: rgba(255, 255, 255, 0.05);
-            }
+    <title>User Dashboard | Bonniface</title>
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <link rel="stylesheet" href="../static/css/navbar.css">
+    <style>
+        :root {
+            --sidebar-width: 280px;
+            --primary-blue: #3b82f6;
+            --bg-dark: #0f172a;
+            --bg-card: rgba(255, 255, 255, 0.05);
+        }
 
-            body {
-                background: var(--bg-dark);
-                color: white;
-                font-family: 'Inter', sans-serif;
-                margin: 0;
-                display: flex;
-                min-height: 100vh;
-            }
+        body {
+            background: var(--bg-dark);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            min-height: 100vh;
+        }
 
-            /* Sidebar Styles */
-            .sidebar {
-                width: var(--sidebar-width);
-                background: rgba(15, 23, 42, 0.95);
-                border-right: 1px solid rgba(255, 255, 255, 0.1);
-                display: flex;
-                flex-direction: column;
-                position: fixed;
-                height: 100vh;
-                z-index: 100;
-            }
+        /* Sidebar Styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: rgba(15, 23, 42, 0.95);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
 
-            .sidebar-header {
-                padding: 2rem;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            }
+        .sidebar-header {
+            padding: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-            .sidebar-nav {
-                padding: 2rem 1rem;
-                flex-grow: 1;
-            }
+        .sidebar-nav {
+            padding: 2rem 1rem;
+            flex-grow: 1;
+        }
 
-            .nav-item {
-                display: flex;
-                align-items: center;
-                gap: 1rem;
-                padding: 0.75rem 1rem;
-                color: rgba(255, 255, 255, 0.6);
-                text-decoration: none;
-                border-radius: 0.75rem;
-                transition: all 0.3s ease;
-                margin-bottom: 0.5rem;
-            }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+            margin-bottom: 0.5rem;
+        }
 
-            .nav-item:hover,
-            .nav-item.active {
-                background: var(--bg-card);
-                color: white;
-            }
+        .nav-item:hover,
+        .nav-item.active {
+            background: var(--bg-card);
+            color: white;
+        }
 
-            .nav-item ion-icon {
-                font-size: 1.25rem;
-            }
+        .nav-item ion-icon {
+            font-size: 1.25rem;
+        }
 
-            .sidebar-footer {
-                padding: 2rem;
-                border-top: 1px solid rgba(255, 255, 255, 0.1);
-            }
+        .sidebar-footer {
+            padding: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-            /* Main Content */
-            .main-content {
-                margin-left: var(--sidebar-width);
-                flex-grow: 1;
-                padding: 3rem;
-            }
+        /* Main Content */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex-grow: 1;
+            padding: 3rem;
+        }
 
-            .dashboard-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-bottom: 3rem;
-            }
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
 
-            .user-profile {
-                display: flex;
-                align-items: center;
-                gap: 1rem;
-            }
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
 
-            .user-avatar {
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                border: 2px solid var(--primary-blue);
-            }
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--primary-blue);
+        }
 
-            .stats-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-                gap: 1.5rem;
-                margin-bottom: 3rem;
-            }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
 
-            .stat-card {
-                background: var(--bg-card);
-                padding: 1.5rem;
-                border-radius: 1rem;
-                border: 1px solid rgba(255, 255, 255, 0.1);
-            }
+        .stat-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-            .stat-label {
-                color: rgba(255, 255, 255, 0.5);
-                font-size: 0.875rem;
-                margin-bottom: 0.5rem;
-            }
+        .stat-label {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
 
-            .stat-value {
-                font-size: 1.5rem;
-                font-weight: 700;
-            }
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
 
-            .content-card {
-                background: var(--bg-card);
-                border-radius: 1.5rem;
-                border: 1px solid rgba(255, 255, 255, 0.1);
-                padding: 2rem;
-            }
+        .content-card {
+            background: var(--bg-card);
+            border-radius: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+        }
 
-            .btn-logout {
-                color: #ef4444;
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-                text-decoration: none;
-                font-weight: 600;
-                cursor: pointer;
-            }
-        </style>
+        .btn-logout {
+            color: #ef4444;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
@@ -224,21 +224,27 @@
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script>
         async function initDashboard() {
-            if (typeof window.supabaseClient === 'undefined') {
-                console.error('supabaseClient not initialized');
-                return;
-            }
-            const session = await window.supabaseClient.checkSession();
-            if (!session) {
-                window.location.href = 'login.html';
-                return;
-            }
+            try {
+                if (typeof window.supabaseClient === 'undefined') {
+                    throw new Error('Supabase client not initialized');
+                }
+                const session = await window.supabaseClient.checkSession();
+                if (!session) {
+                    window.location.href = 'login.html';
+                    return;
+                }
 
-            const user = session.user;
-            document.getElementById('userName').textContent = user.user_metadata.full_name || user.email;
-            document.getElementById('welcomeText').textContent = `Welcome back, ${user.user_metadata.full_name || 'User'}!`;
-            if (user.user_metadata.avatar_url) {
-                document.getElementById('userAvatar').src = user.user_metadata.avatar_url;
+                const user = session.user;
+                document.getElementById('userName').textContent = user.user_metadata.full_name || user.email;
+                document.getElementById('welcomeText').textContent = `Welcome back, ${user.user_metadata.full_name || 'User'}!`;
+                if (user.user_metadata.avatar_url) {
+                    document.getElementById('userAvatar').src = user.user_metadata.avatar_url;
+                }
+
+            } catch (error) {
+                console.error('Dashboard init error:', error);
+                alert('Dashboard failed to load: ' + error.message);
+                window.location.href = 'login.html';
             }
         }
 

@@ -8,6 +8,7 @@
     <title>OAuth Consent | Bonniface</title>
     <link rel="stylesheet" href="../static/css/styles.css">
     <link rel="stylesheet" href="../static/css/navbar.css">
+    <title>Completing Login...</title>
     <style>
         body {
             background: linear-gradient(135deg, #0f172a, #1e293b);
@@ -18,151 +19,89 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-        }
-
-        .consent-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            padding: 2.5rem;
-            border-radius: 1.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            width: 100%;
-            max-width: 500px;
             text-align: center;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
-        .logo-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            text-decoration: none;
-            color: white;
-        }
-
-        .logo-container img {
-            width: 48px;
-            height: 48px;
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
             border-radius: 50%;
+            border-top: 4px solid #3b82f6;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
         }
 
-        .logo-text {
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #60a5fa, #3b82f6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
 
-        h1 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-        }
-
-        .permissions-list {
-            text-align: left;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .permission-item {
-            display: flex;
-            gap: 1rem;
-            align-items: start;
-            margin-bottom: 1rem;
-        }
-
-        .permission-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .permission-icon {
-            color: #3b82f6;
-            font-size: 1.25rem;
-            margin-top: 0.25rem;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .btn {
-            flex: 1;
-            padding: 0.75rem;
-            border-radius: 0.75rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            text-align: center;
-        }
-
-        .btn-confirm {
-            background: #3b82f6;
-            color: white;
-            border: none;
-        }
-
-        .btn-confirm:hover {
-            background: #2563eb;
-            transform: translateY(-2px);
-        }
-
-        .btn-cancel {
-            background: transparent;
-            color: rgba(255, 255, 255, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .btn-cancel:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: white;
+            100% {
+                transform: rotate(360deg);
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="consent-card">
-        <div class="logo-container">
-            <img src="../static/img/boni_avatar.jpg" alt="Bonniface Logo">
-            <span class="logo-text">Bonniface</span>
-        </div>
-
-        <h1>Permission Request</h1>
-        <p style="color: rgba(255, 255, 255, 0.6); margin-bottom: 2rem;">
-            Application is requesting access to the following information:
-        </p>
-
-        <div class="permissions-list">
-            <div class="permission-item">
-                <div class="permission-icon">👤</div>
-                <div>
-                    <div style="font-weight: 600;">Basic Profile</div>
-                    <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.5);">View your name and profile
-                        picture.</div>
-                </div>
-            </div>
-            <div class="permission-item">
-                <div class="permission-icon">✉️</div>
-                <div>
-                    <div style="font-weight: 600;">Email Address</div>
-                    <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.5);">View your primary email address.
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="btn-group">
-            <a href="../index.html" class="btn btn-cancel">Cancel</a>
-            <a href="dashboard.html" class="btn btn-confirm">Allow Access</a>
-        </div>
+    <div>
+        <div class="spinner"></div>
+        <h2>Completing your login...</h2>
+        <p>Please wait while we redirect you.</p>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Initialize Supabase
+        const supabaseUrl = "https://sefuxvdhfgylmlqdrhoh.supabase.co";
+        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNlZnV4dmRoZmd5bG1scWRyaG9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzU4NzYxMzEsImV4cCI6MjA1MTQ1MjEzMX0.-p-gG1vtY4-jemZAhE8VZtei4tT-8OQp2qM4t9FJwRg";
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+        async function handleOAuthCallback() {
+            try {
+                // Get the hash from URL
+                const hash = window.location.hash.substring(1);
+                const params = new URLSearchParams(hash);
+
+                const accessToken = params.get('access_token');
+                const refreshToken = params.get('refresh_token');
+                const error = params.get('error_description');
+
+                if (error) {
+                    console.error('OAuth error:', error);
+                    window.location.href = 'login.html?error=' + encodeURIComponent(error);
+                    return;
+                }
+
+                if (accessToken && refreshToken) {
+                    // Set the session
+                    const { data, error: sessionError } = await supabase.auth.setSession({
+                        access_token: accessToken,
+                        refresh_token: refreshToken
+                    });
+
+                    if (sessionError) {
+                        console.error('Session error:', sessionError);
+                        window.location.href = 'login.html?error=' + encodeURIComponent(sessionError.message);
+                        return;
+                    }
+
+                    // Success - redirect to dashboard
+                    window.location.href = 'dashboard.html';
+                } else {
+                    // No tokens, redirect to login
+                    window.location.href = 'login.html';
+                }
+            } catch (error) {
+                console.error('Callback handler error:', error);
+                window.location.href = 'login.html?error=' + encodeURIComponent(error.message);
+            }
+        }
+
+        // Run when page loads
+        document.addEventListener('DOMContentLoaded', handleOAuthCallback);
+    </script>
 </body>
 
 </html>

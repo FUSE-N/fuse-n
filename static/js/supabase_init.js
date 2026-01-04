@@ -1,6 +1,6 @@
 // Supabase Initialization
 const supabaseUrl = "https://sefuxvdhfgylmlqdrhoh.supabase.co";
-const supabaseAnonKey = "sb_publishable_5KdCsyhbO5dGmopJfa0Ycg_GA2R50v9";
+const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNlZnV4dmRoZmd5bG1scWRyaG9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzU4NzYxMzEsImV4cCI6MjA1MTQ1MjEzMX0.-p-gG1vtY4-jemZAhE8VZtei4tT-8OQp2qM4t9FJwRg";
 
 let _supabaseInstance;
 
@@ -23,7 +23,7 @@ async function signInWithGoogle() {
         const { data, error } = await _supabaseInstance.auth.signInWithOAuth({
             provider: 'google',
             options: {
-                redirectTo: window.location.origin + '/templates/login.html'
+                redirectTo: window.location.origin + '/templates/oauth_consent.html'
             }
         });
 
