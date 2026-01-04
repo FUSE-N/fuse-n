@@ -238,33 +238,31 @@
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script>
-        function toggleSidebar() {
-            document.querySelector('.sidebar').classList.toggle('active');
-            document.querySelector('.sidebar-overlay').classList.toggle('active');
-        }
+        <script src="../static/js/sidebar.js"></script>
+    <script>
 
         async function initDashboard() {
             try {
                 if (typeof window.supabaseClient === 'undefined') {
                     throw new Error('Supabase client not initialized');
                 }
-                const session = await window.supabaseClient.checkSession();
-                if (!session) {
-                    window.location.href = 'login.html';
-                    return;
+        const session = await window.supabaseClient.checkSession();
+        if (!session) {
+            window.location.href = 'login.html';
+        return;
                 }
 
-                const user = session.user;
-                document.getElementById('userName').textContent = user.user_metadata.full_name || user.email;
-                document.getElementById('welcomeText').textContent = `Welcome back, ${user.user_metadata.full_name || 'User'}!`;
-                if (user.user_metadata.avatar_url) {
-                    document.getElementById('userAvatar').src = user.user_metadata.avatar_url;
+        const user = session.user;
+        document.getElementById('userName').textContent = user.user_metadata.full_name || user.email;
+        document.getElementById('welcomeText').textContent = `Welcome back, ${user.user_metadata.full_name || 'User'}!`;
+        if (user.user_metadata.avatar_url) {
+            document.getElementById('userAvatar').src = user.user_metadata.avatar_url;
                 }
 
             } catch (error) {
-                console.error('Dashboard init error:', error);
-                alert('Dashboard failed to load: ' + error.message);
-                window.location.href = 'login.html';
+            console.error('Dashboard init error:', error);
+        alert('Dashboard failed to load: ' + error.message);
+        window.location.href = 'login.html';
             }
         }
 
