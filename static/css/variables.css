@@ -1,0 +1,54 @@
+:root {
+    /* --- COLORS --- */
+
+    /* Primary Blues */
+    --primary: #2563eb;
+    /* Main Brand Blue */
+    --primary-hover: #1e40af;
+    /* Darker Blue for hover */
+    --primary-light: #3b82f6;
+    /* Lighter Blue (Accent) */
+    --primary-soft: rgba(37, 99, 235, 0.1);
+
+    /* Accent Colors */
+    --accent: #3b82f6;
+    --success: #10b981;
+    --warning: #fbbf24;
+    --danger: #ef4444;
+
+    /* Backgrounds */
+    --bg-dark: #0f172a;
+    /* Slate 950 - Main Dark Background */
+    --bg-dark-soft: #1e293b;
+    /* Slate 800 - Lighter Dark Background */
+    --bg-light: #f8fafc;
+    /* Slate 50 - Main Light Background */
+    --bg-white: #ffffff;
+    --bg-card: rgba(255, 255, 255, 0.05);
+    /* Glassmorphism Card Bg */
+
+    /* Text */
+    --text-light: #ffffff;
+    --text-muted: rgba(255, 255, 255, 0.6);
+    --text-dark: #0f172a;
+    /* Slate 950 */
+    --text-dark-muted: #64748b;
+    /* Slate 500 */
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --gradient-blue: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+
+    /* --- LAYOUT --- */
+    --sidebar-width: 280px;
+
+    /* --- BORDERS --- */
+    --border-light: #e2e8f0;
+    --border-dark: rgba(255, 255, 255, 0.1);
+
+    /* --- SHADOWS --- */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.15);
+}

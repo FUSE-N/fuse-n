@@ -22,7 +22,11 @@ from werkzeug.utils import secure_filename
 
 # ---------------- INITIAL SETUP ----------------
 load_dotenv()
-app = Flask(__name__)
+# Set root directory (one level up from backend/)
+root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+app = Flask(__name__, 
+            template_folder=[root_dir, os.path.join(root_dir, 'templates')],
+            static_folder=os.path.join(root_dir, 'static'))
 
 # Folder for uploaded files
 UPLOAD_FOLDER = "uploads"

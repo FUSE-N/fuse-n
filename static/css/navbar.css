@@ -1,13 +1,4 @@
-/* Reset and base styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: Arial, sans-serif;
-}
+/* Reset and base styles removed - using global styles.css */
 
 /* Header styles */
 .header {
@@ -15,7 +6,8 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 15px 40px;
-    background-color: #0099d8; /* Bright blue background */
+    background-color: #0099d8;
+    /* Bright blue background */
     color: white;
     position: relative;
 }
@@ -42,28 +34,115 @@ body {
 
 /* Generate positions for the dots pattern */
 /* This is a simplified version - you'd need more precise positioning for exact replication */
-.dot-1 { top: 5px; left: 10px; }
-.dot-2 { top: 5px; left: 16px; }
-.dot-3 { top: 5px; left: 22px; }
-.dot-4 { top: 5px; left: 28px; }
-.dot-5 { top: 11px; left: 7px; }
-.dot-6 { top: 11px; left: 13px; }
-.dot-7 { top: 11px; left: 19px; }
-.dot-8 { top: 11px; left: 25px; }
-.dot-9 { top: 11px; left: 31px; }
-.dot-10 { top: 17px; left: 10px; }
-.dot-11 { top: 17px; left: 16px; }
-.dot-12 { top: 17px; left: 22px; }
-.dot-13 { top: 17px; left: 28px; }
-.dot-14 { top: 23px; left: 7px; }
-.dot-15 { top: 23px; left: 13px; }
-.dot-16 { top: 23px; left: 19px; }
-.dot-17 { top: 23px; left: 25px; }
-.dot-18 { top: 23px; left: 31px; }
-.dot-19 { top: 29px; left: 10px; }
-.dot-20 { top: 29px; left: 16px; }
-.dot-21 { top: 29px; left: 22px; }
-.dot-22 { top: 29px; left: 28px; }
+.dot-1 {
+    top: 5px;
+    left: 10px;
+}
+
+.dot-2 {
+    top: 5px;
+    left: 16px;
+}
+
+.dot-3 {
+    top: 5px;
+    left: 22px;
+}
+
+.dot-4 {
+    top: 5px;
+    left: 28px;
+}
+
+.dot-5 {
+    top: 11px;
+    left: 7px;
+}
+
+.dot-6 {
+    top: 11px;
+    left: 13px;
+}
+
+.dot-7 {
+    top: 11px;
+    left: 19px;
+}
+
+.dot-8 {
+    top: 11px;
+    left: 25px;
+}
+
+.dot-9 {
+    top: 11px;
+    left: 31px;
+}
+
+.dot-10 {
+    top: 17px;
+    left: 10px;
+}
+
+.dot-11 {
+    top: 17px;
+    left: 16px;
+}
+
+.dot-12 {
+    top: 17px;
+    left: 22px;
+}
+
+.dot-13 {
+    top: 17px;
+    left: 28px;
+}
+
+.dot-14 {
+    top: 23px;
+    left: 7px;
+}
+
+.dot-15 {
+    top: 23px;
+    left: 13px;
+}
+
+.dot-16 {
+    top: 23px;
+    left: 19px;
+}
+
+.dot-17 {
+    top: 23px;
+    left: 25px;
+}
+
+.dot-18 {
+    top: 23px;
+    left: 31px;
+}
+
+.dot-19 {
+    top: 29px;
+    left: 10px;
+}
+
+.dot-20 {
+    top: 29px;
+    left: 16px;
+}
+
+.dot-21 {
+    top: 29px;
+    left: 22px;
+}
+
+.dot-22 {
+    top: 29px;
+    left: 28px;
+}
 
 .logo-text {
     font-size: 28px;
@@ -84,12 +163,14 @@ body {
     cursor: pointer;
 }
 
-.search-icon, .menu-icon {
+.search-icon,
+.menu-icon {
     cursor: pointer;
     margin-left: 15px;
 }
 
-.search-icon svg, .menu-icon svg {
+.search-icon svg,
+.menu-icon svg {
     fill: white;
     width: 24px;
     height: 24px;

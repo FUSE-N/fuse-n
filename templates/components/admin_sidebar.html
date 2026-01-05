@@ -1,0 +1,44 @@
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <a href="/" class="logo-container"
+            style="display:flex; align-items:center; gap:1rem; text-decoration:none; color:white;">
+            <img src="../static/img/boni_avatar.jpg" alt="Logo" style="width: 32px; height: 32px; border-radius: 50%;">
+            <span class="logo-text" style="font-weight: 700; font-size: 1.25rem;">Bonniface|Admin</span>
+        </a>
+    </div>
+    <nav class="sidebar-nav">
+        <div class="nav-item active" onclick="switchTab('overview', this)">
+            <ion-icon name="grid-outline"></ion-icon>
+            Overview
+        </div>
+        <div class="nav-item" onclick="switchTab('messages', this)">
+            <ion-icon name="chatbubbles-outline"></ion-icon>
+            Messages
+            <span class="badge-count">3</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('files', this)">
+            <ion-icon name="folder-open-outline"></ion-icon>
+            Files
+        </div>
+        <div class="nav-item" onclick="switchTab('notifications', this)">
+            <ion-icon name="notifications-outline"></ion-icon>
+            Notifications
+            <span class="badge-count">5</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('settings', this)">
+            <ion-icon name="settings-outline"></ion-icon>
+            Settings
+        </div>
+    </nav>
+    <div class="sidebar-footer">
+        <form action="/logout" method="POST" style="margin:0;">
+            <button type="submit" style="background:transparent; border:none; width:100%; text-align:left; padding:0;"
+                class="nav-item">
+                <span style="display:flex; align-items:center; gap:1rem; color:#ef4444; font-weight:600;">
+                    <ion-icon name="log-out-outline"></ion-icon>
+                    Logout
+                </span>
+            </button>
+        </form>
+    </div>
+</aside>

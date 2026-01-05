@@ -7,9 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bonniface | Freelance Professional</title>
     <link rel="stylesheet" href="static/css/styles.css">
-    <link rel="stylesheet" href="static/css/ai_chatbot.css">
+    <link rel="preload" href="static/css/ai_chatbot.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="stylesheet" href="static/css/navbar.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         .profile-container {
             position: relative;
@@ -484,6 +484,12 @@
             <p class="section-description">Ready to start your next project? Get in touch and let's discuss how I can
                 help achieve your goals.</p>
 
+            <div
+                style="margin-bottom: 3rem; border-radius: 1rem; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);">
+                <img src="static/img/contact_banner.png" alt="Contact Us"
+                    style="width: 100%; height: auto; display: block;">
+            </div>
+
             <div class="contact-container">
                 <div class="contact-info">
                     <div class="contact-card">
@@ -653,52 +659,56 @@
         window.SUPABASE_ANON_KEY = "sb_publishable_5KdCsyhbO5dGmopJfa0Ycg_GA2R50v9";
     </script>
     <script src="static/js/ai_chatbot.js"></script>
-    <script src="static/js/supabase_init.js"></script>
+    <script defer src="static/js/supabase_init.js"></script>
+    <script defer type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script defer nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script>
-        async function updateHeader() {
-            if (typeof window.supabaseClient === 'undefined' || typeof window.supabaseClient.checkSession !== 'function') return;
-            const session = await window.supabaseClient.checkSession();
-            const getStartedBtn = document.getElementById('getStartedBtn');
-            const profileContainer = document.getElementById('profileContainer');
+        document.addEventListener('DOMContentLoaded', () => {
+            async function updateHeader() {
+                if (typeof window.supabaseClient === 'undefined' || typeof window.supabaseClient.checkSession !== 'function') return;
+                const session = await window.supabaseClient.checkSession();
+                const getStartedBtn = document.getElementById('getStartedBtn');
+                const profileContainer = document.getElementById('profileContainer');
 
-            if (session) {
-                if (getStartedBtn) getStartedBtn.style.display = 'none';
-                if (profileContainer) profileContainer.style.display = 'flex';
+                if (session) {
+                    if (getStartedBtn) getStartedBtn.style.display = 'none';
+                    if (profileContainer) profileContainer.style.display = 'flex';
 
-                const user = session.user;
-                const nameEl = document.getElementById('headerUserName');
-                const avatarEl = document.getElementById('headerAvatar');
+                    const user = session.user;
+                    const nameEl = document.getElementById('headerUserName');
+                    const avatarEl = document.getElementById('headerAvatar');
 
-                if (nameEl) nameEl.textContent = user.user_metadata.full_name || user.email;
-                if (avatarEl && user.user_metadata.avatar_url) {
-                    avatarEl.src = user.user_metadata.avatar_url;
+                    if (nameEl) nameEl.textContent = user.user_metadata.full_name || user.email;
+                    if (avatarEl && user.user_metadata.avatar_url) {
+                        avatarEl.src = user.user_metadata.avatar_url;
+                    }
+                } else {
+                    if (getStartedBtn) getStartedBtn.style.display = 'inline-block';
+                    if (profileContainer) profileContainer.style.display = 'none';
                 }
-            } else {
-                if (getStartedBtn) getStartedBtn.style.display = 'inline-block';
-                if (profileContainer) profileContainer.style.display = 'none';
             }
-        }
 
-        const profileContainer = document.getElementById('profileContainer');
-        if (profileContainer) {
-            profileContainer.addEventListener('click', function (e) {
-                e.stopPropagation();
-                this.classList.toggle('active');
+            const profileContainer = document.getElementById('profileContainer');
+            if (profileContainer) {
+                profileContainer.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    this.classList.toggle('active');
+                });
+            }
+
+            document.addEventListener('click', function (e) {
+                const container = document.getElementById('profileContainer');
+                if (container && !container.contains(e.target)) {
+                    container.classList.remove('active');
+                }
             });
-        }
 
-        document.addEventListener('click', function (e) {
-            const container = document.getElementById('profileContainer');
-            if (container && !container.contains(e.target)) {
-                container.classList.remove('active');
-            }
+            document.getElementById('mobileMenuToggle').addEventListener('click', function () {
+                document.getElementById('navLinks').classList.toggle('active');
+            });
+
+            updateHeader();
         });
-
-        document.getElementById('mobileMenuToggle').addEventListener('click', function () {
-            document.getElementById('navLinks').classList.toggle('active');
-        });
-
-        updateHeader();
     </script>
 </body>
 

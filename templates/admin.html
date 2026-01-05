@@ -7,302 +7,13 @@
   <title>Admin Dashboard | Fuse-IN</title>
   <link rel="icon" href="../static/img/boni_avatar.jpg">
   <link rel="stylesheet" href="../static/css/styles.css">
-  <link rel="stylesheet" href="../static/css/navbar.css">
-  <style>
-    :root {
-      --sidebar-width: 280px;
-      --primary-blue: #3b82f6;
-      --bg-dark: #0f172a;
-      --bg-card: rgba(255, 255, 255, 0.05);
-      --border-color: rgba(255, 255, 255, 0.1);
-    }
 
-    body {
-      background: var(--bg-dark);
-      color: white;
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      display: flex;
-      height: 100vh;
-      overflow: hidden;
-    }
-
-    /* Sidebar */
-    .sidebar {
-      width: var(--sidebar-width);
-      background: rgba(15, 23, 42, 0.95);
-      border-right: 1px solid var(--border-color);
-      display: flex;
-      flex-direction: column;
-      position: fixed;
-      height: 100vh;
-      z-index: 100;
-    }
-
-    .sidebar-header {
-      padding: 2rem;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    .sidebar-nav {
-      padding: 2rem 1rem;
-      flex-grow: 1;
-    }
-
-    .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 0.75rem 1rem;
-      color: rgba(255, 255, 255, 0.6);
-      text-decoration: none;
-      border-radius: 0.75rem;
-      transition: all 0.3s ease;
-      margin-bottom: 0.5rem;
-      cursor: pointer;
-    }
-
-    .nav-item:hover,
-    .nav-item.active {
-      background: var(--bg-card);
-      color: white;
-    }
-
-    .nav-item ion-icon {
-      font-size: 1.25rem;
-    }
-
-    .sidebar-footer {
-      padding: 2rem;
-      border-top: 1px solid var(--border-color);
-    }
-
-    /* Main Content Area */
-    .main-content {
-      margin-left: var(--sidebar-width);
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      overflow: hidden;
-    }
-
-    .view-section {
-      display: none;
-      padding: 3rem;
-      overflow-y: auto;
-      height: 100%;
-      box-sizing: border-box;
-    }
-
-    .view-section.active {
-      display: block;
-    }
-
-    /* --- Overview Tab Styles --- */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 3rem;
-    }
-
-    .stat-card {
-      background: var(--bg-card);
-      padding: 1.5rem;
-      border-radius: 1rem;
-      border: 1px solid var(--border-color);
-    }
-
-    .table-container {
-      background: var(--bg-card);
-      border-radius: 1rem;
-      overflow: hidden;
-      border: 1px solid var(--border-color);
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    table th,
-    table td {
-      text-align: left;
-      padding: 1rem;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    table th {
-      background: rgba(0, 0, 0, 0.2);
-      font-weight: 600;
-      color: rgba(255, 255, 255, 0.7);
-    }
-
-    .search-box {
-      margin-bottom: 2rem;
-    }
-
-    .search-box input {
-      width: 100%;
-      max-width: 400px;
-      padding: 1rem;
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 0.5rem;
-      color: white;
-    }
-
-    /* --- Chat / Messages Tab Styles --- */
-    .chat-container {
-      display: flex;
-      height: 100%;
-      margin: -3rem;
-      /* Counteract padding to fill screen */
-      background: var(--bg-dark);
-    }
-
-    .user-list-sidebar {
-      width: 300px;
-      border-right: 1px solid var(--border-color);
-      background: rgba(15, 23, 42, 0.5);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .chat-main {
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      background: var(--bg-dark);
-    }
-
-    .user-item {
-      padding: 1rem;
-      border-bottom: 1px solid var(--border-color);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .user-item:hover,
-    .user-item.active {
-      background: rgba(255, 255, 255, 0.05);
-    }
-
-    .user-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: #334155;
-    }
-
-    /* --- Files Tab Styles --- */
-    .file-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .file-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 1rem;
-      padding: 1rem;
-      text-align: center;
-      transition: transform 0.2s;
-    }
-
-    .file-card:hover {
-      transform: translateY(-5px);
-      border-color: var(--primary-blue);
-    }
-
-    .file-icon {
-      font-size: 3rem;
-      color: rgba(255, 255, 255, 0.5);
-      margin-bottom: 1rem;
-    }
-
-    /* --- Notifications Tab Styles --- */
-    .notification-list {
-      max-width: 800px;
-    }
-
-    .notification-item {
-      background: var(--bg-card);
-      border-radius: 0.75rem;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      border-left: 4px solid var(--primary-blue);
-      display: flex;
-      align-items: start;
-      gap: 1rem;
-    }
-
-    .notification-time {
-      font-size: 0.8rem;
-      color: rgba(255, 255, 255, 0.4);
-      white-space: nowrap;
-    }
-
-    .badge-count {
-      background: #ef4444;
-      color: white;
-      font-size: 0.7rem;
-      padding: 0.1rem 0.4rem;
-      border-radius: 1rem;
-      margin-left: auto;
-    }
-  </style>
+  <link rel="stylesheet" href="../static/css/layout.css">
+  <link rel="stylesheet" href="../static/css/admin-styles.css">
 </head>
 
 <body>
-  <aside class="sidebar">
-    <div class="sidebar-header">
-      <a href="/" class="logo-container"
-        style="display:flex; align-items:center; gap:1rem; text-decoration:none; color:white;">
-        <img src="../static/img/boni_avatar.jpg" alt="Logo" style="width: 32px; height: 32px; border-radius: 50%;">
-        <span class="logo-text" style="font-weight: 700; font-size: 1.25rem;">Bonniface|Admin</span>
-      </a>
-    </div>
-    <nav class="sidebar-nav">
-      <div class="nav-item active" onclick="switchTab('overview', this)">
-        <ion-icon name="grid-outline"></ion-icon>
-        Overview
-      </div>
-      <div class="nav-item" onclick="switchTab('messages', this)">
-        <ion-icon name="chatbubbles-outline"></ion-icon>
-        Messages
-        <span class="badge-count">3</span>
-      </div>
-      <div class="nav-item" onclick="switchTab('files', this)">
-        <ion-icon name="folder-open-outline"></ion-icon>
-        Files
-      </div>
-      <div class="nav-item" onclick="switchTab('notifications', this)">
-        <ion-icon name="notifications-outline"></ion-icon>
-        Notifications
-        <span class="badge-count">5</span>
-      </div>
-      <div class="nav-item" onclick="alert('Settings view coming soon')">
-        <ion-icon name="settings-outline"></ion-icon>
-        Settings
-      </div>
-    </nav>
-    <div class="sidebar-footer">
-      <form action="/logout" method="POST" style="margin:0;">
-        <button type="submit" style="background:transparent; border:none; width:100%; text-align:left; padding:0;"
-          class="nav-item">
-          <span style="display:flex; align-items:center; gap:1rem; color:#ef4444; font-weight:600;">
-            <ion-icon name="log-out-outline"></ion-icon>
-            Logout
-          </span>
-        </button>
-      </form>
-    </div>
-  </aside>
+  {% include 'components/admin_sidebar.html' %}
 
   <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
@@ -539,10 +250,10 @@
 
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="../static/js/supabase_init.js"></script>
-  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="../static/js/supabase_init.js"></script>
+  <script defer type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script defer nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
   <script src="../static/js/sidebar.js"></script>
   <script>
     // Init Global Data
@@ -671,9 +382,9 @@
     }
 
     // Initial Load
-    window.addEventListener('load', () => {
+    document.addEventListener('DOMContentLoaded', () => {
       fetchProjects();
-      fetchNotifications(); // Pre-load to show badge counts eventually
+      fetchNotifications();
     });
   </script>
 </body>
