@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard | Bonniface</title>
     <link rel="stylesheet" href="../static/css/styles.css">
-
     <link rel="stylesheet" href="../static/css/layout.css">
 </head>
 
@@ -18,23 +17,16 @@
     <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
     <main class="main-content">
-        <!-- Mobile Header -->
-        <div class="mobile-header">
-            <button class="mobile-menu-btn" onclick="toggleSidebar()">
-                <ion-icon name="menu-outline"></ion-icon>
-            </button>
-            <span style="font-weight: 700; font-size: 1.25rem;">Bonniface</span>
-            <div style="width: 32px;"></div> <!-- Spacer -->
-        </div>
-
-        <header class="dashboard-header">
+        <header class="dashboard-header"
+            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
             <div>
                 <h1 id="welcomeText">Welcome back!</h1>
                 <p style="color: rgba(255,255,255,0.5);">Here's what's happening with your projects.</p>
             </div>
-            <div class="user-profile">
+            <div class="user-profile" style="display: flex; align-items: center; gap: 1rem;">
                 <span id="userName">User</span>
-                <img id="userAvatar" src="../static/img/boni_avatar.jpg" alt="Avatar" class="user-avatar">
+                <img id="userAvatar" src="../static/img/boni_avatar.jpg" alt="Avatar" class="user-avatar"
+                    style="width: 40px; height: 40px; border-radius: 50%;">
             </div>
         </header>
 
@@ -60,39 +52,57 @@
         </div>
     </main>
 
+    <!-- Scripts -->
     <script>
-        window.SUPABASE_URL = "https://sefuxvdhfgylmlqdrhoh.supabase.co";
-        window.SUPABASE_ANON_KEY = "sb_publishable_5KdCsyhbO5dGmopJfa0Ycg_GA2R50v9";
+        window.SUPABASE_URL = "{{ SUPABASE_URL }}";
+        window.SUPABASE_ANON_KEY = "{{ SUPABASE_ANON_KEY }}";
     </script>
     <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script defer src="../static/js/supabase_init.js"></script>
     <script defer type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script defer nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <script src="../static/js/sidebar.js"></script>
-    <script>
+    <script defer src="../static/js/sidebar.js"></script>
 
+    <script>
         async function initDashboard() {
             try {
                 if (typeof window.supabaseClient === 'undefined') {
+                    // Small delay to ensure deferred scripts are available
+                    if (!window.supabaseRetryCount) window.supabaseRetryCount = 0;
+                    if (window.supabaseRetryCount < 5) {
+                        window.supabaseRetryCount++;
+                        setTimeout(initDashboard, 200);
+                        return;
+                    }
                     throw new Error('Supabase client not initialized');
                 }
                 const session = await window.supabaseClient.checkSession();
                 if (!session) {
-                    window.location.href = 'login.html';
+                    window.location.href = '/login';
                     return;
                 }
 
                 const user = session.user;
                 document.getElementById('userName').textContent = user.user_metadata.full_name || user.email;
                 document.getElementById('welcomeText').textContent = `Welcome back, ${user.user_metadata.full_name || 'User'}!`;
+
                 if (user.user_metadata.avatar_url) {
-                    document.getElementById('userAvatar').src = user.user_metadata.avatar_url;
+                    const avatarUrl = user.user_metadata.avatar_url;
+                    document.getElementById('userAvatar').src = avatarUrl;
+
+                    // Update mobile avatar if present
+                    const mobileAvatar = document.getElementById('mobileAvatar');
+                    if (mobileAvatar) mobileAvatar.src = avatarUrl;
+
+                    // Update header avatar in sidebar
+                    const headerAvatar = document.querySelector('.sidebar .logo-img');
+                    if (headerAvatar) headerAvatar.src = avatarUrl;
                 }
 
             } catch (error) {
                 console.error('Dashboard init error:', error);
                 alert('Dashboard failed to load: ' + error.message);
-                window.location.href = 'login.html';
+                window.location.href = '/login';
             }
         }
 

@@ -1,24 +1,12 @@
-from flask import (
-    Flask,
-    render_template,
-    session,
-    render_template_string,
-    request,
-    redirect,
-    url_for,
-)
-from flask_mail import Mail, Message
+import os
 import datetime
 import random
-import os
-
+from flask import Flask, render_template, session, render_template_string, request, redirect, url_for
+from flask_mail import Mail, Message
+from flask_bcrypt import Bcrypt
 from dotenv import load_dotenv
 from werkzeug.utils import secure_filename
 from services import get_data_manager, get_email_service
-import os
-
-from dotenv import load_dotenv
-from werkzeug.utils import secure_filename
 
 # ---------------- INITIAL SETUP ----------------
 load_dotenv()
@@ -40,6 +28,7 @@ app.config["MAIL_USE_TLS"] = True
 app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME")  # Your email
 app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD")  # Your app password
 mail = Mail(app)
+bcrypt = Bcrypt(app)
 
 # ---------------- SERVICES SETUP ----------------
 data_manager = get_data_manager("Client_Project_Submissions")
@@ -51,8 +40,8 @@ email_service = get_email_service(app, mail)
 @app.context_processor
 def inject_supabase():
     return dict(
-        SUPABASE_URL=os.getenv("SUPABASE_URL"),
-        SUPABASE_ANON_KEY=os.getenv("SUPABASE_ANON_KEY"),
+        SUPABASE_URL=os.getenv("SUPABASE_URL") or "https://sefuxvdhfgylmlqdrhoh.supabase.co",
+        SUPABASE_ANON_KEY=os.getenv("SUPABASE_ANON_KEY") or "sb_publishable_5KdCsyhbO5dGmopJfa0Ycg_GA2R50v9",
     )
 
 
@@ -154,15 +143,24 @@ def login():
 def dashboard():
     return render_template("dashboard.html")
 
-
 @app.route("/oauth/consent")
 def oauth_consent():
-    """OAuth consent page route."""
     return render_template("oauth_consent.html")
 
+@app.route("/messages")
+def messages():
+    return render_template("messages.html")
+
+@app.route("/billings")
+def billings():
+    return render_template("billings.html")
+
+@app.route("/settings")
+def settings():
+    return render_template("settings.html")
 
 @app.route("/start-project")
-def form_page():
+def start_project():
     return render_template("start-project.html")
 
 
@@ -324,10 +322,11 @@ def admin_login():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
-        if username == os.getenv("ADMIN_USER") and password == os.getenv(
-                "ADMIN_PASS"):
+        admin_user = os.getenv("ADMIN_USER")
+        admin_pass_hash = os.getenv("ADMIN_PASS") # Should be a BCRPYT hash
+        if username == admin_user and (admin_pass_hash and bcrypt.check_password_hash(admin_pass_hash, password)):
             session["admin_logged_in"] = True
-            return redirect(url_for("dashboard"))
+            return redirect(url_for("admin_dashboard"))
         else:
             return render_template_string("""
             <html><body style='background:#0f172a;color:white;text-align:center;padding-top:20%;font-family:Inter;'>
@@ -335,7 +334,7 @@ def admin_login():
             """)
 
     if "admin_logged_in" in session:
-        return redirect(url_for("dashboard"))
+        return redirect(url_for("admin_dashboard"))
 
     return render_template_string("""
     <html><body style='background:#0f172a;color:white;text-align:center;padding-top:10%;font-family:Inter;'>
@@ -349,8 +348,8 @@ def admin_login():
     """)
 
 
-@app.route("/dashboard")
-def dashboard():
+@app.route("/admin/dashboard")
+def admin_dashboard():
     """Admin dashboard view."""
     if "admin_logged_in" not in session:
         return redirect(url_for("admin_login"))
@@ -358,8 +357,6 @@ def dashboard():
     data = []
     # Get all values from data manager
     data = data_manager.get_all_values()
-    if data and len(data) > 1:
-         data = data[1:] # skip header if it exists
     
     # Analytics
     total_projects = len(data)

@@ -186,6 +186,74 @@
     right: 0;
 }
 
+/* Profile Dropdown (Supabase Auth) */
+.profile-container {
+    position: relative;
+    display: none;
+    /* Hidden by default until auth check */
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+}
+
+.profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #3b82f6;
+    transition: transform 0.3s ease;
+}
+
+.profile-container:hover .profile-img {
+    transform: scale(1.05);
+}
+
+.profile-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: #1e293b;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.75rem;
+    padding: 0.5rem;
+    min-width: 200px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    margin-top: 0.75rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.profile-container.active .profile-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 0.5rem 0;
+}
+
 /* Media query for mobile responsiveness */
 .mobile-menu-toggle {
     display: none;

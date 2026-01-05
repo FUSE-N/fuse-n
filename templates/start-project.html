@@ -7,102 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Start Project | Bonniface</title>
     <link rel="stylesheet" href="../static/css/styles.css">
-
     <link rel="stylesheet" href="../static/css/layout.css">
-    <style>
-        .page-header {
-            margin-bottom: 3rem;
-            max-width: 800px;
-        }
-
-        .form-card {
-            background: var(--bg-card);
-            backdrop-filter: blur(10px);
-            border-radius: 1.5rem;
-            border: 1px solid var(--border-color);
-            padding: 2.5rem;
-            max-width: 800px;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: rgba(255, 255, 255, 0.8);
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-
-        .form-input,
-        .form-select,
-        .form-textarea {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid var(--border-color);
-            padding: 0.875rem;
-            border-radius: 0.75rem;
-            color: white;
-            font-family: inherit;
-            font-size: 1rem;
-            transition: border-color 0.2s;
-            box-sizing: border-box;
-        }
-
-        .form-input:focus,
-        .form-select:focus,
-        .form-textarea:focus {
-            outline: none;
-            border-color: var(--primary-blue);
-            background: rgba(0, 0, 0, 0.3);
-        }
-
-        .form-select option {
-            background: #1e293b;
-            color: white;
-        }
-
-        .form-textarea {
-            resize: vertical;
-            min-height: 150px;
-        }
-
-        .file-upload-wrapper {
-            position: relative;
-            background: rgba(0, 0, 0, 0.2);
-            border: 2px dashed var(--border-color);
-            border-radius: 0.75rem;
-            padding: 2rem;
-            text-align: center;
-            transition: all 0.2s;
-            cursor: pointer;
-        }
-
-        .file-upload-wrapper:hover {
-            border-color: var(--primary-blue);
-            background: rgba(59, 130, 246, 0.05);
-        }
-
-        .btn-submit {
-            background: var(--primary-blue);
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 0.75rem;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 1rem;
-            transition: background 0.2s;
-        }
-
-        .btn-submit:hover {
-            background: #2563eb;
-        }
-    </style>
 </head>
 
 <body>
@@ -112,121 +17,117 @@
     <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
     <main class="main-content">
-        <!-- Mobile Header -->
-        <div class="mobile-header">
-            <button class="mobile-menu-btn" onclick="toggleSidebar()">
-                <ion-icon name="menu-outline"></ion-icon>
-            </button>
-            <span style="font-weight: 700; font-size: 1.25rem;">Start Project</span>
-        </div>
         <header class="page-header">
             <h1>Start Your Project</h1>
             <p style="color: rgba(255,255,255,0.5);">Tell me about your project so I can help you get the best possible
-                solution.</p>
+                result.</p>
         </header>
 
-        <div class="form-card">
-            <form id="projectForm" onsubmit="handleProjectSubmit(event)">
-                <div class="form-group">
-                    <label class="form-label">Project Title</label>
-                    <input type="text" class="form-input" name="title"
-                        placeholder="e.g., Predictive Analytics for Sales" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Service Type</label>
-                    <select class="form-select" name="service" required>
-                        <option value="">Select a Service</option>
-                        <option>Web Design & Development</option>
-                        <option>Academic Research & Reports</option>
-                        <option>Data Analysis & Visualization</option>
-                        <option>AI Integration for Businesses</option>
-                        <option>AI Automation & Workflows</option>
-                        <option>IT Consulting</option>
-                        <option>Machine Learning Solutions</option>
-                        <option>Business Intelligence Consulting</option>
-                        <option>System Integration & APIs</option>
-                        <option>Ongoing Support</option>
-                        <option>Other</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Project Description</label>
-                    <textarea class="form-textarea" name="description"
-                        placeholder="Briefly describe your project, objectives, and expected outcome..."
-                        required></textarea>
-                </div>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+        <div class="content-card">
+            <form id="startProjectForm" onsubmit="handleProjectSubmit(event)">
+                <div class="form-grid">
                     <div class="form-group">
-                        <label class="form-label">Expected Deadline</label>
-                        <input type="date" class="form-input" name="deadline">
+                        <label class="form-label">Project Title</label>
+                        <input type="text" name="title" class="form-input"
+                            placeholder="e.g., E-commerce App Development" required>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Estimated Budget (USD/GHS)</label>
-                        <input type="text" class="form-input" name="budget" placeholder="e.g., $300">
+                        <label class="form-label">Service Type</label>
+                        <select name="service" class="form-input" required>
+                            <option value="" disabled selected>Select a service</option>
+                            <option>Web Design & Development</option>
+                            <option>Academic Research & Reports</option>
+                            <option>Data Analysis & Visualization</option>
+                            <option>AI Integration for Businesses</option>
+                            <option>AI Automation & Workflows</option>
+                            <option>IT Consulting</option>
+                            <option>Machine Learning Solutions</option>
+                            <option>Business Intelligence Consulting</option>
+                            <option>System Integration & APIs</option>
+                            <option>Ongoing Support</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label class="form-label">Project Description</label>
+                        <textarea name="description" class="form-input" rows="5"
+                            placeholder="Briefly describe your project goals, target audience, and any specific requirements..."
+                            required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Desired Deadline</label>
+                        <input type="date" name="deadline" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Estimated Budget (USD)</label>
+                        <input type="text" name="budget" class="form-input" placeholder="e.g., $1,000" required>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">Preferred Tools (Optional)</label>
-                    <input type="text" class="form-input" name="tools" placeholder="e.g., Python, TensorFlow, Flask">
+                <div class="form-group" style="margin-top: 1.5rem;">
+                    <label class="form-label">Payment Method</label>
+                    <div style="display: flex; gap: 2rem; margin-top: 0.5rem;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="radio" name="payment_method" value="pay_now" checked
+                                onchange="updateSubmitButton()">
+                            <span>Pay 50% Deposit Now</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="radio" name="payment_method" value="pay_later" onchange="updateSubmitButton()">
+                            <span>Request Invoice (Pay Later)</span>
+                        </label>
+                    </div>
                 </div>
 
-        </div>
-
-        <div class="form-group">
-            <label class="form-label">Payment Preference</label>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                <label
-                    style="background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); padding: 1rem; border-radius: 0.75rem; cursor: pointer; display: flex; align-items: center; gap: 0.75rem;">
-                    <input type="radio" name="payment_method" value="pay_now" checked onchange="updateSubmitButton()">
-                    <div>
-                        <div style="font-weight: 600;">Pay 50% Deposit</div>
-                        <div style="font-size: 0.8rem; opacity: 0.7;">Secure your slot immediately</div>
+                <div class="form-group" style="margin-top: 2rem;">
+                    <label class="form-label">Attachments (Optional)</label>
+                    <div class="file-upload-wrapper" onclick="document.getElementById('projectFile').click()">
+                        <ion-icon name="cloud-upload-outline"
+                            style="font-size: 2rem; color: var(--primary-blue); margin-bottom: 0.5rem;"></ion-icon>
+                        <div style="font-weight: 500;">Click to upload files</div>
+                        <div style="font-size: 0.875rem; color: rgba(255,255,255,0.5);">CSV, PDF, DOCX, ZIP (Max 10MB)
+                        </div>
+                        <input type="file" id="projectFile" hidden
+                            onchange="alert('File selected: ' + this.files[0].name)">
                     </div>
-                </label>
-                <label
-                    style="background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); padding: 1rem; border-radius: 0.75rem; cursor: pointer; display: flex; align-items: center; gap: 0.75rem;">
-                    <input type="radio" name="payment_method" value="pay_later" onchange="updateSubmitButton()">
-                    <div>
-                        <div style="font-weight: 600;">Request Invoice</div>
-                        <div style="font-size: 0.8rem; opacity: 0.7;">Pay later (Subject to review)</div>
-                    </div>
-                </label>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="form-label">Project Files (Optional)</label>
-            <div class="file-upload-wrapper" onclick="document.getElementById('projectFile').click()">
-                <ion-icon name="cloud-upload-outline"
-                    style="font-size: 2rem; color: var(--primary-blue); margin-bottom: 0.5rem;"></ion-icon>
-                <div style="font-weight: 500;">Click to upload files</div>
-                <div style="font-size: 0.875rem; color: rgba(255,255,255,0.5);">CSV, PDF, DOCX, ZIP (Max 10MB)
                 </div>
-                <input type="file" id="projectFile" hidden onchange="alert('File selected: ' + this.files[0].name)">
-            </div>
-        </div>
 
-        <button type="submit" class="btn-submit">Submit Request</button>
-        </form>
+                <button type="submit" class="btn-submit">Submit Request</button>
+            </form>
         </div>
     </main>
 
+    <!-- Scripts -->
+    <script>
+        window.SUPABASE_URL = "{{ SUPABASE_URL }}";
+        window.SUPABASE_ANON_KEY = "{{ SUPABASE_ANON_KEY }}";
+    </script>
     <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://js.paystack.co/v1/inline.js"></script>
     <script defer src="../static/js/supabase_init.js"></script>
-    <script src="../static/js/sidebar.js"></script>
     <script defer type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script defer nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script defer src="../static/js/sidebar.js"></script>
+
     <script>
         // Session Check
         async function checkAccess() {
-            const session = await window.supabaseClient.checkSession();
-            if (!session) {
-                window.location.href = 'login.html';
+            try {
+                if (typeof window.supabaseClient === 'undefined') {
+                    // Small delay to ensure deferred scripts are available
+                    if (!window.supabaseRetryCount) window.supabaseRetryCount = 0;
+                    if (window.supabaseRetryCount < 5) {
+                        window.supabaseRetryCount++;
+                        setTimeout(checkAccess, 200);
+                        return;
+                    }
+                }
+                const session = await window.supabaseClient.checkSession();
+                if (!session) {
+                    window.location.href = '/login';
+                }
+            } catch (error) {
+                console.error('Access check error:', error);
             }
         }
         document.addEventListener('DOMContentLoaded', checkAccess);
@@ -274,9 +175,6 @@
             // Validation: Check Minimum Budget (Skip if Other or not in map)
             if (minPrice > 0 && budget < minPrice) {
                 alert(`The minimum budget for ${selectedService} is $${minPrice}. Please increase your budget.`);
-                btn.disabled = false;
-                btn.innerText = originalText;
-                btn.style.opacity = "1";
                 return;
             }
 
@@ -303,16 +201,13 @@
                     if (budget <= 0) throw new Error("Please enter a valid budget amount to calculate deposit.");
                     btn.innerText = "Processing...";
 
-                    // Trigger Paystack Integration
-                    // Calculate 50% deposit in kobo/cents. Assuming GHS for now as default currency context.
-                    // 1 unit = 100 kobo.
                     const depositAmount = (budget * 0.5) * 100;
 
                     const handler = PaystackPop.setup({
-                        key: 'pk_test_64a5e8550ef53bf8089e4c109e49def1341b2235', // Use User's Test Key
+                        key: 'pk_test_64a5e8550ef53bf8089e4c109e49def1341b2235',
                         email: session.user.email,
                         amount: depositAmount,
-                        currency: 'GHS', // Could make this dynamic if needed
+                        currency: 'GHS',
                         ref: '' + Math.floor((Math.random() * 1000000000) + 1),
                         callback: async function (response) {
                             // Payment Success
@@ -352,15 +247,14 @@
         }
 
         async function saveProject(data, userId, note) {
-            // Save project
-            const { error } = await window.supabase
+            const { error } = await window.supabaseClient.supabase
                 .from('projects')
                 .insert([data]);
 
             if (error) throw error;
 
             // Notification
-            await window.supabase
+            await window.supabaseClient.supabase
                 .from('notifications')
                 .insert([{
                     user_id: userId,

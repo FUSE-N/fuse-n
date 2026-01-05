@@ -1,0 +1,57 @@
+<header>
+    <div class="container">
+        <nav class="navbar">
+            <a href="{{ url_for('home') }}" class="logo-container">
+                <img src="{{ url_for('static', filename='img/boni_avatar.jpg') }}" alt="Bonniface Logo">
+                <span class="logo">Bonniface</span>
+            </a>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Menu"
+                style="display: none; background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">
+                ☰
+            </button>
+            <div class="nav-links" id="navLinks">
+                <div class="dropdown">
+                    <a href="{{ url_for('home') }}#services" class="dropbtn">Services</a>
+                    <div class="dropdown-content">
+                        <a href="{{ url_for('home') }}#consulting">Consulting</a>
+                        <a href="{{ url_for('home') }}#data-analysis">Data Analysis & Visualization</a>
+                        <a href="{{ url_for('home') }}#ai-automation">AI Evaluating & Automation</a>
+                        <a href="{{ url_for('home') }}#research-reports">Research Analyst</a>
+                        <a href="{{ url_for('home') }}#system-integration">System Integration</a>
+                    </div>
+                </div>
+                <a href="{{ url_for('home') }}"> Explore</a>
+                <a href="{{ url_for('home') }}#portfolio">Portfolio</a>
+                <a href="{{ url_for('home') }}#about">About</a>
+                <a href="{{ url_for('home') }}">Careers</a>
+
+                <a href="{{ url_for('login') }}" class="btn btn-primary btn-get-started" id="getStartedBtn">Get
+                    Started</a>
+
+                <div class="profile-container" id="profileContainer" style="display: none;">
+                    <img src="{{ url_for('static', filename='img/boni_avatar.jpg') }}" alt="Profile" class="profile-img"
+                        id="headerAvatar">
+                    <div class="profile-dropdown">
+                        <div style="padding: 0.5rem 1rem; font-size: 0.875rem; color: rgba(255,255,255,0.5);"
+                            id="headerUserName">User</div>
+                        <div class="dropdown-divider"></div>
+                        <a href="{{ url_for('dashboard') }}" class="dropdown-item">
+                            <ion-icon name="grid-outline"></ion-icon>
+                            Dashboard
+                        </a>
+                        <a href="{{ url_for('start_project') }}" class="dropdown-item">
+                            <ion-icon name="rocket-outline"></ion-icon>
+                            Start Project
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a onclick="supabaseClient.signOut()" class="dropdown-item"
+                            style="color: #ef4444; cursor: pointer;">
+                            <ion-icon name="log-out-outline"></ion-icon>
+                            Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>

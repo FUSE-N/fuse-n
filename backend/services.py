@@ -1,13 +1,114 @@
 import os
 import json
 import datetime
-import gspread
-from oauth2client.service_account import ServiceAccountCredentials
 from flask_mail import Message
-import firebase_admin
-from firebase_admin import credentials, firestore
+from supabase import create_client, Client
 
-# Abstract Interfaces (Implicit)
+class SupabaseDataManager:
+    def __init__(self, collection_name):
+        self.url = os.getenv("SUPABASE_URL")
+        # Prefer Service Role Key for backend operations
+        self.key = os.getenv("SUPABASE_SERVICE_ROLE_KEY") or os.getenv("SUPABASE_ANON_KEY")
+        self.table_name = collection_name.lower().replace(" ", "_")
+        
+        if not self.url or not self.key:
+            self.supabase = None
+            print(f"[Warn] Supabase credentials missing for {collection_name}")
+        else:
+            try:
+                self.supabase: Client = create_client(self.url, self.key)
+            except Exception as e:
+                self.supabase = None
+                print(f"[Error] Failed to initialize Supabase client: {e}")
+
+    def append_row(self, data):
+        if not self.supabase:
+            print("[Error] Supabase client not initialized")
+            return
+        
+        # Map list to dictionary
+        if self.table_name == "client_project_submissions":
+            row_data = {
+                "date_submitted": data[0],
+                "project_id": data[1],
+                "name": data[2],
+                "email": data[3],
+                "title": data[4],
+                "service": data[5],
+                "description": data[6],
+                "tools": data[7],
+                "deadline": data[8],
+                "budget": data[9],
+                "file_path": data[10]
+            }
+        elif self.table_name == "community_posts":
+            row_data = {
+                "date_posted": data[0],
+                "name": data[1],
+                "content": data[2]
+            }
+        elif self.table_name == "activity_log":
+            row_data = {
+                "timestamp": data[0],
+                "activity_type": data[1],
+                "details": data[2]
+            }
+        else:
+            row_data = {"raw_data": data}
+
+        try:
+            self.supabase.table(self.table_name).insert(row_data).execute()
+        except Exception as e:
+            print(f"[Error] Failed to save to Supabase: {e}")
+
+    def get_all_values(self):
+        if not self.supabase:
+            return []
+        try:
+            # Note: We assume 'id' or 'timestamp' exists for ordering
+            order_col = "timestamp" if self.table_name == "activity_log" else "id"
+            # Attempt to select all and order
+            try:
+                response = self.supabase.table(self.table_name).select("*").order(order_col, descending=True).execute()
+            except:
+                response = self.supabase.table(self.table_name).select("*").execute()
+            
+            data = response.data
+            all_rows = []
+            for row in data:
+                if self.table_name == "client_project_submissions":
+                    all_rows.append([
+                        row.get("date_submitted"),
+                        row.get("project_id"),
+                        row.get("name"),
+                        row.get("email"),
+                        row.get("title"),
+                        row.get("service"),
+                        row.get("description"),
+                        row.get("tools"),
+                        row.get("deadline"),
+                        row.get("budget"),
+                        row.get("file_path")
+                    ])
+                elif self.table_name == "community_posts":
+                    all_rows.append([
+                        row.get("date_posted"),
+                        row.get("name"),
+                        row.get("content")
+                    ])
+                elif self.table_name == "activity_log":
+                    all_rows.append([
+                        row.get("timestamp"),
+                        row.get("activity_type"),
+                        row.get("details")
+                    ])
+                else:
+                    # Fallback for generic tables
+                    all_rows.append(row.get("raw_data", []))
+            return all_rows
+        except Exception as e:
+            print(f"[Error] Failed to fetch from Supabase: {e}")
+            return []
 
 class LocalDataManager:
     def __init__(self, collection_name="data"):
@@ -28,74 +129,15 @@ class LocalDataManager:
         
         with open(self.filename, 'w') as f:
             json.dump(db_data, f, indent=4)
-        print(f"[DEV] Data saved to {self.filename}: {data}")
 
     def get_all_values(self):
         """Return all data as a list of lists."""
         try:
             with open(self.filename, 'r') as f:
-                return json.load(f)
+                data = json.load(f)
+                return data[::-1] # Newest first locally too
         except Exception:
             return []
-
-class GSheetsDataManager:
-    def __init__(self, credentials_file, scope, sheet_name):
-        self.creds = ServiceAccountCredentials.from_json_keyfile_name(credentials_file, scope)
-        self.client = gspread.authorize(self.creds)
-        try:
-            self.sheet = self.client.open(sheet_name).sheet1
-        except gspread.exceptions.SpreadsheetNotFound:
-            # Fallback or create? For now just print warning and fail gracefully similar to init
-            print(f"Warning: Sheet '{sheet_name}' not found.")
-            self.sheet = None
-
-    def append_row(self, data):
-        if self.sheet:
-            self.sheet.append_row(data)
-        else:
-            print(f"[Warn] No sheet found for append_row")
-
-    def get_all_values(self):
-        if self.sheet:
-            return self.sheet.get_all_values()
-        return []
-
-class FirebaseDataManager:
-    def __init__(self, key_path, collection_name):
-        if not firebase_admin._apps:
-            cred = credentials.Certificate(key_path)
-            firebase_admin.initialize_app(cred)
-        self.db = firestore.client()
-        self.collection_name = collection_name
-        print(f"[INFO] Initialized Firebase for {collection_name}")
-
-    def append_row(self, data):
-        # Data is a list. We need to convert to dict for Firestore or simple document.
-        # For simplicity similar to sheets, let's create a doc with timestamp.
-        # But wait, the app passes a list. We should key it properly or just store as 'data': list
-        # detailed mapping would be better but let's stick to list storage for compatibility or minimal refactor.
-        # Actually, let's map it if we can, or just store the raw list.
-        # Storing as list:
-        doc_data = {
-            "created_at": datetime.datetime.now(),
-            "raw_data": data
-            # If we knew the schema here we could map it, e.g. name=data[2]
-            # But the DataManager interface is generic 'append_row'.
-            # Let's trust usage of 'raw_data' or try to map if list length matches known schemas.
-            # A generic `raw_data` field is safest for a "list append" abstraction.
-            # HOWEVER, existing templates (admin.html, community.html) expect a LIST (row[0], row[1]...)
-            # So when we read back, we must return a LIST.
-        }
-        self.db.collection(self.collection_name).add(doc_data)
-
-    def get_all_values(self):
-        docs = self.db.collection(self.collection_name).stream()
-        all_rows = []
-        for doc in docs:
-            d = doc.to_dict()
-            if "raw_data" in d:
-                all_rows.append(d["raw_data"])
-        return all_rows
 
 class ConsoleEmailService:
     def send_email(self, subject, recipients, body, attachment_path=None, app_instance=None):
@@ -103,7 +145,6 @@ class ConsoleEmailService:
         print(f" [DEV] MOCK EMAIL SENT")
         print(f" To: {recipients}")
         print(f" Subject: {subject}")
-        print(f" Attch: {attachment_path}")
         print("-" * 10)
         print(body)
         print("="*30 + "\n")
@@ -113,8 +154,7 @@ class FlaskMailService:
         self.mail = mail_instance
         self.sender = sender
 
-    def send_email(self, subject, recipients, body, attachment_path=None, attachment_name=None, app_instance=None):
-        # app_instance needed for open_resource context if not in request context
+    def send_email(self, subject, recipients, body, attachment_path=None, attachment_name=None):
         msg = Message(subject=subject, sender=self.sender, recipients=recipients)
         msg.body = body
         
@@ -126,24 +166,14 @@ class FlaskMailService:
         try:
             self.mail.send(msg)
         except Exception as e:
-            print(f"Error sending email via Flask-Mail: {e}")
+            print(f"Error sending email: {e}")
 
 # Factory / Setup
 def get_data_manager(collection_name):
-    # Check for Firebase Key
-    if os.path.exists("firebase_key.json"):
-        try:
-            return FirebaseDataManager("firebase_key.json", collection_name)
-        except Exception as e:
-            print(f"Failed to init Firebase: {e}")
-
-    # Check for GSheets credentials (Legacy/Alternative)
-    if os.path.exists("credentials.json"):
-        try:
-            scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-            return GSheetsDataManager("credentials.json", scope, collection_name)
-        except Exception as e:
-            print(f"Failed to init GSheets for {collection_name}: {e}. Falling back to Local.")
+    # Prefer Supabase
+    if os.getenv("SUPABASE_URL") and (os.getenv("SUPABASE_SERVICE_ROLE_KEY") or os.getenv("SUPABASE_ANON_KEY")):
+        return SupabaseDataManager(collection_name)
+    # Fallback to Local JSON
     return LocalDataManager(collection_name)
 
 def get_email_service(app, mail):

@@ -1,6 +1,5 @@
-// Supabase Initialization
-const supabaseUrl = "https://sefuxvdhfgylmlqdrhoh.supabase.co";
-const supabaseAnonKey = "sb_publishable_5KdCsyhbO5dGmopJfa0Ycg_GA2R50v9";
+const supabaseUrl = (window.SUPABASE_URL && window.SUPABASE_URL !== 'None' && !window.SUPABASE_URL.includes('{{')) ? window.SUPABASE_URL : "https://sefuxvdhfgylmlqdrhoh.supabase.co";
+const supabaseAnonKey = (window.SUPABASE_ANON_KEY && window.SUPABASE_ANON_KEY !== 'None' && !window.SUPABASE_ANON_KEY.includes('{{')) ? window.SUPABASE_ANON_KEY : "sb_publishable_5KdCsyhbO5dGmopJfa0Ycg_GA2R50v9";
 
 let _supabaseInstance;
 

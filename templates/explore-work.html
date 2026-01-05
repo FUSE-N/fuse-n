@@ -3,36 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="../static/img/boni_avatar.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Explore | Bonniface Freelance</title>
+    <title>Explore | Bonniface</title>
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <link rel="stylesheet" href="../static/css/navbar.css">
     <style>
-        :root {
-            --bg-dark: #0f172a;
-            --bg-darker: #0f172a;
-            --light: #f1f5f9;
-            --card-bg: rgba(255, 255, 255, 0.06);
-            --card-border: rgba(255, 255, 255, 0.1);
-            --accent: #7c3aed;
-            --glass: rgba(255, 255, 255, 0.04);
-            --muted: rgba(255, 255, 255, 0.7);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-            background: linear-gradient(135deg, var(--bg-dark), #071024);
-            color: var(--light);
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            min-height: 100vh;
-        }
-
-        /* Hero Section */
         .hero-section {
             min-height: 100vh;
             display: flex;
@@ -41,6 +17,7 @@
             position: relative;
             overflow: hidden;
             text-align: center;
+            background: #0f172a;
         }
 
         .hero-bg {
@@ -50,33 +27,30 @@
             width: 100%;
             height: 100%;
             z-index: 0;
-            background-image: url('../assets/bg-img/header-bg0.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             animation: bgSlide 24s infinite;
-            box-shadow: inset 0 0 0 1000px rgba(15, 23, 42, 0.85);
+            filter: brightness(0.4);
         }
 
         @keyframes bgSlide {
-            0% {
-                background-image: url('../assets/bg-img/header-bg1.png');
+
+            0%,
+            100% {
+                background-image: url('https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=2070&auto=format&fit=crop');
             }
 
             25% {
-                background-image: url('../assets/bg-img/header-bg2.png');
+                background-image: url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop');
             }
 
             50% {
-                background-image: url('../assets/bg-img/header-bg3.png');
+                background-image: url('https://images.unsplash.com/photo-1504384308090-c89e1d2e131?q=80&w=2070&auto=format&fit=crop');
             }
 
             75% {
-                background-image: url('../assets/bg-img/header-bg4.png');
-            }
-
-            100% {
-                background-image: url('../assets/bg-img/header-bg1.png');
+                background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop');
             }
         }
 
@@ -85,276 +59,71 @@
             z-index: 2;
             max-width: 800px;
             padding: 2rem;
+            color: white;
         }
 
         .hero-content h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
+            font-size: 4rem;
             font-weight: 700;
-            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
         }
 
         .hero-content p {
             font-size: 1.25rem;
-            margin-bottom: 2rem;
             opacity: 0.9;
-            line-height: 1.6;
+            margin-bottom: 3rem;
         }
 
         .hero-actions {
             display: flex;
-            gap: 1rem;
+            gap: 1.5rem;
             justify-content: center;
-            flex-wrap: wrap;
         }
 
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: transparent;
-            color: var(--light);
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-
-        .btn-primary {
-            background: linear-gradient(90deg, var(--accent), #4f46e5);
-            border: none;
-            color: white;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .hero-indicators {
-            position: absolute;
-            bottom: 2rem;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-            z-index: 3;
-        }
-
-        .indicator {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .indicator.active {
-            background: var(--accent);
-            transform: scale(1.2);
-        }
-
-        .down-arrow-indicator {
-            position: absolute;
-            bottom: 2rem;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-            z-index: 3;
-        }
-
-        .down-arrow {
-            height: 40px;
-            animation: animateDown infinite 1.5s;
-            cursor: pointer;
-        }
-
-        @keyframes animateDown {
-
-            0%,
-            20%,
-            50%,
-            80%,
-            100% {
-                transform: translateY(0);
-            }
-
-            40% {
-                transform: translateY(5px);
-            }
-
-            60% {
-                transform: translateY(3px);
-            }
-        }
-
-        /* Additional content to show scrollability */
-        .content-section {
-            padding: 5rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .content-section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-
-        .content-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .content-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 12px;
-            padding: 2rem;
-            transition: transform 0.3s ease;
-        }
-
-        .content-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .content-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        /* Responsive adjustments */
         @media (max-width: 768px) {
             .hero-content h1 {
                 font-size: 2.5rem;
             }
 
-            .hero-content p {
-                font-size: 1.1rem;
-            }
-
             .hero-actions {
                 flex-direction: column;
-                align-items: center;
-            }
-
-            .btn {
                 width: 100%;
                 max-width: 300px;
-                justify-content: center;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero-content h1 {
-                font-size: 2rem;
-            }
-
-            .hero-content p {
-                font-size: 1rem;
+                margin: 0 auto;
             }
         }
     </style>
 </head>
 
 <body>
-    <section class="hero-section">
-        <div class="hero-bg"></div>
-        <div class="hero-content">
-            <h1>Discover Amazing Projects</h1>
-            <p>Explore innovative solutions in AI, Web3, automation, and more. Each project showcases cutting-edge
-                technology and creative problem-solving.</p>
-            <div class="hero-actions">
-                <a href="#" class="btn btn-primary">Explore Projects</a>
-                <a href="#" class="btn">Learn More</a>
-            </div>
-        </div>
-        <div class="hero-indicators">
-            <div class="indicator active" data-index="0"></div>
-            <div class="indicator" data-index="1"></div>
-            <div class="indicator" data-index="2"></div>
-            <div class="indicator" data-index="3"></div>
-        </div>
-        <div class="down-arrow-indicator">
-            <img class="down-arrow"
-                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"
-                alt="Down Arrow">
-        </div>
-    </section>
+    {% include 'components/navbar.html' %}
 
-    <section class="content-section">
-        <h2>Featured Projects</h2>
-        <div class="content-grid">
-            <div class="content-card">
-                <h3>AI-Powered Analytics</h3>
-                <p>Advanced machine learning models for predictive analytics and business intelligence.</p>
+    <main>
+        <section class="hero-section">
+            <div class="hero-bg"></div>
+            <div class="hero-content">
+                <h1>Crafting Experiences, Building Future</h1>
+                <p>Welcome to a portfolio of innovation, data-driven decisions, and cutting-edge software solutions
+                    designed to push boundaries.</p>
+                <div class="hero-actions">
+                    <a href="{{ url_for('start_project') }}" class="btn btn-primary btn-large">Start Project</a>
+                    <a href="{{ url_for('research') }}" class="btn btn-outline btn-large">View Research</a>
+                </div>
             </div>
-            <div class="content-card">
-                <h3>Web3 Integration</h3>
-                <p>Blockchain solutions for secure, decentralized applications and smart contracts.</p>
-            </div>
-            <div class="content-card">
-                <h3>Automation Systems</h3>
-                <p>Custom automation solutions to streamline workflows and increase productivity.</p>
-            </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
+    <!-- Scripts -->
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const indicators = document.querySelectorAll('.indicator');
-            const heroBg = document.querySelector('.hero-bg');
-
-            // Background images array - using your local images
-            const bgImages = [
-                'assets/bg-img/header-bg1.png',
-                'assets/bg-img/header-bg2.png',
-                'assets/bg-img/header-bg3.png',
-                'assets/bg-img/header-bg4.png'
-            ];
-
-            let currentIndex = 0;
-
-            // Function to update the active indicator
-            function updateIndicator(index) {
-                indicators.forEach((indicator, i) => {
-                    if (i === index) {
-                        indicator.classList.add('active');
-                    } else {
-                        indicator.classList.remove('active');
-                    }
-                });
-            }
-
-            // Function to change background image
-            function changeBackground(index) {
-                heroBg.style.backgroundImage = `url(${bgImages[index]})`;
-                updateIndicator(index);
-                currentIndex = index;
-            }
-
-            // Add click events to indicators
-            indicators.forEach((indicator, index) => {
-                indicator.addEventListener('click', () => {
-                    changeBackground(index);
-                });
-            });
-
-            // Auto-advance backgrounds (optional)
-            setInterval(() => {
-                currentIndex = (currentIndex + 1) % bgImages.length;
-                changeBackground(currentIndex);
-            }, 6000);
-        });
+        window.SUPABASE_URL = "{{ SUPABASE_URL }}";
+        window.SUPABASE_ANON_KEY = "{{ SUPABASE_ANON_KEY }}";
     </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script defer src="../static/js/supabase_init.js"></script>
+    <script defer type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script defer nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script defer src="../static/js/navbar.js"></script>
 </body>
 
 </html>

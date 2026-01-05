@@ -1,6 +1,10 @@
 import webbrowser
 import os
 import sys
+
+# Add backend directory to sys.path so backend.app can import services
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'backend'))
+
 from backend.app import app
 
 PORT = 5501

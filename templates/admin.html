@@ -13,19 +13,12 @@
 </head>
 
 <body>
-  {% include 'components/admin_sidebar.html' %}
+  {% include 'components/sidebar.html' %}
 
   <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
   <main class="main-content">
 
-    <!-- Mobile Header -->
-    <div class="mobile-header">
-      <button class="mobile-menu-btn" onclick="toggleSidebar()">
-        <ion-icon name="menu-outline"></ion-icon>
-      </button>
-      <span style="font-weight: 700; font-size: 1.25rem;">Admin</span>
-    </div>
 
     <!-- OVERVIEW TAB -->
     <div id="overview" class="view-section active">
@@ -250,35 +243,60 @@
 
   </main>
 
+  <!-- Scripts -->
+  <script>
+    window.SUPABASE_URL = "{{ SUPABASE_URL }}";
+    window.SUPABASE_ANON_KEY = "{{ SUPABASE_ANON_KEY }}";
+  </script>
   <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script defer src="../static/js/supabase_init.js"></script>
+  <script defer src="../static/js/sidebar.js"></script>
   <script defer type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script defer nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-  <script src="../static/js/sidebar.js"></script>
+
   <script>
     // Init Global Data
     let projects = [];
     let messages = [];
 
-    function switchTab(tabId, navElement) {
-      // Hide all views
-      document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-      // Remove active class from nav
-      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+    async function checkAdminAccess() {
+      try {
+        if (typeof window.supabaseClient === 'undefined') {
+          if (!window.supabaseRetryCount) window.supabaseRetryCount = 0;
+          if (window.supabaseRetryCount < 5) {
+            window.supabaseRetryCount++;
+            setTimeout(checkAdminAccess, 200);
+            return;
+          }
+        }
+        const session = await window.supabaseClient.checkSession();
+        if (!session) {
+          window.location.href = '/login';
+          return;
+        }
 
-      // Show selected view
+        // Fetch initial data
+        fetchProjects();
+        fetchNotifications();
+      } catch (error) {
+        console.error('Admin access error:', error);
+        window.location.href = '/login';
+      }
+    }
+
+    function switchTab(tabId, navElement) {
+      document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
-      // Activate nav item
       navElement.classList.add('active');
 
-      // Refresh data for tab
       if (tabId === 'overview') fetchProjects();
       if (tabId === 'notifications') fetchNotifications();
     }
 
     async function fetchProjects() {
       try {
-        const { data, error } = await window.supabase
+        const { data, error } = await window.supabaseClient.supabase
           .from('projects')
           .select('*')
           .order('created_at', { ascending: false });
@@ -294,7 +312,7 @@
 
     async function fetchNotifications() {
       try {
-        const { data, error } = await window.supabase
+        const { data, error } = await window.supabaseClient.supabase
           .from('notifications')
           .select('*')
           .order('created_at', { ascending: false });
@@ -310,7 +328,7 @@
       const tbody = document.getElementById('projectTableBody');
       tbody.innerHTML = '';
 
-      if (data.length === 0) {
+      if (!data || data.length === 0) {
         tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:2rem; color:rgba(255,255,255,0.5);">No projects found.</td></tr>';
         return;
       }
@@ -320,12 +338,12 @@
         const tr = document.createElement('tr');
         tr.innerHTML = `
                     <td>${date}</td>
-                    <td style="font-weight:600; color:white;">${p.title}</td>
-                    <td>${p.service_type || '-'}</td>
+                    <td style="font-weight:600; color:white;">${p.title || 'Untitled'}</td>
+                    <td>${p.service_type || p.service || '-'}</td>
                     <td>${p.budget || '-'}</td>
-                    <td><span style="padding:0.2rem 0.5rem; border-radius:0.5rem; background:rgba(59,130,246,0.2); color:#60a5fa; font-size:0.8rem;">${p.status}</span></td>
+                    <td><span style="padding:0.2rem 0.5rem; border-radius:0.5rem; background:rgba(59,130,246,0.2); color:#60a5fa; font-size:0.8rem;">${p.status || 'pending'}</span></td>
                     <td>
-                        <button style="background:transparent; border:1px solid var(--border-color); color:white; padding:0.3rem 0.6rem; border-radius:0.3rem; cursor:pointer;">Details</button>
+                        <button onclick="viewDetails('${p.id}')" style="background:transparent; border:1px solid var(--border-color); color:white; padding:0.3rem 0.6rem; border-radius:0.3rem; cursor:pointer;">Details</button>
                     </td>
                 `;
         tbody.appendChild(tr);
@@ -336,7 +354,7 @@
       const list = document.getElementById('notificationList');
       list.innerHTML = '';
 
-      if (data.length === 0) {
+      if (!data || data.length === 0) {
         list.innerHTML = '<div style="padding:1rem; opacity:0.6;">No new notifications.</div>';
         return;
       }
@@ -345,7 +363,6 @@
         const time = new Date(n.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         const item = document.createElement('div');
         item.className = 'notification-item';
-        // Color code by type
         let color = '#3b82f6';
         let icon = 'information-circle';
         if (n.type === 'message') { color = '#fbbf24'; icon = 'chatbubble'; }
@@ -355,8 +372,8 @@
         item.innerHTML = `
                      <div style="font-size:1.5rem; color:${color};"><ion-icon name="${icon}"></ion-icon></div>
                      <div style="flex-grow:1;">
-                         <div style="font-weight:600;">${n.type.toUpperCase()}</div>
-                         <div style="opacity:0.7; font-size:0.9rem;">${n.message}</div>
+                          <div style="font-weight:600;">${n.type.toUpperCase()}</div>
+                          <div style="opacity:0.7; font-size:0.9rem;">${n.message}</div>
                      </div>
                      <div class="notification-time">${time}</div>
                  `;
@@ -365,11 +382,15 @@
     }
 
     function updateStats(data) {
-      document.getElementById('statTotalProjects').innerText = data.length;
-      const pending = data.filter(p => p.status === 'pending').length;
-      document.getElementById('statPendingRequests').innerText = pending;
-      // Mock total messages for now or fetch count
-      document.getElementById('statTotalMessages').innerText = '0';
+      const statTotalProjects = document.getElementById('statTotalProjects');
+      if (statTotalProjects) statTotalProjects.innerText = data.length;
+
+      const pendingCount = data.filter(p => p.status === 'pending').length;
+      const statPendingRequests = document.getElementById('statPendingRequests');
+      if (statPendingRequests) statPendingRequests.innerText = pendingCount;
+
+      const statTotalMessages = document.getElementById('statTotalMessages');
+      if (statTotalMessages) statTotalMessages.innerText = '0';
     }
 
     function filterTable() {
@@ -382,10 +403,7 @@
     }
 
     // Initial Load
-    document.addEventListener('DOMContentLoaded', () => {
-      fetchProjects();
-      fetchNotifications();
-    });
+    document.addEventListener('DOMContentLoaded', checkAdminAccess);
   </script>
 </body>
 

@@ -7,111 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Billings | Bonniface</title>
     <link rel="stylesheet" href="../static/css/styles.css">
-
     <link rel="stylesheet" href="../static/css/layout.css">
-    <style>
-        .page-header {
-            margin-bottom: 3rem;
-        }
-
-        .section-card {
-            background: var(--bg-card);
-            border-radius: 1.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .plan-card {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(37, 99, 235, 0.1));
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .plan-info h3 {
-            margin: 0 0 0.5rem 0;
-            color: white;
-        }
-
-        .plan-price {
-            font-size: 2rem;
-            font-weight: 700;
-        }
-
-        .plan-period {
-            font-size: 1rem;
-            color: rgba(255, 255, 255, 0.6);
-            font-weight: 400;
-        }
-
-        .badge {
-            background: var(--primary-blue);
-            padding: 0.25rem 0.75rem;
-            border-radius: 1rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-left: 0.5rem;
-        }
-
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .table th,
-        .table td {
-            text-align: left;
-            padding: 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .table th {
-            color: rgba(255, 255, 255, 0.5);
-            font-weight: 500;
-            font-size: 0.875rem;
-        }
-
-        .status-paid {
-            color: #4ade80;
-            background: rgba(74, 222, 128, 0.1);
-            padding: 0.25rem 0.75rem;
-            border-radius: 1rem;
-            font-size: 0.875rem;
-        }
-
-        .btn-primary {
-            background: var(--primary-blue);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.75rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .btn-primary:hover {
-            background: #2563eb;
-        }
-
-        .btn-logout {
-            color: #ef4444;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .payment-option:hover {
-            background: rgba(255, 255, 255, 0.1) !important;
-            border-color: var(--primary-blue) !important;
-            transform: translateY(-2px);
-        }
-    </style>
 </head>
 
 <body>
@@ -121,81 +17,46 @@
     <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
     <main class="main-content">
-        <!-- Mobile Header -->
-        <div class="mobile-header">
-            <button class="mobile-menu-btn" onclick="toggleSidebar()">
-                <ion-icon name="menu-outline"></ion-icon>
-            </button>
-            <span style="font-weight: 700; font-size: 1.25rem;">Billings</span>
-        </div>
         <header class="page-header">
             <h1>Billing & Plans</h1>
             <p style="color: rgba(255,255,255,0.5);">Manage your subscription and payment details.</p>
         </header>
 
-        <div class="section-card plan-card">
-            <div class="plan-info">
-                <h3>Current Plan <span class="badge">Active</span></h3>
-                <div style="color: rgba(255,255,255,0.7);">Pro Plan - Unlimited Access</div>
+        <div class="content-grid" style="grid-template-columns: 1fr 1fr; gap: 2rem;">
+            <div class="section-card">
+                <h2 style="margin-top: 0;">Current Plan</h2>
+                <div
+                    style="background: linear-gradient(135deg, var(--primary-blue), #4f46e5); padding: 2rem; border-radius: 1rem; margin: 1.5rem 0;">
+                    <div style="font-size: 0.875rem; opacity: 0.8; margin-bottom: 0.5rem;">Pro Plan (Monthly)</div>
+                    <div style="font-size: 2.5rem; font-weight: 700;">$29.00</div>
+                    <div style="font-size: 0.875rem; opacity: 0.8; margin-top: 0.5rem;">Next billing on Feb 01, 2026
+                    </div>
+                </div>
+                <button class="btn-primary" style="width: 100%;">Upgrade Plan</button>
             </div>
-            <div class="plan-actions" style="text-align: right;">
-                <div class="plan-price">$29<span class="plan-period">/month</span></div>
-                <button class="btn-primary" style="margin-top: 1rem;">Upgrade Plan</button>
-            </div>
-        </div>
 
-        <div class="section-card">
-            <h2 style="margin-top: 0; margin-bottom: 2rem;">Payment Methods</h2>
-
-            <div class="payment-grid"
-                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-                <!-- Stripe / Card -->
-                <div class="payment-option"
-                    style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 1rem; border: 1px solid rgba(255,255,255,0.1); text-align: center; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg"
-                        alt="Stripe" style="height: 40px; margin-bottom: 1rem; object-fit: contain;">
-                    <div style="font-weight: 600;">Credit Card</div>
-                    <div style="font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-top: 0.5rem;">Stripe Secure
-                        Payment</div>
-                </div>
-
-                <!-- Paystack -->
-                <div class="payment-option" onclick="payWithPaystack()"
-                    style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 1rem; border: 1px solid rgba(255,255,255,0.1); text-align: center; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Paystack_Logo.png" alt="Paystack"
-                        style="height: 40px; margin-bottom: 1rem; object-fit: contain;">
-                    <div style="font-weight: 600;">Paystack</div>
-                    <div style="font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-top: 0.5rem;">Cards, Bank, USSD
+            <div class="section-card">
+                <h2 style="margin-top: 0;">Payment Methods</h2>
+                <div style="display: grid; gap: 1rem; margin-top: 1.5rem;">
+                    <div class="payment-method-card active" onclick="payWithPaystack()" style="cursor: pointer;">
+                        <img src="https://paystack.com/assets/payment/img/momo_logo.png" alt="Momo"
+                            style="height: 40px; margin-bottom: 1rem;">
+                        <div style="font-weight: 600;">Mobile Money (MOMO)</div>
+                        <div style="font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-top: 0.5rem;">Pay securely
+                            via Paystack</div>
                     </div>
-                </div>
-
-                <!-- Mobile Money -->
-                <div class="payment-option"
-                    style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 1rem; border: 1px solid rgba(255,255,255,0.1); text-align: center; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                    <div
-                        style="display: flex; gap: 0.5rem; justify-content: center; align-items: center; margin-bottom: 1rem; height: 40px;">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/MTN_Logo.svg/2048px-MTN_Logo.svg.png"
-                            alt="MTN" style="height: 30px; object-fit: contain;">
-                        <div style="font-weight: bold; font-size: 1.2rem; color: #ef4444;">Vodafone</div>
+                    <div class="payment-method-card">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg"
+                            alt="Mastercard" style="height: 40px; margin-bottom: 1rem; filter: invert(1);">
+                        <div style="font-weight: 600;">Bank Transfer</div>
+                        <div style="font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-top: 0.5rem;">Direct Wire /
+                            SWIFT</div>
                     </div>
-                    <div style="font-weight: 600;">Mobile Money</div>
-                    <div style="font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-top: 0.5rem;">MOMO, Telecel, AT
-                    </div>
-                </div>
-
-                <!-- Bank Transfer -->
-                <div class="payment-option"
-                    style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 1rem; border: 1px solid rgba(255,255,255,0.1); text-align: center; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                    <img src="https://cdn-icons-png.flaticon.com/512/2830/2830284.png" alt="Bank"
-                        style="height: 40px; margin-bottom: 1rem; filter: invert(1);">
-                    <div style="font-weight: 600;">Bank Transfer</div>
-                    <div style="font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-top: 0.5rem;">Direct Wire /
-                        SWIFT</div>
                 </div>
             </div>
         </div>
 
-        <div class="section-card">
+        <div class="section-card" style="margin-top: 2rem;">
             <h2 style="margin-top: 0;">Invoice History</h2>
             <table class="table">
                 <thead>
@@ -229,22 +90,40 @@
         </div>
     </main>
 
+    <!-- Scripts -->
+    <script>
+        window.SUPABASE_URL = "{{ SUPABASE_URL }}";
+        window.SUPABASE_ANON_KEY = "{{ SUPABASE_ANON_KEY }}";
+    </script>
     <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script defer src="../static/js/supabase_init.js"></script>
+    <script src="https://js.paystack.co/v1/inline.js"></script>
     <script defer type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script defer nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <script src="https://js.paystack.co/v1/inline.js"></script>
-    <script src="../static/js/sidebar.js"></script>
+    <script defer src="../static/js/sidebar.js"></script>
+
     <script>
-        // Basic session check
         let currentUserEmail = "";
 
         async function checkAccess() {
-            const session = await window.supabaseClient.checkSession();
-            if (!session) {
-                window.location.href = 'login.html';
-            } else {
-                currentUserEmail = session.user.email;
+            try {
+                if (typeof window.supabaseClient === 'undefined') {
+                    // Small delay to ensure deferred scripts are available
+                    if (!window.supabaseRetryCount) window.supabaseRetryCount = 0;
+                    if (window.supabaseRetryCount < 5) {
+                        window.supabaseRetryCount++;
+                        setTimeout(checkAccess, 200);
+                        return;
+                    }
+                }
+                const session = await window.supabaseClient.checkSession();
+                if (!session) {
+                    window.location.href = '/login';
+                } else {
+                    currentUserEmail = session.user.email;
+                }
+            } catch (error) {
+                console.error('Access check error:', error);
             }
         }
         document.addEventListener('DOMContentLoaded', checkAccess);
@@ -256,18 +135,13 @@
             }
 
             const handler = PaystackPop.setup({
-                key: 'pk_test_64a5e8550ef53bf8089e4c109e49def1341b2235', // User provided Public Key
+                key: 'pk_test_64a5e8550ef53bf8089e4c109e49def1341b2235',
                 email: currentUserEmail,
-                amount: 2900 * 15, // Amount in kobo (Test: $29 * ~15 GHS rate * 100 for kobo, just an example) -> Let's use GHS for Paystack usually. Or USD if enabled.
-                // Let's assume GHS for now as user mentioned Mobile Money (MOMO)
-                // 29 USD to GHS approx 450 GHS -> 45000 kobo
-                // For safety in test, let's charge 10 GHS
                 amount: 1000,
                 currency: 'GHS',
-                ref: '' + Math.floor((Math.random() * 1000000000) + 1), // Generate a random ref
+                ref: '' + Math.floor((Math.random() * 1000000000) + 1),
                 callback: function (response) {
                     alert('Payment complete! Reference: ' + response.reference);
-                    // TODO: Call backend to verify transaction
                 },
                 onClose: function () {
                     alert('Transaction was closed.');
