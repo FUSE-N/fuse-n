@@ -1,5 +1,8 @@
 :root {
     /* --- COLORS --- */
+    --dark: #0f172a;
+    --light: #ffffff;
+
 
     /* Primary Blues */
     --primary: #2563eb;

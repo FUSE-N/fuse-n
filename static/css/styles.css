@@ -141,24 +141,26 @@ header {
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: rgba(255, 255, 255, 0.98);
+    background-color: rgba(30, 41, 59, 0.98);
     backdrop-filter: blur(10px);
     min-width: 250px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
     z-index: 1;
     border-radius: 0.5rem;
     overflow: hidden;
     top: 100%;
     margin-top: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .dropdown-content a {
-    color: var(--dark);
+    color: var(--light);
     padding: 1rem 1.5rem;
     text-decoration: none;
     display: block;
     transition: all 0.3s ease;
 }
+
 
 .dropdown-content a:hover {
     background-color: var(--primary);
@@ -1049,8 +1051,8 @@ footer {
 .tabs {
     display: flex;
     justify-content: center;
-    background: #fff;
-    border-bottom: 1px solid #eee;
+    background: var(--bg-dark-soft);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     gap: 2rem;
     padding: 0.75rem 0;
 }
@@ -1059,9 +1061,10 @@ footer {
     background: none;
     border: none;
     font-weight: 600;
-    color: #555;
+    color: rgba(255, 255, 255, 0.6);
     cursor: pointer;
 }
+
 
 .tabs button:hover,
 .tabs button.active {
@@ -1150,15 +1153,17 @@ footer {
 }
 
 .card {
-    background: #fff;
+    background: var(--bg-dark-soft);
     border-radius: 0.75rem;
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     transition: transform 0.3s ease;
 }
 
 .card:hover {
     transform: translateY(-4px);
+    border-color: var(--primary);
 }
 
 .card img {
@@ -1174,14 +1179,15 @@ footer {
 .card-body h3 {
     margin: 0;
     font-size: 1.1rem;
-    color: #222;
+    color: var(--light);
 }
 
 .card-body p {
-    color: #555;
+    color: rgba(255, 255, 255, 0.7);
     font-size: 0.9rem;
     margin-top: 0.5rem;
 }
+
 
 .reaction-bar {
     display: flex;
