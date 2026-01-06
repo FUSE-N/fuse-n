@@ -1,9 +1,0 @@
-node_modules/
-.env
-*.json
-__pycache__/
-.pythonlibs/
-uploads/
-*.pyc
-.DS_Store
-instance/
