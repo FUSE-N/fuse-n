@@ -1,0 +1,19 @@
+[[redirects]]
+  from = "/login"
+  to = "/templates/login.html"
+  status = 200
+
+[[redirects]]
+  from = "/dashboard"
+  to = "/templates/dashboard.html"
+  status = 200
+
+[[redirects]]
+  from = "/oauth/consent"
+  to = "/templates/oauth_consent.html"
+  status = 200
+
+[[redirects]]
+  from = "/start-project"
+  to = "/templates/start-project.html"
+  status = 200

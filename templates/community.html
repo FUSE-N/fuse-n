@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Community Hub | Bonniface Freelance</title>
     <link rel="icon" href="../static/img/boni_avatar.jpg">
-    <link rel="stylesheet" href="../static/css/styles.css">
-    <link rel="stylesheet" href="../static/css/navbar.css">
+    <link rel="stylesheet" href="../static/styles.css">
     <style>
         body {
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
@@ -78,7 +77,20 @@
 </head>
 
 <body>
-    {% include 'components/navbar.html' %}
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="/" class="logo-container">
+                    <img src="../static/img/boni_avatar.jpg" alt="Logo">
+                    <span class="logo">Bonniface</span>
+                </a>
+                <div class="nav-links">
+                    <a href="/start-project" class="btn btn-outline">Start Project</a>
+                    <a href="/" class="btn btn-primary">Home</a>
+                </div>
+            </nav>
+        </div>
+    </header>
 
     <section class="container page-header">
         <h1 class="page-title">Community Hub</h1>
@@ -124,17 +136,9 @@
         </div>
     </section>
 
+    <!-- Firebase Analytics -->
+    <script type="module" src="{{ url_for('static', filename='js/firebase_init.js') }}"></script>
 
-    <!-- Scripts -->
-    <script>
-        window.SUPABASE_URL = "{{ SUPABASE_URL }}";
-        window.SUPABASE_ANON_KEY = "{{ SUPABASE_ANON_KEY }}";
-    </script>
-    <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script defer src="../static/js/supabase_init.js"></script>
-    <script defer type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script defer nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <script defer src="../static/js/navbar.js"></script>
 </body>
 
 </html>

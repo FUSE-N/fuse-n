@@ -1,4 +1,13 @@
-/* Reset and base styles removed - using global styles.css */
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
 
 /* Header styles */
 .header {
@@ -6,8 +15,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 15px 40px;
-    background-color: #0099d8;
-    /* Bright blue background */
+    background-color: #0099d8; /* Bright blue background */
     color: white;
     position: relative;
 }
@@ -34,115 +42,28 @@
 
 /* Generate positions for the dots pattern */
 /* This is a simplified version - you'd need more precise positioning for exact replication */
-.dot-1 {
-    top: 5px;
-    left: 10px;
-}
-
-.dot-2 {
-    top: 5px;
-    left: 16px;
-}
-
-.dot-3 {
-    top: 5px;
-    left: 22px;
-}
-
-.dot-4 {
-    top: 5px;
-    left: 28px;
-}
-
-.dot-5 {
-    top: 11px;
-    left: 7px;
-}
-
-.dot-6 {
-    top: 11px;
-    left: 13px;
-}
-
-.dot-7 {
-    top: 11px;
-    left: 19px;
-}
-
-.dot-8 {
-    top: 11px;
-    left: 25px;
-}
-
-.dot-9 {
-    top: 11px;
-    left: 31px;
-}
-
-.dot-10 {
-    top: 17px;
-    left: 10px;
-}
-
-.dot-11 {
-    top: 17px;
-    left: 16px;
-}
-
-.dot-12 {
-    top: 17px;
-    left: 22px;
-}
-
-.dot-13 {
-    top: 17px;
-    left: 28px;
-}
-
-.dot-14 {
-    top: 23px;
-    left: 7px;
-}
-
-.dot-15 {
-    top: 23px;
-    left: 13px;
-}
-
-.dot-16 {
-    top: 23px;
-    left: 19px;
-}
-
-.dot-17 {
-    top: 23px;
-    left: 25px;
-}
-
-.dot-18 {
-    top: 23px;
-    left: 31px;
-}
-
-.dot-19 {
-    top: 29px;
-    left: 10px;
-}
-
-.dot-20 {
-    top: 29px;
-    left: 16px;
-}
-
-.dot-21 {
-    top: 29px;
-    left: 22px;
-}
-
-.dot-22 {
-    top: 29px;
-    left: 28px;
-}
+.dot-1 { top: 5px; left: 10px; }
+.dot-2 { top: 5px; left: 16px; }
+.dot-3 { top: 5px; left: 22px; }
+.dot-4 { top: 5px; left: 28px; }
+.dot-5 { top: 11px; left: 7px; }
+.dot-6 { top: 11px; left: 13px; }
+.dot-7 { top: 11px; left: 19px; }
+.dot-8 { top: 11px; left: 25px; }
+.dot-9 { top: 11px; left: 31px; }
+.dot-10 { top: 17px; left: 10px; }
+.dot-11 { top: 17px; left: 16px; }
+.dot-12 { top: 17px; left: 22px; }
+.dot-13 { top: 17px; left: 28px; }
+.dot-14 { top: 23px; left: 7px; }
+.dot-15 { top: 23px; left: 13px; }
+.dot-16 { top: 23px; left: 19px; }
+.dot-17 { top: 23px; left: 25px; }
+.dot-18 { top: 23px; left: 31px; }
+.dot-19 { top: 29px; left: 10px; }
+.dot-20 { top: 29px; left: 16px; }
+.dot-21 { top: 29px; left: 22px; }
+.dot-22 { top: 29px; left: 28px; }
 
 .logo-text {
     font-size: 28px;
@@ -163,14 +84,12 @@
     cursor: pointer;
 }
 
-.search-icon,
-.menu-icon {
+.search-icon, .menu-icon {
     cursor: pointer;
     margin-left: 15px;
 }
 
-.search-icon svg,
-.menu-icon svg {
+.search-icon svg, .menu-icon svg {
     fill: white;
     width: 24px;
     height: 24px;
@@ -184,74 +103,6 @@
     bottom: 0;
     left: 0;
     right: 0;
-}
-
-/* Profile Dropdown (Supabase Auth) */
-.profile-container {
-    position: relative;
-    display: none;
-    /* Hidden by default until auth check */
-    align-items: center;
-    gap: 0.75rem;
-    cursor: pointer;
-}
-
-.profile-img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: 2px solid #3b82f6;
-    transition: transform 0.3s ease;
-}
-
-.profile-container:hover .profile-img {
-    transform: scale(1.05);
-}
-
-.profile-dropdown {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    background: #1e293b;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 0.75rem;
-    padding: 0.5rem;
-    min-width: 200px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-    margin-top: 0.75rem;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px);
-    transition: all 0.3s ease;
-    z-index: 1000;
-}
-
-.profile-container.active .profile-dropdown {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-}
-
-.dropdown-item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem 1rem;
-    color: rgba(255, 255, 255, 0.7);
-    text-decoration: none;
-    border-radius: 0.5rem;
-    transition: all 0.2s ease;
-}
-
-.dropdown-item:hover {
-    background: rgba(255, 255, 255, 0.05);
-    color: white;
-}
-
-.dropdown-divider {
-    height: 1px;
-    background: rgba(255, 255, 255, 0.1);
-    margin: 0.5rem 0;
 }
 
 /* Media query for mobile responsiveness */

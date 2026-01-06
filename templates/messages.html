@@ -7,24 +7,355 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Messages | Bonniface</title>
     <link rel="stylesheet" href="../static/css/styles.css">
-    <link rel="stylesheet" href="../static/css/layout.css">
+    <link rel="stylesheet" href="../static/css/navbar.css">
+    <style>
+        :root {
+            --sidebar-width: 280px;
+            --primary-blue: #3b82f6;
+            --bg-dark: #0f172a;
+            --bg-card: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            background: var(--bg-dark);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            /* Prevent body scroll for chat app feel */
+        }
+
+        /* Sidebar (Same as others) */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: rgba(15, 23, 42, 0.95);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        /* ... Reuse sidebar nav classes ... */
+        .sidebar-header {
+            padding: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar-nav {
+            padding: 2rem 1rem;
+            flex-grow: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: var(--bg-card);
+            color: white;
+        }
+
+        .nav-item ion-icon {
+            font-size: 1.25rem;
+        }
+
+        .sidebar-footer {
+            padding: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .btn-logout {
+            color: #ef4444;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Chat Layout */
+        .chat-layout {
+            margin-left: var(--sidebar-width);
+            flex-grow: 1;
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Threads List Sidebar */
+        .threads-sidebar {
+            width: 320px;
+            background: rgba(15, 23, 42, 0.5);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .threads-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .search-bar {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            color: white;
+            margin-top: 1rem;
+            box-sizing: border-box;
+        }
+
+        .thread-list {
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .thread-item {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .thread-item:hover,
+        .thread-item.active {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .thread-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #334155;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .thread-info {
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .thread-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .thread-last-msg {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.5);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .thread-time {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Chat Area */
+        .chat-area {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-dark);
+        }
+
+        .chat-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .message {
+            max-width: 60%;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .message.received {
+            align-self: flex-start;
+        }
+
+        .message.sent {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .message-bubble {
+            padding: 1rem;
+            border-radius: 1rem;
+            line-height: 1.5;
+            position: relative;
+        }
+
+        .received .message-bubble {
+            background: rgba(255, 255, 255, 0.1);
+            border-top-left-radius: 0;
+        }
+
+        .sent .message-bubble {
+            background: var(--primary-blue);
+            border-top-right-radius: 0;
+        }
+
+        /* Message Input Area */
+        .chat-input-area {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            background: rgba(15, 23, 42, 0.95);
+        }
+
+        .input-wrapper {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .input-field {
+            flex-grow: 1;
+            background: transparent;
+            border: none;
+            padding: 0.75rem;
+            color: white;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .input-field:focus {
+            outline: none;
+        }
+
+        .action-btn {
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-size: 1.25rem;
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .action-btn.send-btn {
+            color: var(--primary-blue);
+        }
+
+        /* Active recording state for voice button */
+        .action-btn.recording {
+            color: #ef4444;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
 </head>
 
 <body>
-    {% set active_page = 'messages' %}
-    {% include 'components/sidebar.html' %}
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <a href="../index.html" class="logo-container">
+                <img src="../static/img/boni_avatar.jpg" alt="Logo"
+                    style="width: 32px; height: 32px; border-radius: 50%;">
+                <span class="logo-text" style="font-weight: 700; font-size: 1.25rem; color: white;">Bonniface</span>
+            </a>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item">
+                <ion-icon name="grid-outline"></ion-icon>
+                Overview
+            </a>
+            <a href="messages.html" class="nav-item active">
+                <ion-icon name="chatbubbles-outline"></ion-icon>
+                Messages
+            </a>
+            <a href="start-project.html" class="nav-item">
+                <ion-icon name="rocket-outline"></ion-icon>
+                New Project
+            </a>
+            <a href="billings.html" class="nav-item">
+                <ion-icon name="card-outline"></ion-icon>
+                Billings
+            </a>
+            <a href="settings.html" class="nav-item">
+                <ion-icon name="settings-outline"></ion-icon>
+                Settings
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a onclick="supabaseClient.signOut()" class="btn-logout">
+                <ion-icon name="log-out-outline"></ion-icon>
+                Logout
+            </a>
+        </div>
+    </aside>
 
     <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
     <div class="chat-layout">
         <!-- Threads List -->
-        <div class="threads-sidebar" id="threadsSidebar">
-            <div class="threads-header">
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        <h2 style="margin:0;">Messages</h2>
-                    </div>
-                </div>
+        <div class="threads-sidebar">
+            <div class="threads-header" style="display: flex; align-items: center; gap: 1rem;">
+                <button class="mobile-menu-btn" onclick="toggleSidebar()" style="color: white; display: none;">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </button>
+                <h2 style="margin:0;">Messages</h2>
                 <input type="text" class="search-bar" placeholder="Search conversations...">
             </div>
             <div class="thread-list">
@@ -94,48 +425,55 @@
                     <input type="file" id="fileInput" hidden multiple onchange="handleFileSelect(this)">
 
                     <!-- Voice Recorder Button -->
-                    <button class="action-btn" id="voiceBtn" title="Record Voice" onclick="toggleVoiceRecording()">
+                    <button class="action-btn" id="voiceBtn" title="Record Voice" onclick="toggleRecording()">
                         <ion-icon name="mic-outline"></ion-icon>
                     </button>
 
-                    <input type="text" id="messageInput" placeholder="Type a message..."
+                    <input type="text" class="input-field" placeholder="Type a message..." id="messageInput"
                         onkeypress="handleKeyPress(event)">
 
-                    <button class="send-btn" onclick="sendMessage()">
+                    <button class="action-btn send-btn" onclick="sendMessage()">
                         <ion-icon name="send"></ion-icon>
                     </button>
                 </div>
                 <div id="uploadStatus"
-                    style="display:none; color: #60a5fa; font-size: 0.8rem; padding: 0.5rem 1rem; border-top: 1px solid rgba(255,255,255,0.05);">
+                    style="font-size: 0.75rem; color: rgba(255,255,255,0.5); margin-top: 0.5rem; padding-left: 1rem; display: none;">
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../static/js/supabase_init.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="../static/js/sidebar.js"></script>
     <script>
-        window.SUPABASE_URL = "{{ SUPABASE_URL }}";
-        window.SUPABASE_ANON_KEY = "{{ SUPABASE_ANON_KEY }}";
-    </script>
-    <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script defer src="../static/js/supabase_init.js"></script>
-    <script defer type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script defer nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <script defer src="../static/js/sidebar.js"></script>
+        // Session Check
+        async function checkAccess() {
+            const session = await window.supabaseClient.checkSession();
+            if (!session) {
+                window.location.href = 'login.html';
+            }
+        }
+        checkAccess();
 
-    <script>
+        // UI Functions
         let isRecording = false;
 
-        function toggleVoiceRecording() {
+        function toggleRecording() {
             const btn = document.getElementById('voiceBtn');
             const icon = btn.querySelector('ion-icon');
-            isRecording = !isRecording;
 
-            if (isRecording) {
+            if (!isRecording) {
+                // Start recording simulation
+                isRecording = true;
                 btn.classList.add('recording');
-                icon.setAttribute('name', 'stop-circle-outline');
-                document.getElementById('messageInput').placeholder = "Recording voice...";
+                icon.setAttribute('name', 'mic'); // Filled icon
+                document.getElementById('messageInput').placeholder = "Recording... Click mic to stop";
             } else {
+                // Stop recording
+                isRecording = false;
                 btn.classList.remove('recording');
                 icon.setAttribute('name', 'mic-outline');
                 document.getElementById('messageInput').placeholder = "Type a message...";
@@ -158,27 +496,6 @@
             }
         }
 
-        async function initMessages() {
-            try {
-                if (typeof window.supabaseClient === 'undefined') {
-                    // Small delay to ensure deferred scripts are available
-                    if (!window.supabaseRetryCount) window.supabaseRetryCount = 0;
-                    if (window.supabaseRetryCount < 5) {
-                        window.supabaseRetryCount++;
-                        setTimeout(initMessages, 200);
-                        return;
-                    }
-                }
-                const session = await window.supabaseClient.checkSession();
-                if (!session) {
-                    window.location.href = '/login';
-                    return;
-                }
-            } catch (error) {
-                console.error('Messages init error:', error);
-            }
-        }
-
         function sendMessage() {
             const input = document.getElementById('messageInput');
             const fileInput = document.getElementById('fileInput');
@@ -186,6 +503,7 @@
             const hasFile = fileInput.files.length > 0;
 
             if (text || hasFile) {
+                // Add message to UI (Simulation)
                 const container = document.getElementById('messageContainer');
 
                 let messageContent = text;
@@ -203,15 +521,13 @@
 
                 // Reset inputs
                 input.value = '';
-                fileInput.value = '';
+                fileInput.value = ''; // clear files
                 document.getElementById('uploadStatus').style.display = 'none';
 
                 // Scroll to bottom
                 container.scrollTop = container.scrollHeight;
             }
         }
-
-        document.addEventListener('DOMContentLoaded', initMessages);
     </script>
 </body>
 

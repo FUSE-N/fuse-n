@@ -7,26 +7,203 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard | Bonniface</title>
     <link rel="stylesheet" href="../static/css/styles.css">
-    <link rel="stylesheet" href="../static/css/layout.css">
+    <link rel="stylesheet" href="../static/css/navbar.css">
+    <style>
+        :root {
+            --sidebar-width: 280px;
+            --primary-blue: #3b82f6;
+            --bg-dark: #0f172a;
+            --bg-card: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            background: var(--bg-dark);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: rgba(15, 23, 42, 0.95);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-nav {
+            padding: 2rem 1rem;
+            flex-grow: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: var(--bg-card);
+            color: white;
+        }
+
+        .nav-item ion-icon {
+            font-size: 1.25rem;
+        }
+
+        .sidebar-footer {
+            padding: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex-grow: 1;
+            padding: 3rem;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--primary-blue);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .content-card {
+            background: var(--bg-card);
+            border-radius: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+        }
+
+        .btn-logout {
+            color: #ef4444;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
-    {% set active_page = 'dashboard' %}
-    {% include 'components/sidebar.html' %}
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <a href="../index.html" class="logo-container">
+                <img src="../static/img/boni_avatar.jpg" alt="Logo"
+                    style="width: 32px; height: 32px; border-radius: 50%;">
+                <span class="logo-text" style="font-weight: 700; font-size: 1.25rem;">Bonniface</span>
+            </a>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item active">
+                <ion-icon name="grid-outline"></ion-icon>
+                Overview
+            </a>
+            <a href="messages.html" class="nav-item">
+                <ion-icon name="chatbubbles-outline"></ion-icon>
+                Messages
+            </a>
+            <a href="start-project.html" class="nav-item">
+                <ion-icon name="rocket-outline"></ion-icon>
+                New Project
+            </a>
+            <a href="billings.html" class="nav-item">
+                <ion-icon name="card-outline"></ion-icon>
+                Billings
+            </a>
+            <a href="settings.html" class="nav-item">
+                <ion-icon name="settings-outline"></ion-icon>
+                Settings
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a onclick="supabaseClient.signOut()" class="btn-logout">
+                <ion-icon name="log-out-outline"></ion-icon>
+                Logout
+            </a>
+        </div>
+    </aside>
 
     <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
     <main class="main-content">
-        <header class="dashboard-header"
-            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <!-- Mobile Header -->
+        <div class="mobile-header">
+            <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                <ion-icon name="menu-outline"></ion-icon>
+            </button>
+            <span style="font-weight: 700; font-size: 1.25rem;">Bonniface</span>
+            <div style="width: 32px;"></div> <!-- Spacer -->
+        </div>
+
+        <header class="dashboard-header">
             <div>
                 <h1 id="welcomeText">Welcome back!</h1>
                 <p style="color: rgba(255,255,255,0.5);">Here's what's happening with your projects.</p>
             </div>
-            <div class="user-profile" style="display: flex; align-items: center; gap: 1rem;">
+            <div class="user-profile">
                 <span id="userName">User</span>
-                <img id="userAvatar" src="../static/img/boni_avatar.jpg" alt="Avatar" class="user-avatar"
-                    style="width: 40px; height: 40px; border-radius: 50%;">
+                <img id="userAvatar" src="../static/img/boni_avatar.jpg" alt="Avatar" class="user-avatar">
             </div>
         </header>
 
@@ -52,61 +229,44 @@
         </div>
     </main>
 
-    <!-- Scripts -->
     <script>
-        window.SUPABASE_URL = "{{ SUPABASE_URL }}";
-        window.SUPABASE_ANON_KEY = "{{ SUPABASE_ANON_KEY }}";
+        window.SUPABASE_URL = "https://sefuxvdhfgylmlqdrhoh.supabase.co";
+        window.SUPABASE_ANON_KEY = "sb_publishable_5KdCsyhbO5dGmopJfa0Ycg_GA2R50v9";
     </script>
-    <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script defer src="../static/js/supabase_init.js"></script>
-    <script defer type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script defer nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <script defer src="../static/js/sidebar.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../static/js/supabase_init.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script>
+        <script src="../static/js/sidebar.js"></script>
+    <script>
+
         async function initDashboard() {
             try {
                 if (typeof window.supabaseClient === 'undefined') {
-                    // Small delay to ensure deferred scripts are available
-                    if (!window.supabaseRetryCount) window.supabaseRetryCount = 0;
-                    if (window.supabaseRetryCount < 5) {
-                        window.supabaseRetryCount++;
-                        setTimeout(initDashboard, 200);
-                        return;
-                    }
                     throw new Error('Supabase client not initialized');
                 }
-                const session = await window.supabaseClient.checkSession();
-                if (!session) {
-                    window.location.href = '/login';
-                    return;
+        const session = await window.supabaseClient.checkSession();
+        if (!session) {
+            window.location.href = 'login.html';
+        return;
                 }
 
-                const user = session.user;
-                document.getElementById('userName').textContent = user.user_metadata.full_name || user.email;
-                document.getElementById('welcomeText').textContent = `Welcome back, ${user.user_metadata.full_name || 'User'}!`;
-
-                if (user.user_metadata.avatar_url) {
-                    const avatarUrl = user.user_metadata.avatar_url;
-                    document.getElementById('userAvatar').src = avatarUrl;
-
-                    // Update mobile avatar if present
-                    const mobileAvatar = document.getElementById('mobileAvatar');
-                    if (mobileAvatar) mobileAvatar.src = avatarUrl;
-
-                    // Update header avatar in sidebar
-                    const headerAvatar = document.querySelector('.sidebar .logo-img');
-                    if (headerAvatar) headerAvatar.src = avatarUrl;
+        const user = session.user;
+        document.getElementById('userName').textContent = user.user_metadata.full_name || user.email;
+        document.getElementById('welcomeText').textContent = `Welcome back, ${user.user_metadata.full_name || 'User'}!`;
+        if (user.user_metadata.avatar_url) {
+            document.getElementById('userAvatar').src = user.user_metadata.avatar_url;
                 }
 
             } catch (error) {
-                console.error('Dashboard init error:', error);
-                alert('Dashboard failed to load: ' + error.message);
-                window.location.href = '/login';
+            console.error('Dashboard init error:', error);
+        alert('Dashboard failed to load: ' + error.message);
+        window.location.href = 'login.html';
             }
         }
 
-        document.addEventListener('DOMContentLoaded', initDashboard);
+        initDashboard();
     </script>
 </body>
 
