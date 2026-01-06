@@ -30,7 +30,7 @@ outputType = "webview"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "gunicorn --bind 0.0.0.0:5000 --reuse-port app:app"
+args = "cd backend && gunicorn --bind 0.0.0.0:5000 --reuse-port app:app"
 waitForPort = 5000
 
 [deployment]
