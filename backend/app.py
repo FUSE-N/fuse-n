@@ -20,9 +20,19 @@ import os
 from dotenv import load_dotenv
 from werkzeug.utils import secure_filename
 
+from jinja2 import ChoiceLoader, FileSystemLoader
+
 # ---------------- INITIAL SETUP ----------------
 load_dotenv()
-app = Flask(__name__)
+# Set root directory (one level up from backend/)
+root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+app = Flask(__name__, 
+            static_folder=os.path.join(root_dir, 'static'))
+
+app.jinja_loader = ChoiceLoader([
+    FileSystemLoader(root_dir),
+    FileSystemLoader(os.path.join(root_dir, 'templates'))
+])
 
 # Folder for uploaded files
 UPLOAD_FOLDER = "uploads"
@@ -346,7 +356,7 @@ def admin_login():
 
 
 @app.route("/dashboard")
-def dashboard():
+def admin_dashboard():
     """Admin dashboard view."""
     if "admin_logged_in" not in session:
         return redirect(url_for("admin_login"))
