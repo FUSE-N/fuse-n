@@ -5,7 +5,7 @@ import os
 import sys
 from urllib.parse import urlparse, parse_qs
 
-PORT = 5501
+PORT = 8080
 
 class Handler(http.server.SimpleHTTPRequestHandler):
     def end_headers(self):

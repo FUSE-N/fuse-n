@@ -399,20 +399,7 @@
             </header>
 
             <div class="chat-messages" id="messageContainer">
-                <div class="message received">
-                    <div class="thread-avatar" style="width: 32px; height: 32px; align-self: flex-end;">
-                        <ion-icon name="person"></ion-icon>
-                    </div>
-                    <div class="message-bubble">
-                        Hello! Welcome to Bonniface support. How can I assist you with your project today?
-                    </div>
-                </div>
-
-                <div class="message sent">
-                    <div class="message-bubble">
-                        Hi, I'm just exploring the new features.
-                    </div>
-                </div>
+                <!-- Messages will be rendered here by chat.js -->
             </div>
 
             <div class="chat-input-area">
@@ -429,10 +416,9 @@
                         <ion-icon name="mic-outline"></ion-icon>
                     </button>
 
-                    <input type="text" class="input-field" placeholder="Type a message..." id="messageInput"
-                        onkeypress="handleKeyPress(event)">
+                    <input type="text" class="input-field" placeholder="Type a message..." id="messageInput">
 
-                    <button class="action-btn send-btn" onclick="sendMessage()">
+                    <button class="action-btn send-btn">
                         <ion-icon name="send"></ion-icon>
                     </button>
                 </div>
@@ -448,6 +434,8 @@
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="../static/js/sidebar.js"></script>
+    <script src="../static/js/chat.js"></script>
+    <script src="../static/js/message_init.js"></script>
     <script>
         // Session Check
         async function checkAccess() {
@@ -457,77 +445,6 @@
             }
         }
         checkAccess();
-
-        // UI Functions
-        let isRecording = false;
-
-        function toggleRecording() {
-            const btn = document.getElementById('voiceBtn');
-            const icon = btn.querySelector('ion-icon');
-
-            if (!isRecording) {
-                // Start recording simulation
-                isRecording = true;
-                btn.classList.add('recording');
-                icon.setAttribute('name', 'mic'); // Filled icon
-                document.getElementById('messageInput').placeholder = "Recording... Click mic to stop";
-            } else {
-                // Stop recording
-                isRecording = false;
-                btn.classList.remove('recording');
-                icon.setAttribute('name', 'mic-outline');
-                document.getElementById('messageInput').placeholder = "Type a message...";
-                alert("Voice recording captured! (Simulation)");
-            }
-        }
-
-        function handleFileSelect(input) {
-            if (input.files && input.files.length > 0) {
-                const count = input.files.length;
-                const status = document.getElementById('uploadStatus');
-                status.textContent = `${count} file(s) attached: ${input.files[0].name}${count > 1 ? '...' : ''}`;
-                status.style.display = 'block';
-            }
-        }
-
-        function handleKeyPress(e) {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        }
-
-        function sendMessage() {
-            const input = document.getElementById('messageInput');
-            const fileInput = document.getElementById('fileInput');
-            const text = input.value.trim();
-            const hasFile = fileInput.files.length > 0;
-
-            if (text || hasFile) {
-                // Add message to UI (Simulation)
-                const container = document.getElementById('messageContainer');
-
-                let messageContent = text;
-                if (hasFile) {
-                    messageContent += `<div style="margin-top:0.5rem; display:flex; align-items:center; gap:0.5rem; background:rgba(0,0,0,0.2); padding:0.5rem; border-radius:0.5rem;">
-                        <ion-icon name="document-text-outline"></ion-icon>
-                        <span>${fileInput.files[0].name}</span>
-                    </div>`;
-                }
-
-                const msgDiv = document.createElement('div');
-                msgDiv.className = 'message sent';
-                msgDiv.innerHTML = `<div class="message-bubble">${messageContent}</div>`;
-                container.appendChild(msgDiv);
-
-                // Reset inputs
-                input.value = '';
-                fileInput.value = ''; // clear files
-                document.getElementById('uploadStatus').style.display = 'none';
-
-                // Scroll to bottom
-                container.scrollTop = container.scrollHeight;
-            }
-        }
     </script>
 </body>
 
