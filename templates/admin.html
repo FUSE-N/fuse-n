@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,6 +16,8 @@
       --bg-dark: #0f172a;
       --bg-card: rgba(255, 255, 255, 0.05);
       --border-color: rgba(255, 255, 255, 0.1);
+      --online-color: #4ade80;
+      --offline-color: #94a3b8;
     }
 
     body {
@@ -72,11 +75,6 @@
       font-size: 1.25rem;
     }
 
-    .sidebar-footer {
-      padding: 2rem;
-      border-top: 1px solid var(--border-color);
-    }
-
     /* Main Content Area */
     .main-content {
       margin-left: var(--sidebar-width);
@@ -89,81 +87,24 @@
 
     .view-section {
       display: none;
-      padding: 3rem;
-      overflow-y: auto;
       height: 100%;
       box-sizing: border-box;
+      overflow-y: auto;
     }
 
     .view-section.active {
       display: block;
     }
 
-    /* --- Overview Tab Styles --- */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 3rem;
-    }
-
-    .stat-card {
-      background: var(--bg-card);
-      padding: 1.5rem;
-      border-radius: 1rem;
-      border: 1px solid var(--border-color);
-    }
-
-    .table-container {
-      background: var(--bg-card);
-      border-radius: 1rem;
-      overflow: hidden;
-      border: 1px solid var(--border-color);
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    table th,
-    table td {
-      text-align: left;
-      padding: 1rem;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    table th {
-      background: rgba(0, 0, 0, 0.2);
-      font-weight: 600;
-      color: rgba(255, 255, 255, 0.7);
-    }
-
-    .search-box {
-      margin-bottom: 2rem;
-    }
-
-    .search-box input {
-      width: 100%;
-      max-width: 400px;
-      padding: 1rem;
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 0.5rem;
-      color: white;
-    }
-
     /* --- Chat / Messages Tab Styles --- */
     .chat-container {
       display: flex;
       height: 100%;
-      margin: -3rem;
-      /* Counteract padding to fill screen */
       background: var(--bg-dark);
     }
 
     .user-list-sidebar {
-      width: 300px;
+      width: 320px;
       border-right: 1px solid var(--border-color);
       background: rgba(15, 23, 42, 0.5);
       display: flex;
@@ -178,7 +119,7 @@
     }
 
     .user-item {
-      padding: 1rem;
+      padding: 1rem 1.5rem;
       border-bottom: 1px solid var(--border-color);
       cursor: pointer;
       display: flex;
@@ -192,489 +133,470 @@
     }
 
     .user-avatar {
-      width: 40px;
-      height: 40px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       background: #334155;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .user-avatar img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
     }
 
-    /* --- Files Tab Styles --- */
-    .file-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 1.5rem;
+    .online-indicator {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 2px solid var(--bg-dark);
     }
+    .online-indicator.online { background-color: var(--online-color); }
+    .online-indicator.offline { background-color: var(--offline-color); }
 
-    .file-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 1rem;
-      padding: 1rem;
-      text-align: center;
-      transition: transform 0.2s;
-    }
 
-    .file-card:hover {
-      transform: translateY(-5px);
-      border-color: var(--primary-blue);
-    }
-
-    .file-icon {
-      font-size: 3rem;
-      color: rgba(255, 255, 255, 0.5);
-      margin-bottom: 1rem;
-    }
-
-    /* --- Notifications Tab Styles --- */
-    .notification-list {
-      max-width: 800px;
-    }
-
-    .notification-item {
-      background: var(--bg-card);
-      border-radius: 0.75rem;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      border-left: 4px solid var(--primary-blue);
+    .chat-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
       display: flex;
-      align-items: start;
-      gap: 1rem;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
     }
 
-    .notification-time {
-      font-size: 0.8rem;
-      color: rgba(255, 255, 255, 0.4);
-      white-space: nowrap;
+    .chat-header .user-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
     }
 
-    .badge-count {
-      background: #ef4444;
-      color: white;
-      font-size: 0.7rem;
-      padding: 0.1rem 0.4rem;
-      border-radius: 1rem;
-      margin-left: auto;
+    .chat-header .user-info .status {
+        font-size: 0.875rem;
     }
+     .chat-header .user-info .status.online { color: var(--online-color); }
+     .chat-header .user-info .status.offline { color: var(--offline-color); }
+
+
+    .chat-messages {
+        flex-grow: 1;
+        padding: 2rem;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .message {
+        max-width: 70%;
+        display: flex;
+        gap: 1rem;
+        align-items: flex-end;
+    }
+
+    .message.received {
+        align-self: flex-start;
+    }
+
+    .message.sent {
+        align-self: flex-end;
+        flex-direction: row-reverse;
+    }
+
+    .message-bubble {
+        padding: 1rem;
+        border-radius: 1rem;
+        line-height: 1.5;
+        position: relative;
+        color: white;
+    }
+
+    .received .message-bubble {
+        background: rgba(255, 255, 255, 0.1);
+        border-top-left-radius: 0;
+    }
+
+    .sent .message-bubble {
+        background: var(--primary-blue);
+        border-top-right-radius: 0;
+    }
+
+    .chat-input-area {
+        padding: 1.5rem;
+        border-top: 1px solid var(--border-color);
+        background: rgba(15, 23, 42, 0.95);
+    }
+
+    .input-wrapper {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 1rem;
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+        border: 1px solid var(--border-color);
+    }
+
+    .input-field {
+        flex-grow: 1;
+        background: transparent;
+        border: none;
+        padding: 0.75rem;
+        color: white;
+        font-family: inherit;
+        font-size: 1rem;
+    }
+
+    .input-field:focus {
+        outline: none;
+    }
+
+    .action-btn {
+        background: transparent;
+        border: none;
+        color: rgba(255, 255, 255, 0.6);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        font-size: 1.25rem;
+    }
+    .action-btn.send-btn { color: var(--primary-blue); }
   </style>
 </head>
 
 <body>
   <aside class="sidebar">
     <div class="sidebar-header">
-      <a href="/" class="logo-container"
-        style="display:flex; align-items:center; gap:1rem; text-decoration:none; color:white;">
-        <img src="../static/img/boni_avatar.jpg" alt="Logo" style="width: 32px; height: 32px; border-radius: 50%;">
-        <span class="logo-text" style="font-weight: 700; font-size: 1.25rem;">Bonniface|Admin</span>
-      </a>
+         <a href="/index.html" class="logo-container" style="display:flex; align-items:center; gap:1rem; text-decoration:none; color:white;">
+            <img src="../static/img/boni_avatar.jpg" alt="Logo" style="width: 32px; height: 32px; border-radius: 50%;">
+            <span class="logo-text" style="font-weight: 700; font-size: 1.25rem;">Bonniface|Admin</span>
+        </a>
     </div>
     <nav class="sidebar-nav">
-      <div class="nav-item active" onclick="switchTab('overview', this)">
-        <ion-icon name="grid-outline"></ion-icon>
-        Overview
-      </div>
-      <div class="nav-item" onclick="switchTab('messages', this)">
+      <div class="nav-item active" onclick="switchTab('messages', this)">
         <ion-icon name="chatbubbles-outline"></ion-icon>
         Messages
-        <span class="badge-count">3</span>
       </div>
-      <div class="nav-item" onclick="switchTab('files', this)">
-        <ion-icon name="folder-open-outline"></ion-icon>
-        Files
-      </div>
-      <div class="nav-item" onclick="switchTab('notifications', this)">
-        <ion-icon name="notifications-outline"></ion-icon>
-        Notifications
-        <span class="badge-count">5</span>
-      </div>
-      <div class="nav-item" onclick="alert('Settings view coming soon')">
-        <ion-icon name="settings-outline"></ion-icon>
-        Settings
+       <div class="nav-item" onclick="alert('This feature is not available yet.')">
+        <ion-icon name="grid-outline"></ion-icon>
+        Dashboard
       </div>
     </nav>
     <div class="sidebar-footer">
-      <form action="/logout" method="POST" style="margin:0;">
-        <button type="submit" style="background:transparent; border:none; width:100%; text-align:left; padding:0;"
-          class="nav-item">
-          <span style="display:flex; align-items:center; gap:1rem; color:#ef4444; font-weight:600;">
+        <a onclick="supabaseClient.signOut()" class="nav-item" style="color: #ef4444; font-weight:600;">
             <ion-icon name="log-out-outline"></ion-icon>
             Logout
-          </span>
-        </button>
-      </form>
+        </a>
     </div>
   </aside>
 
-  <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
-
   <main class="main-content">
-
-    <!-- Mobile Header -->
-    <div class="mobile-header">
-      <button class="mobile-menu-btn" onclick="toggleSidebar()">
-        <ion-icon name="menu-outline"></ion-icon>
-      </button>
-      <span style="font-weight: 700; font-size: 1.25rem;">Admin</span>
-    </div>
-
-    <!-- OVERVIEW TAB -->
-    <div id="overview" class="view-section active">
-      <h1 style="margin-bottom: 2rem;">Dashboard Overview</h1>
-
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div style="color:rgba(255,255,255,0.5); margin-bottom:0.5rem;">Total Projects</div>
-          <div style="font-size: 2.5rem; font-weight: 700;" id="statTotalProjects">-</div>
-        </div>
-        <div class="stat-card" style="border-color: rgba(16, 185, 129, 0.3);">
-          <div style="color:rgba(255,255,255,0.5); margin-bottom:0.5rem;">Total Messages</div>
-          <div style="font-size: 2.5rem; font-weight: 700; color:#4ade80;" id="statTotalMessages">-</div>
-        </div>
-        <div class="stat-card" style="border-color: rgba(245, 158, 11, 0.3);">
-          <div style="color:rgba(255,255,255,0.5); margin-bottom:0.5rem;">Pending Requests</div>
-          <div style="font-size: 2.5rem; font-weight: 700; color:#fbbf24;" id="statPendingRequests">-</div>
-        </div>
-      </div>
-
-      <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Search projects by name, title..." onkeyup="filterTable()">
-      </div>
-
-      <div class="table-container">
-        <table id="projectTable">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Title</th>
-              <th>Service</th>
-              <th>Budget</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="projectTableBody">
-            <!-- Populated by JS -->
-            <tr>
-              <td colspan="6" style="text-align:center; padding:2rem;">Loading projects...</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
     <!-- MESSAGES TAB -->
-    <div id="messages" class="view-section" style="padding:0;">
+    <div id="messages" class="view-section active" style="padding:0;">
       <div class="chat-container">
         <div class="user-list-sidebar">
           <div style="padding:1.5rem; border-bottom:1px solid var(--border-color);">
             <h3 style="margin:0;">Conversations</h3>
+             <input type="text" id="userSearch" placeholder="Search users..." class="search-bar" style="width: 100%; margin-top: 1rem; box-sizing: border-box; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); padding: 0.5rem; border-radius: 0.5rem; color: white;">
           </div>
-          <div style="overflow-y:auto; flex-grow:1;">
-            <!-- Fake User List -->
-            <div class="user-item active">
-              <div class="user-avatar"></div>
-              <div>
-                <div style="font-weight:600;">Alice Freeman</div>
-                <div style="font-size:0.8rem; opacity:0.6;">I need help with...</div>
-              </div>
-            </div>
-            <div class="user-item">
-              <div class="user-avatar" style="background:#475569;"></div>
-              <div>
-                <div style="font-weight:600;">Bob Smith</div>
-                <div style="font-size:0.8rem; opacity:0.6;">Project File attached</div>
-              </div>
-            </div>
+          <div id="user-list" style="overflow-y:auto; flex-grow:1;">
+             <div style="text-align:center; padding: 2rem; opacity: 0.5;">Loading users...</div>
           </div>
         </div>
-        <div class="chat-main" style="position:relative;">
-          <div
-            style="padding:1.5rem; border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
-            <h3>Alice Freeman</h3>
-            <button
-              style="background:transparent; border:1px solid var(--border-color); color:white; padding:0.5rem 1rem; border-radius:0.5rem; cursor:pointer;">Actions</button>
-          </div>
-          <div style="flex-grow:1; padding:2rem; overflow-y:auto;">
-            <!-- Chat Bubbles -->
-            <div style="display:flex; gap:1rem; margin-bottom:1.5rem;">
-              <div class="user-avatar"></div>
-              <div
-                style="background:rgba(255,255,255,0.1); padding:1rem; border-radius:0 1rem 1rem 1rem; max-width:60%;">
-                Hello Admin, I have a question about my project proposal.
-              </div>
+        <div id="chat-main" class="chat-main" style="position:relative;">
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; text-align: center; opacity: 0.5;">
+                <ion-icon name="chatbubbles-outline" style="font-size: 5rem;"></ion-icon>
+                <h2>Select a conversation</h2>
+                <p>Choose a user from the list to start chatting.</p>
             </div>
-            <div style="display:flex; gap:1rem; margin-bottom:1.5rem; flex-direction:row-reverse;">
-              <div class="user-avatar" style="background:var(--primary-blue);"></div>
-              <div style="background:var(--primary-blue); padding:1rem; border-radius:1rem 0 1rem 1rem; max-width:60%;">
-                Hi Alice! Sure, I'd be happy to help. What's on your mind?
-              </div>
-            </div>
-          </div>
-          <!-- Input Area -->
-          <div style="padding:1.5rem; border-top:1px solid var(--border-color); background:rgba(15,23,42,0.9);">
-            <div
-              style="display:flex; gap:1rem; background:rgba(255,255,255,0.05); padding:0.5rem; border-radius:0.5rem;">
-              <button style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;"><ion-icon
-                  name="attach"></ion-icon></button>
-              <button style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;"><ion-icon
-                  name="mic"></ion-icon></button>
-              <input type="text" placeholder="Type a reply..."
-                style="flex-grow:1; background:transparent; border:none; color:white; outline:none;">
-              <button
-                style="background:none; border:none; color:var(--primary-blue); font-size:1.2rem; cursor:pointer;"><ion-icon
-                  name="send"></ion-icon></button>
-            </div>
-          </div>
         </div>
       </div>
     </div>
-
-    <!-- FILES TAB -->
-    <div id="files" class="view-section">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
-        <h1>File Manager</h1>
-        <button
-          style="background:var(--primary-blue); color:white; border:none; padding:0.75rem 1.5rem; border-radius:0.5rem; cursor:pointer; font-weight:600;">
-          <ion-icon name="cloud-upload" style="vertical-align:middle; margin-right:0.5rem;"></ion-icon>Upload File
-        </button>
-      </div>
-
-      <div class="file-grid">
-        <!-- Mock Files -->
-        <div class="file-card">
-          <div class="file-icon"><ion-icon name="document-text"></ion-icon></div>
-          <div style="font-weight:600; margin-bottom:0.5rem;">Project_Requirements.pdf</div>
-          <div style="font-size:0.8rem; opacity:0.6;">2.5 MB • 2h ago</div>
-        </div>
-        <div class="file-card">
-          <div class="file-icon"><ion-icon name="image"></ion-icon></div>
-          <div style="font-weight:600; margin-bottom:0.5rem;">Design_Mockup.png</div>
-          <div style="font-size:0.8rem; opacity:0.6;">4.1 MB • 1d ago</div>
-        </div>
-        <div class="file-card">
-          <div class="file-icon"><ion-icon name="code-slash"></ion-icon></div>
-          <div style="font-weight:600; margin-bottom:0.5rem;">main.py</div>
-          <div style="font-size:0.8rem; opacity:0.6;">12 KB • 3d ago</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- NOTIFICATIONS TAB -->
-    <div id="notifications" class="view-section">
-      <h1 style="margin-bottom: 2rem;">Notifications</h1>
-      <div class="notification-list" id="notificationList">
-        <!-- Populated by JS -->
-        <div style="padding:1rem; opacity:0.6;">Loading notifications...</div>
-      </div>
-    </div>
-
-    <!-- SETTINGS TAB -->
-    <div id="settings" class="view-section">
-      <h1 style="margin-bottom: 2rem;">Admin Settings</h1>
-
-      <div style="max-width: 800px;">
-        <div
-          style="background: var(--bg-card); padding: 2rem; border-radius: 1rem; border: 1px solid var(--border-color); margin-bottom: 2rem;">
-          <h2
-            style="margin-top: 0; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; margin-bottom: 1.5rem;">
-            Profile Information</h2>
-          <div style="display: flex; gap: 2rem; align-items: start;">
-            <img src="../static/img/boni_avatar.jpg" alt="Admin"
-              style="width: 100px; height: 100px; border-radius: 50%;">
-            <div style="flex-grow: 1;">
-              <div style="margin-bottom: 1rem;">
-                <label style="display: block; margin-bottom: 0.5rem; color: rgba(255,255,255,0.7);">Full Name</label>
-                <input type="text" value="Bonniface Admin"
-                  style="width: 100%; padding: 0.75rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 0.5rem; color: white;">
-              </div>
-              <div style="margin-bottom: 1rem;">
-                <label style="display: block; margin-bottom: 0.5rem; color: rgba(255,255,255,0.7);">Email
-                  Address</label>
-                <input type="email" value="admin@fusein.com"
-                  style="width: 100%; padding: 0.75rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 0.5rem; color: white;"
-                  disabled>
-              </div>
-              <button
-                style="background: var(--primary-blue); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer;">Save
-                Changes</button>
-            </div>
-          </div>
-        </div>
-
-        <div
-          style="background: var(--bg-card); padding: 2rem; border-radius: 1rem; border: 1px solid var(--border-color);">
-          <h2
-            style="margin-top: 0; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; margin-bottom: 1.5rem;">
-            System Configuration</h2>
-
-          <div style="margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between;">
-            <div>
-              <div style="font-weight: 600;">Maintenance Mode</div>
-              <div style="font-size: 0.875rem; color: rgba(255,255,255,0.5);">Disable user access temporarily</div>
-            </div>
-            <label class="switch" style="position: relative; display: inline-block; width: 50px; height: 26px;">
-              <input type="checkbox" style="opacity: 0; width: 0; height: 0;">
-              <span
-                style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #334155; transition: .4s; border-radius: 34px;"></span>
-              <span
-                style="position: absolute; content: ''; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%;"></span>
-            </label>
-          </div>
-
-          <div style="margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between;">
-            <div>
-              <div style="font-weight: 600;">Allow New Registrations</div>
-              <div style="font-size: 0.875rem; color: rgba(255,255,255,0.5);">Users can sign up for new accounts</div>
-            </div>
-            <label class="switch" style="position: relative; display: inline-block; width: 50px; height: 26px;">
-              <input type="checkbox" checked style="opacity: 0; width: 0; height: 0;">
-              <span
-                style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #334155; transition: .4s; border-radius: 34px;"></span>
-              <span
-                style="position: absolute; content: ''; height: 20px; width: 20px; left: 27px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%;"></span>
-            </label>
-          </div>
-        </div>
-      </div>
-    </div>
-
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../static/js/supabase_init.js"></script>
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-  <script src="../static/js/sidebar.js"></script>
+  
   <script>
-    // Init Global Data
-    let projects = [];
-    let messages = [];
+    class AdminChat {
+        constructor() {
+            this.supabase = window.supabase;
+            this.currentUser = null;
+            this.supportRoomId = null;
+            this.allMessages = [];
+            this.users = new Map();
+            this.onlineUsers = new Set();
+            this.selectedUserId = null;
+            this.channel = null;
 
-    function switchTab(tabId, navElement) {
-      // Hide all views
-      document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-      // Remove active class from nav
-      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            this.init();
+        }
 
-      // Show selected view
-      document.getElementById(tabId).classList.add('active');
-      // Activate nav item
-      navElement.classList.add('active');
+        async init() {
+            const { data: { session }, error } = await this.supabase.auth.getSession();
+            if (error || !session) {
+                window.location.href = 'login.html';
+                return;
+            }
+            this.currentUser = session.user;
 
-      // Refresh data for tab
-      if (tabId === 'overview') fetchProjects();
-      if (tabId === 'notifications') fetchNotifications();
-    }
+            // Simple check if user is admin (in a real app, use roles)
+            if (!this.currentUser.email.includes('admin')) {
+                 console.warn('Access denied. Not an admin.');
+                 // window.location.href = 'login.html';
+                 // return;
+            }
 
-    async function fetchProjects() {
-      try {
-        const { data, error } = await window.supabase
-          .from('projects')
-          .select('*')
-          .order('created_at', { ascending: false });
+            await this.getSupportRoom();
+            if (this.supportRoomId) {
+                await this.fetchUsersAndMessages();
+                this.setupRealtime();
+                this.renderUserList();
+            }
 
-        if (error) throw error;
-        projects = data;
-        renderProjects(projects);
-        updateStats(projects);
-      } catch (err) {
-        console.error('Error fetching projects:', err);
-      }
-    }
+            document.getElementById('userSearch').addEventListener('keyup', () => this.renderUserList());
+        }
 
-    async function fetchNotifications() {
-      try {
-        const { data, error } = await window.supabase
-          .from('notifications')
-          .select('*')
-          .order('created_at', { ascending: false });
+        async getSupportRoom() {
+            const { data, error } = await this.supabase.from('chat_rooms').select('id').eq('name', 'Support Team').single();
+            if (error) console.error('Error fetching support room:', error);
+            else this.supportRoomId = data.id;
+        }
 
-        if (error) throw error;
-        renderNotifications(data);
-      } catch (err) {
-        console.error('Error fetching notifications', err);
-      }
-    }
+        async fetchUsersAndMessages() {
+            // Fetch all members of the support room
+            const { data: members, error: memberError } = await this.supabase
+                .from('room_members')
+                .select('user_id, profiles(id, full_name, avatar_url)')
+                .eq('room_id', this.supportRoomId);
 
-    function renderProjects(data) {
-      const tbody = document.getElementById('projectTableBody');
-      tbody.innerHTML = '';
+            if (memberError) {
+                console.error('Error fetching room members:', memberError);
+                return;
+            }
 
-      if (data.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:2rem; color:rgba(255,255,255,0.5);">No projects found.</td></tr>';
-        return;
-      }
+            members.forEach(m => {
+                if (m.user_id !== this.currentUser.id && m.profiles) {
+                    this.users.set(m.user_id, { ...m.profiles, online: false, unread: 0 });
+                }
+            });
 
-      data.forEach(p => {
-        const date = new Date(p.created_at).toLocaleDateString();
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-                    <td>${date}</td>
-                    <td style="font-weight:600; color:white;">${p.title}</td>
-                    <td>${p.service_type || '-'}</td>
-                    <td>${p.budget || '-'}</td>
-                    <td><span style="padding:0.2rem 0.5rem; border-radius:0.5rem; background:rgba(59,130,246,0.2); color:#60a5fa; font-size:0.8rem;">${p.status}</span></td>
-                    <td>
-                        <button style="background:transparent; border:1px solid var(--border-color); color:white; padding:0.3rem 0.6rem; border-radius:0.3rem; cursor:pointer;">Details</button>
-                    </td>
+            // Fetch all messages in the room
+            const { data: messages, error: msgError } = await this.supabase
+                .from('messages')
+                .select('*')
+                .eq('room_id', this.supportRoomId)
+                .order('created_at', { ascending: true });
+
+            if (msgError) console.error('Error fetching messages:', msgError);
+            else this.allMessages = messages;
+        }
+
+        setupRealtime() {
+            this.channel = this.supabase.channel(`admin-chat:${this.supportRoomId}`, {
+                config: {
+                    presence: { key: this.currentUser.id }
+                }
+            });
+
+            this.channel
+                .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
+                    this.allMessages.push(payload.new);
+                    // If the new message belongs to the active chat, render it
+                    if (payload.new.user_id === this.selectedUserId || payload.new.user_id === this.currentUser.id) {
+                         this.renderMessagesForSelectedUser();
+                    }
+                    this.updateUnreadCount(payload.new.user_id);
+                    this.renderUserList();
+                })
+                .on('presence', { event: 'sync' }, () => {
+                    const presenceState = this.channel.presenceState();
+                    this.onlineUsers.clear();
+                    for (const id in presenceState) {
+                        this.onlineUsers.add(presenceState[id][0].user_id);
+                    }
+                    this.renderUserList();
+                    if(this.selectedUserId) this.renderChatHeader();
+                })
+                .subscribe();
+        }
+
+        renderUserList() {
+            const userListEl = document.getElementById('user-list');
+            const searchTerm = document.getElementById('userSearch').value.toLowerCase();
+            
+            const sortedUsers = Array.from(this.users.values()).sort((a,b) => {
+                 const aName = a.full_name || 'Unknown';
+                 const bName = b.full_name || 'Unknown';
+                 return aName.localeCompare(bName);
+            });
+
+            userListEl.innerHTML = '';
+            
+            for (const user of sortedUsers) {
+                const isOnline = this.onlineUsers.has(user.id);
+                user.online = isOnline;
+                
+                const name = user.full_name || 'Unknown User';
+                if(searchTerm && !name.toLowerCase().includes(searchTerm)) continue;
+
+                const item = document.createElement('div');
+                item.className = 'user-item';
+                if (user.id === this.selectedUserId) item.classList.add('active');
+                
+                item.innerHTML = `
+                    <div class="user-avatar">
+                        <img src="${user.avatar_url || '../static/img/boni_avatar.jpg'}" alt="${name}">
+                        <div class="online-indicator ${isOnline ? 'online' : 'offline'}"></div>
+                    </div>
+                    <div style="flex-grow: 1; min-width:0;">
+                        <div style="font-weight:600;">${name}</div>
+                        <div style="font-size:0.8rem; opacity:0.6; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Last message...</div>
+                    </div>
+                    ${user.unread > 0 ? `<span class="badge-count" style="background:#ef4444; color:white; font-size:0.75rem; padding: 2px 6px; border-radius:10px;">${user.unread}</span>` : ''}
                 `;
-        tbody.appendChild(tr);
-      });
+                item.addEventListener('click', () => this.selectUser(user.id));
+                userListEl.appendChild(item);
+            }
+        }
+        
+        selectUser(userId) {
+            if (this.selectedUserId === userId) return;
+            this.selectedUserId = userId;
+            const user = this.users.get(userId);
+            if(user) user.unread = 0;
+
+            this.renderUserList(); // To update active state
+            this.renderChatForUser(userId);
+        }
+
+        renderChatForUser(userId) {
+            const chatMain = document.getElementById('chat-main');
+            chatMain.innerHTML = `
+                <div id="chat-header" class="chat-header"></div>
+                <div id="chat-messages" class="chat-messages">Loading...</div>
+                <div class="chat-input-area">
+                    <div class="input-wrapper">
+                        <input type="text" id="message-input" class="input-field" placeholder="Type a message to...">
+                        <button id="send-btn" class="action-btn send-btn"><ion-icon name="send"></ion-icon></button>
+                    </div>
+                </div>
+            `;
+            this.renderChatHeader();
+            this.renderMessagesForSelectedUser();
+
+            document.getElementById('send-btn').addEventListener('click', () => this.sendMessage());
+            document.getElementById('message-input').addEventListener('keypress', e => {
+                if(e.key === 'Enter') this.sendMessage();
+            });
+        }
+        
+        renderChatHeader() {
+            const user = this.users.get(this.selectedUserId);
+            if(!user) return;
+            const header = document.getElementById('chat-header');
+            const isOnline = this.onlineUsers.has(user.id);
+
+            header.innerHTML = `
+                <div class="user-info">
+                     <div class="user-avatar">
+                        <img src="${user.avatar_url || '../static/img/boni_avatar.jpg'}" alt="${user.full_name}">
+                        <div class="online-indicator ${isOnline ? 'online' : 'offline'}"></div>
+                    </div>
+                    <div>
+                        <h3 style="margin:0;">${user.full_name || 'Unknown User'}</h3>
+                        <div class="status ${isOnline ? 'online' : 'offline'}">${isOnline ? 'Online' : 'Offline'}</div>
+                    </div>
+                </div>
+                <button class="action-btn"><ion-icon name="ellipsis-vertical"></ion-icon></button>
+            `;
+             document.getElementById('message-input').placeholder = `Message ${user.full_name || 'user'}`;
+        }
+        
+        renderMessagesForSelectedUser() {
+            const messagesContainer = document.getElementById('chat-messages');
+            if(!messagesContainer) return;
+            
+            const filteredMessages = this.allMessages.filter(msg => 
+                (msg.user_id === this.currentUser.id && msg.recipient_id === this.selectedUserId) || // Sent by admin to user
+                (msg.user_id === this.selectedUserId && msg.recipient_id === this.currentUser.id) // Sent by user to admin
+            );
+
+            messagesContainer.innerHTML = filteredMessages.map(msg => {
+                const senderClass = msg.user_id === this.currentUser.id ? 'sent' : 'received';
+                const user = (senderClass === 'received') ? this.users.get(this.selectedUserId) : null;
+                const avatarUrl = user ? (user.avatar_url || '../static/img/boni_avatar.jpg') : '../static/img/boni_avatar.jpg';
+
+                return `
+                    <div class="message ${senderClass}">
+                         ${senderClass === 'received' ? `<div class="user-avatar" style="width:40px; height:40px;"><img src="${avatarUrl}" alt="avatar"></div>` : ''}
+                        <div class="message-bubble">${this.escapeHTML(msg.content)}</div>
+                    </div>
+                `;
+            }).join('') || '<div style="text-align:center; opacity:0.5;">No messages yet. Start the conversation!</div>';
+            
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        async sendMessage() {
+            const input = document.getElementById('message-input');
+            const content = input.value.trim();
+            if (!content || !this.selectedUserId) return;
+
+            input.value = '';
+            const message = {
+                room_id: this.supportRoomId,
+                user_id: this.currentUser.id,
+                content: content,
+                recipient_id: this.selectedUserId // Important for direct messaging within a group room
+            };
+
+            const { error } = await this.supabase.from('messages').insert(message);
+
+            if (error) {
+                console.error('Error sending message:', error);
+                input.value = content; // Restore on failure
+            }
+        }
+        
+        updateUnreadCount(fromUserId) {
+            if (fromUserId !== this.currentUser.id && fromUserId !== this.selectedUserId) {
+                const user = this.users.get(fromUserId);
+                if (user) {
+                    user.unread = (user.unread || 0) + 1;
+                }
+            }
+        }
+
+        escapeHTML(str) {
+            const p = document.createElement('p');
+            p.textContent = str;
+            return p.innerHTML;
+        }
     }
 
-    function renderNotifications(data) {
-      const list = document.getElementById('notificationList');
-      list.innerHTML = '';
-
-      if (data.length === 0) {
-        list.innerHTML = '<div style="padding:1rem; opacity:0.6;">No new notifications.</div>';
-        return;
-      }
-
-      data.forEach(n => {
-        const time = new Date(n.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        const item = document.createElement('div');
-        item.className = 'notification-item';
-        // Color code by type
-        let color = '#3b82f6';
-        let icon = 'information-circle';
-        if (n.type === 'message') { color = '#fbbf24'; icon = 'chatbubble'; }
-        if (n.type === 'project') { color = '#10b981'; icon = 'briefcase'; }
-
-        item.style.borderLeftColor = color;
-        item.innerHTML = `
-                     <div style="font-size:1.5rem; color:${color};"><ion-icon name="${icon}"></ion-icon></div>
-                     <div style="flex-grow:1;">
-                         <div style="font-weight:600;">${n.type.toUpperCase()}</div>
-                         <div style="opacity:0.7; font-size:0.9rem;">${n.message}</div>
-                     </div>
-                     <div class="notification-time">${time}</div>
-                 `;
-        list.appendChild(item);
-      });
-    }
-
-    function updateStats(data) {
-      document.getElementById('statTotalProjects').innerText = data.length;
-      const pending = data.filter(p => p.status === 'pending').length;
-      document.getElementById('statPendingRequests').innerText = pending;
-      // Mock total messages for now or fetch count
-      document.getElementById('statTotalMessages').innerText = '0';
-    }
-
-    function filterTable() {
-      const input = document.getElementById("searchInput").value.toLowerCase();
-      const rows = document.querySelectorAll("#projectTableBody tr");
-      rows.forEach(row => {
-        const text = row.textContent.toLowerCase();
-        row.style.display = text.includes(input) ? "" : "none";
-      });
-    }
-
-    // Initial Load
-    window.addEventListener('load', () => {
-      fetchProjects();
-      fetchNotifications(); // Pre-load to show badge counts eventually
+    document.addEventListener('DOMContentLoaded', () => {
+        window.adminChat = new AdminChat();
     });
+    
+    // Also handle tab switching
+    function switchTab(tabId, navElement) {
+      document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      navElement.classList.add('active');
+    }
+
   </script>
 </body>
 
