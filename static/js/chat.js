@@ -2,8 +2,9 @@
 // static/js/chat.js
 
 class ChatApp {
-    constructor(roomId) {
+    constructor(roomId, user) {
         this.roomId = roomId;
+        this.user = user;
         this.supabase = window.supabase;
         this.messages = [];
         this.messagesContainer = null;
@@ -20,18 +21,23 @@ class ChatApp {
         this.messageInput = document.getElementById('messageInput');
         this.sendButton = document.querySelector('.send-btn');
 
-        this.sendButton.addEventListener('click', () => this.sendMessage());
-        this.messageInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                this.sendMessage();
-            }
-        });
+        if (this.sendButton) {
+            this.sendButton.addEventListener('click', () => this.sendMessage());
+        }
+        
+        if (this.messageInput) {
+            this.messageInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    this.sendMessage();
+                }
+            });
+        }
     }
 
     async fetchInitialMessages() {
         const { data, error } = await this.supabase
             .from('messages')
-            .select('*, users:user_id (*)')
+            .select('*')
             .eq('room_id', this.roomId)
             .order('created_at', { ascending: false })
             .limit(50);
@@ -55,8 +61,11 @@ class ChatApp {
                 table: 'messages',
                 filter: `room_id=eq.${this.roomId}`
             }, payload => {
-                this.messages.push(payload.new);
-                this.renderMessages();
+                // Check if the message is already in our list to avoid duplicates
+                if (!this.messages.find(m => m.id === payload.new.id)) {
+                    this.messages.push(payload.new);
+                    this.renderMessages();
+                }
             })
             .subscribe();
     }
@@ -65,18 +74,11 @@ class ChatApp {
         const content = this.messageInput.value.trim();
         if (!content) return;
 
-        const { data: { user } } = await this.supabase.auth.getUser();
-
-        if (!user) {
-            console.error('User not authenticated');
-            return;
-        }
-
         const { error } = await this.supabase
             .from('messages')
             .insert([{
                 room_id: this.roomId,
-                user_id: user.id,
+                user_id: this.user.id,
                 content: content
             }]);
 
@@ -89,16 +91,23 @@ class ChatApp {
     }
 
     renderMessages() {
-        const { data: { user } } = this.supabase.auth.getUser();
+        if (!this.messagesContainer) return;
+        
         this.messagesContainer.innerHTML = this.messages.map(msg => {
-            const sender = msg.user_id === user.id ? 'sent' : 'received';
+            const senderClass = msg.user_id === this.user.id ? 'sent' : 'received';
             return `
-                <div class="message ${sender}">
-                    <div class="message-bubble">${msg.content}</div>
+                <div class="message ${senderClass}">
+                    <div class="message-bubble">${this.escapeHTML(msg.content)}</div>
                 </div>
             `;
         }).join('');
         this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+    }
+
+    escapeHTML(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
     }
 
     destroy() {

@@ -371,18 +371,6 @@
                         <div class="thread-last-msg">How can we help you today?</div>
                     </div>
                 </div>
-                <div class="thread-item">
-                    <div class="thread-avatar" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa;">
-                        J
-                    </div>
-                    <div class="thread-info">
-                        <div style="display: flex; justify-content: space-between;">
-                            <div class="thread-name">John Doe</div>
-                            <div class="thread-time">1d ago</div>
-                        </div>
-                        <div class="thread-last-msg">Thanks for the update!</div>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -400,6 +388,9 @@
 
             <div class="chat-messages" id="messageContainer">
                 <!-- Messages will be rendered here by chat.js -->
+                <div style="padding: 2rem; text-align: center; color: rgba(255,255,255,0.5);">
+                    Loading chat...
+                </div>
             </div>
 
             <div class="chat-input-area">
@@ -409,10 +400,10 @@
                         onclick="document.getElementById('fileInput').click()">
                         <ion-icon name="attach-outline"></ion-icon>
                     </button>
-                    <input type="file" id="fileInput" hidden multiple onchange="handleFileSelect(this)">
+                    <input type="file" id="fileInput" hidden multiple>
 
                     <!-- Voice Recorder Button -->
-                    <button class="action-btn" id="voiceBtn" title="Record Voice" onclick="toggleRecording()">
+                    <button class="action-btn" id="voiceBtn" title="Record Voice">
                         <ion-icon name="mic-outline"></ion-icon>
                     </button>
 
@@ -435,16 +426,77 @@
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="../static/js/sidebar.js"></script>
     <script src="../static/js/chat.js"></script>
-    <script src="../static/js/message_init.js"></script>
     <script>
-        // Session Check
-        async function checkAccess() {
-            const session = await window.supabaseClient.checkSession();
-            if (!session) {
-                window.location.href = 'login.html';
+        // Chat initialization and session check
+        async function initChat() {
+            try {
+                // 1. Check for active session
+                const { data: { session }, error: sessionError } = await window.supabase.auth.getSession();
+                
+                if (sessionError || !session) {
+                    console.log('No active session, redirecting to login.');
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                const user = session.user;
+                console.log('User authenticated:', user.email);
+
+                // 2. Find or create the Support Team room
+                let { data: room, error: roomError } = await window.supabase
+                    .from('chat_rooms')
+                    .select('id')
+                    .eq('name', 'Support Team')
+                    .single();
+
+                if (roomError && roomError.code !== 'PGRST116') { // PGRST116 is "no rows returned"
+                    throw roomError;
+                }
+
+                let roomId;
+                if (!room) {
+                    // Create the room if it doesn't exist (assuming the user has permission or it's handled via a trigger/service)
+                    // For this implementation, let's assume it should exist. 
+                    // In a production app, you might create it via an edge function or a superuser script.
+                    console.log('Support room not found. Please ensure it is created in the database.');
+                    document.getElementById('messageContainer').innerHTML = 
+                        '<div style="padding: 2rem; text-align: center; color: #ef4444;">Support chat not initialized. Please contact admin.</div>';
+                    return;
+                } else {
+                    roomId = room.id;
+                }
+
+                // 3. Ensure user is a member of the room
+                const { data: membership, error: memberError } = await window.supabase
+                    .from('room_members')
+                    .select('*')
+                    .eq('room_id', roomId)
+                    .eq('user_id', user.id)
+                    .single();
+
+                if (memberError && memberError.code === 'PGRST116') {
+                    // User is not a member, join them
+                    const { error: joinError } = await window.supabase
+                        .from('room_members')
+                        .insert({ room_id: roomId, user_id: user.id });
+
+                    if (joinError) throw joinError;
+                    console.log('User joined the support room.');
+                }
+
+                // 4. Start the Chat Application
+                window.chatApp = new ChatApp(roomId, user);
+                console.log('Chat initialized successfully.');
+
+            } catch (err) {
+                console.error('Failed to initialize chat:', err.message);
+                document.getElementById('messageContainer').innerHTML = 
+                    `<div style="padding: 2rem; text-align: center; color: #ef4444;">Error: ${err.message}</div>`;
             }
         }
-        checkAccess();
+
+        // Run initialization when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initChat);
     </script>
 </body>
 

@@ -38,6 +38,18 @@ USING (
   )
 );
 
+-- RLS Policy: Allow anyone to see the public support room (optional, but easier for joining)
+CREATE POLICY "Allow authenticated to see Support room"
+ON chat_rooms FOR SELECT
+USING ( auth.role() = 'authenticated' AND name = 'Support Team' );
+
+-- RLS Policy: Allow users to join a room
+CREATE POLICY "Allow users to join rooms"
+ON room_members FOR INSERT
+WITH CHECK (
+  auth.uid() = user_id
+);
+
 -- RLS Policy: Allow users to see members of rooms they are in
 CREATE POLICY "Allow members to see other members"
 ON room_members FOR SELECT
