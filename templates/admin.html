@@ -6,9 +6,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard | Fuse-IN</title>
-  <link rel="icon" href="../static/img/boni_avatar.jpg">
   <link rel="stylesheet" href="../static/css/styles.css">
   <link rel="stylesheet" href="../static/css/navbar.css">
+  <link rel="stylesheet" href="../static/css/admin-styles.css">
   <style>
     :root {
       --sidebar-width: 280px;
@@ -281,13 +281,27 @@
         </a>
     </div>
     <nav class="sidebar-nav">
-      <div class="nav-item active" onclick="switchTab('messages', this)">
+      <div class="nav-item active" id="nav-overview" onclick="switchTab('overview', this)">
+        <ion-icon name="grid-outline"></ion-icon>
+        Overview
+      </div>
+      <div class="nav-item" id="nav-messages" onclick="switchTab('messages', this)">
         <ion-icon name="chatbubbles-outline"></ion-icon>
         Messages
+        <span class="badge-count" style="background:#ef4444; color:white; font-size:0.75rem; padding: 2px 6px; border-radius:10px;">3</span>
       </div>
-       <div class="nav-item" onclick="alert('This feature is not available yet.')">
-        <ion-icon name="grid-outline"></ion-icon>
-        Dashboard
+       <div class="nav-item" id="nav-files" onclick="alert('Files feature coming soon')">
+        <ion-icon name="folder-outline"></ion-icon>
+        Files
+      </div>
+      <div class="nav-item" id="nav-notifications" onclick="alert('Notifications feature coming soon')">
+        <ion-icon name="notifications-outline"></ion-icon>
+        Notifications
+        <span class="badge-count" style="background:#ef4444; color:white; font-size:0.75rem; padding: 2px 6px; border-radius:10px;">5</span>
+      </div>
+      <div class="nav-item" id="nav-settings" onclick="alert('Settings feature coming soon')">
+        <ion-icon name="settings-outline"></ion-icon>
+        Settings
       </div>
     </nav>
     <div class="sidebar-footer">
@@ -299,8 +313,76 @@
   </aside>
 
   <main class="main-content">
+    <!-- OVERVIEW TAB -->
+    <div id="overview" class="view-section active">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h1 style="margin: 0; font-size: 2rem; font-weight: 700;">Dashboard Overview</h1>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div style="color: rgba(255, 255, 255, 0.6); margin-bottom: 1.5rem; font-weight: 500;">Total Projects</div>
+          <div style="font-size: 2.5rem; font-weight: 700;">{{ stats.total_projects if stats else '-' }}</div>
+        </div>
+        <div class="stat-card">
+          <div style="color: rgba(255, 255, 255, 0.6); margin-bottom: 1.5rem; font-weight: 500;">Total Messages</div>
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <div style="width: 8px; height: 8px; border-radius: 50%; background: #4ade80;"></div>
+            <div style="font-size: 1.5rem; font-weight: 600; color: rgba(255, 255, 255, 0.4);">-</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div style="color: rgba(255, 255, 255, 0.6); margin-bottom: 1.5rem; font-weight: 500;">Pending Requests</div>
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <div style="width: 8px; height: 8px; border-radius: 50%; background: #fbbf24;"></div>
+            <div style="font-size: 1.5rem; font-weight: 600; color: rgba(255, 255, 255, 0.4);">-</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 2rem;">
+        <input type="text" placeholder="Search projects by name, title..." 
+               style="width: 100%; max-width: 400px; padding: 0.75rem 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color); border-radius: 0.5rem; color: white;">
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Title</th>
+              <th>Service</th>
+              <th>Budget</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if data %}
+              {% for row in data %}
+              <tr>
+                <td>{{ row[0] }}</td>
+                <td>{{ row[4] }}</td>
+                <td>{{ row[5] }}</td>
+                <td>{{ row[9] }}</td>
+                <td><span style="padding: 0.25rem 0.75rem; border-radius: 1rem; background: rgba(59, 130, 246, 0.1); color: #60a5fa; font-size: 0.875rem;">Active</span></td>
+                <td><button style="background: transparent; border: none; color: white; cursor: pointer;"><ion-icon name="ellipsis-vertical"></ion-icon></button></td>
+              </tr>
+              {% endfor %}
+            {% else %}
+              <tr>
+                <td colspan="6" style="text-align: center; padding: 4rem; color: rgba(255, 255, 255, 0.4);">
+                  Loading projects...
+                </td>
+              </tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
     <!-- MESSAGES TAB -->
-    <div id="messages" class="view-section active" style="padding:0;">
+    <div id="messages" class="view-section" style="padding:0;">
       <div class="chat-container">
         <div class="user-list-sidebar">
           <div style="padding:1.5rem; border-bottom:1px solid var(--border-color);">

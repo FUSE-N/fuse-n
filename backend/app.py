@@ -371,6 +371,10 @@ def admin_dashboard():
     total_projects = len(data)
     recent_activities = activity_manager.get_all_values()
     
+    # Ensure data is a list of lists if it's currently empty or has headers
+    if not data:
+        data = []
+    
     # Filter "New Project Submission" and "New Community Post" counts if wanted, or just total logs
     
     if recent_activities:
