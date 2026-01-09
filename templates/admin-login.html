@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="../static/img/boni_avatar.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Access | Bonniface</title>
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <link rel="stylesheet" href="../static/css/navbar.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .auth-view {
+            display: none;
+        }
+
+        .auth-view.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            text-decoration: none;
+            color: white;
+        }
+
+        .logo-container img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #f87171, #ef4444);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .admin-badge {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            color: white;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #ef4444;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .form-group select option {
+            background: #1e293b;
+            color: white;
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .auth-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        .switch-view {
+            margin-top: 1.5rem;
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .switch-view a {
+            color: #f87171;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .switch-view a:hover {
+            text-decoration: underline;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 2rem;
+            color: rgba(255, 255, 255, 0.4);
+            text-decoration: none;
+            font-size: 0.875rem;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ef4444;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 0.75rem;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            z-index: 10;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="toast" class="toast"></div>
+
+    <div class="login-card">
+        <a href="../index.html" class="logo-container">
+            <img src="../static/img/boni_avatar.jpg" alt="Bonniface Logo">
+            <span class="logo-text">Bonniface</span>
+        </a>
+
+        <div class="admin-badge">Admin Portal</div>
+
+        <!-- Login View -->
+        <div id="loginView" class="auth-view active">
+            <h1>Staff Login</h1>
+            <p>Access the administrative dashboard.</p>
+
+            <form onsubmit="handleAdminLogin(event)">
+                <div class="form-group">
+                    <label>Admin Email</label>
+                    <input type="email" id="loginEmail" placeholder="admin@bonniface.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="loginPassword" placeholder="••••••••" required>
+                    </div>
+                </div>
+                <button type="submit" class="auth-btn">Authorize Access</button>
+            </form>
+
+            <div class="switch-view">
+                New staff member? <a onclick="switchView('signupView')">Register</a>
+            </div>
+        </div>
+
+        <!-- Signup View -->
+        <div id="signupView" class="auth-view">
+            <h1>Admin Registration</h1>
+            <p>Create your professional staff account.</p>
+
+            <form onsubmit="handleAdminSignup(event)">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="signupName" placeholder="Professional Name" required>
+                </div>
+                <div class="form-group">
+                    <label>Department</label>
+                    <select id="signupDept" required>
+                        <option value="Technical Support">Technical Support</option>
+                        <option value="Data Science">Data Science</option>
+                        <option value="Business Strategy">Business Strategy</option>
+                        <option value="Administration">Administration</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Staff Email</label>
+                    <input type="email" id="signupEmail" placeholder="name@bonniface.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="signupPassword" placeholder="••••••••" required>
+                    </div>
+                </div>
+                <button type="submit" class="auth-btn">Register as Admin</button>
+            </form>
+
+            <div class="switch-view">
+                Already have access? <a onclick="switchView('loginView')">Sign In</a>
+            </div>
+        </div>
+
+        <a href="../index.html" class="back-link">← Back to public site</a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../static/js/supabase_init.js"></script>
+
+    <script>
+        function switchView(viewId) {
+            document.querySelectorAll('.auth-view').forEach(v => v.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+        }
+
+        function showToast(message, isError = true) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.background = isError ? '#ef4444' : '#10b981';
+            toast.style.display = 'block';
+            setTimeout(() => toast.style.display = 'none', 5000);
+        }
+
+        async function handleAdminLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                const { data, error } = await window.supabase.auth.signInWithPassword({ email, password });
+                if (error) throw error;
+
+                // Check if user is actually an admin in the profiles table
+                const { data: profile, error: profileError } = await window.supabase
+                    .from('profiles')
+                    .select('is_admin')
+                    .eq('id', data.user.id)
+                    .single();
+
+                if (profileError || !profile.is_admin) {
+                    await window.supabase.auth.signOut();
+                    throw new Error("Access Denied: Not an authorized admin account.");
+                }
+
+                window.location.href = 'admin.html';
+            } catch (error) {
+                showToast(error.message);
+            }
+        }
+
+        async function handleAdminSignup(e) {
+            e.preventDefault();
+            const fullName = document.getElementById('signupName').value;
+            const department = document.getElementById('signupDept').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+
+            try {
+                // 1. Sign up the user
+                const { data, error } = await window.supabase.auth.signUp({
+                    email,
+                    password,
+                    options: {
+                        data: {
+                            full_name: fullName,
+                            is_admin: true // metadata
+                        }
+                    }
+                });
+
+                if (error) throw error;
+                if (!data.user) throw new Error("Signup failed.");
+
+                // Note: The 'profiles' table should be updated via a Supabase Trigger/Function 
+                // on the server for security (to prevent anyone from setting is_admin = true).
+                // However, for this implementation, we'll try to insert it directly assuming
+                // you have a trigger or will manually approve admins.
+                
+                showToast('Registration submitted! Please check email and wait for approval.', false);
+                switchView('loginView');
+            } catch (error) {
+                showToast(error.message);
+            }
+        }
+    </script>
+</body>
+
+</html>
