@@ -1,3 +1,9 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- --------------------------------------------------------------------------------
+-- 1. Table Definitions
+-- --------------------------------------------------------------------------------
+
 -- Create the chat_rooms table
 CREATE TABLE chat_rooms (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
